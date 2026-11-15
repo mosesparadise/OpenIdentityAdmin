@@ -9,6 +9,8 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Projects one current browser session onto a fixed API read without exposing or accepting browser bearer credentials.</summary>
 internal static class ApplicationProxyEndpoint
 {
+    private const string VersionRoot = "/bff/api/v1";
+
     private const string NoStore = "no-store";
     private const string NoSniff = "nosniff";
     private const string TransferEncoding = "Transfer-Encoding";
@@ -25,8 +27,17 @@ internal static class ApplicationProxyEndpoint
     internal const string Path = "/bff/api/v1/applications";
     private const string JsonType = "application/json; charset=utf-8";
 
+    /// <summary>Chooses only a code-owned collection path.</summary>
+    private static string CollectionPath(bool retired) => retired ? VersionRoot + ApplicationRetirementRules.ListPath : Path;
+
     /// <summary>Owns the original browser deadline and clears failures without forwarding downstream headers or bodies.</summary>
-    internal static async Task HandleAsync(HttpContext http)
+    internal static Task HandleAsync(HttpContext http) => HandleAsync(http, false);
+
+    /// <summary>Reads the separate retained collection without shadowing historical application identifiers.</summary>
+    internal static Task HandleRetiredAsync(HttpContext http) => HandleAsync(http, true);
+
+    /// <summary>Keeps the selected collection inside the original bounded read and publication owner.</summary>
+    private static async Task HandleAsync(HttpContext http, bool retired)
     {
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers.XContentTypeOptions = NoSniff;
@@ -36,7 +47,7 @@ internal static class ApplicationProxyEndpoint
         http.RequestAborted = budget.Token;
         try
         {
-            await ExecuteAsync(http, budget, clock);
+            await ExecuteAsync(http, budget, clock, retired);
         }
         catch (Exception) when (!http.Response.HasStarted)
         {
@@ -47,9 +58,9 @@ internal static class ApplicationProxyEndpoint
     }
 
     /// <summary>Requires bodyless same-origin input and a protected session credential before making any API request.</summary>
-    private static async Task ExecuteAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock)
+    private static async Task ExecuteAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock, bool retired)
     {
-        if (!ValidRequest(http) || http.Request.QueryString.Value?.Length > ApplicationProjection.MaximumQueryCharacters ||
+        if (!ValidRequest(http, retired) || http.Request.QueryString.Value?.Length > ApplicationProjection.MaximumQueryCharacters ||
             ApplicationListQuery.Parse(http.Request.Query.Select(pair => new KeyValuePair<string, string[]>(pair.Key, pair.Value.ToArray()!))) is not { } query)
         {
             await ProblemAsync(http, StatusCodes.Status400BadRequest);
@@ -62,7 +73,7 @@ internal static class ApplicationProxyEndpoint
             await ProblemAsync(http, StatusCodes.Status401Unauthorized);
             return;
         }
-        var result = await http.RequestServices.GetRequiredService<ApplicationProxyTransport>().ReadAsync(access, query, budget.Token);
+        var result = await http.RequestServices.GetRequiredService<ApplicationProxyTransport>().ReadAsync(access, query, budget.Token, retired);
         budget.RequireCurrent();
         if (!session.Status(clock.GetUtcNow()).Authenticated || access.ExpiresAt <= clock.GetUtcNow())
         {
@@ -119,13 +130,13 @@ internal static class ApplicationProxyEndpoint
     }
 
     /// <summary>Rejects encoded route aliases, body-bearing reads and explicit foreign browser provenance; no caller header is forwarded.</summary>
-    private static bool ValidRequest(HttpContext http)
+    private static bool ValidRequest(HttpContext http, bool retired)
     {
         var origin = http.RequestServices.GetRequiredService<BrowserSessionDestinations>().Client.GetLeftPart(UriPartial.Authority);
-        return http.Request.IsHttps && HttpMethods.IsGet(http.Request.Method) && http.Request.Path == Path &&
+        return http.Request.IsHttps && HttpMethods.IsGet(http.Request.Method) && http.Request.Path == CollectionPath(retired) &&
             http.Request.ContentLength is null or 0 && !http.Request.Headers.ContainsKey(TransferEncoding) &&
             http.Features.Get<IHttpRequestBodyDetectionFeature>()?.CanHaveBody != true &&
-            (http.Features.Get<IHttpRequestFeature>()?.RawTarget is not { Length: > 0 } raw || raw.Split('?', QueryParts)[0] == Path) &&
+            (http.Features.Get<IHttpRequestFeature>()?.RawTarget is not { Length: > 0 } raw || raw.Split('?', QueryParts)[0] == CollectionPath(retired)) &&
             (!http.Request.Headers.TryGetValue(OriginHeader, out var incoming) || incoming.Count == 1 && incoming[0] == origin) &&
             (!http.Request.Headers.TryGetValue(FetchSiteHeader, out var site) || site.Count == 1 && site[0] is SameOrigin or NoSite);
     }

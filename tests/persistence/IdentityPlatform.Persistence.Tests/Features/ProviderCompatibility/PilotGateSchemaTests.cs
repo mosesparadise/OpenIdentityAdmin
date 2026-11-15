@@ -79,6 +79,7 @@ public sealed class PilotGateSchemaTests
         await using var scope = fixture.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var rows = GrantSchemaRows.Add(database);
+        await RetirementPredecessorRows.InsertAsync(database, rows.Policy, fixture.Token);
         rows.Job.State = GrantJobState.Processing;
         rows.Job.Revision = HistoricalRevision;
         rows.Job.AuthorizationCount = HistoricalAuthorizations;
@@ -106,7 +107,7 @@ public sealed class PilotGateSchemaTests
         policy.ApplicationId = id;
         policy.Enabled = false;
         var database = services.GetRequiredService<PlatformDbContext>();
-        database.Add(policy);
+        await RetirementPredecessorRows.InsertAsync(database, policy, fixture.Token);
         await database.SaveChangesAsync(fixture.Token);
         var authorizations = services.GetRequiredService<IOpenIddictAuthorizationManager>();
         var authorization = await authorizations.CreateAsync(new OpenIddictAuthorizationDescriptor

@@ -61,8 +61,10 @@ internal static class ApplicationDetailsReader
         {
             throw new InvalidDataException();
         }
+        var retirement = await ApplicationRetirementReader.ReadAsync(database, policy, token);
         return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
-            policy.Profile, true, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry, policy.Enabled),
+            policy.Profile, !policy.Retired, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry, policy.Enabled,
+            policy.Retired, retirement),
             ApplicationVersion.Create(row.Id, policy.Revision), descriptor.Permissions
                 .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))
                 .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).Order(StringComparer.Ordinal).ToArray());

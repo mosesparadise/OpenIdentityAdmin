@@ -32,9 +32,9 @@ async function boundedFetch(request: Request): Promise<Response> {
 }
 
 /** Reads the generated same-origin BFF operation with cookies and no browser-held OAuth credential. */
-export async function readApplications(query: Query, signal: AbortSignal): Promise<Result> {
+export async function readApplications(query: Query, signal: AbortSignal, retired = false): Promise<Result> {
   const client = createClient<paths>({ baseUrl: window.location.origin, fetch: boundedFetch });
-  const { data, response } = await client.GET("/bff/api/v1/applications", {
+  const { data, response } = await client.GET(retired ? "/bff/api/v1/retired-applications" : "/bff/api/v1/applications", {
     params: { query }, credentials: "same-origin", cache: "no-store", redirect: "error",
     signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)])
   });

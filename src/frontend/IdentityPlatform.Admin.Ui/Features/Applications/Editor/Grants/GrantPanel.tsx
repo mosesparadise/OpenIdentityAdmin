@@ -27,18 +27,18 @@ export function GrantPanel({ base }: { base: Observed }) {
     if (!confirming && focus.current) { (focus.current === "action" ? action : heading).current?.focus(); focus.current = null; }
   }, [confirming, state.kind]);
   const job = state.kind === "ready" ? state.jobs.find(value => value.state !== "succeeded") ?? state.jobs[0] : undefined;
-  const available = state.kind === "ready" && base.details.enabled === false && (!job || job.state === "succeeded" || job.state === "stopped");
+  const available = state.kind === "ready" && base.details.enabled === false && (base.details.retired ? job?.state === "stopped" : !job || job.state === "succeeded" || job.state === "stopped");
   return <section className="editor-notice" aria-labelledby="grant-heading" aria-busy={state.kind === "loading" || state.kind === "sending"}>
-    <h3 id="grant-heading" tabIndex={-1} ref={heading}>Revoke application grants</h3>
+    <h3 id="grant-heading" tabIndex={-1} ref={heading}>{base.details.retired ? "Retirement grant revocation" : "Revoke application grants"}</h3>
     <p>Revocation invalidates stored authorizations and tokens. Tokens validated offline and sessions in other applications may continue.</p>
-    <p>The application must stay disabled until revocation succeeds. You can re-enable it separately afterward. Accepted work continues after you sign out while its approving administrator remains eligible.</p>
+    <p>{base.details.retired ? "This application is permanently retired. Its recorded revocation job continues after you sign out while its approving administrator remains eligible." : "The application must stay disabled until revocation succeeds. You can re-enable it separately afterward. Accepted work continues after you sign out while its approving administrator remains eligible."}</p>
     <div role="status" aria-live="polite" aria-atomic="true">
       {state.kind === "loading" && <p>Checking current access and committed progress…</p>}
       {state.kind === "sending" && <p>Sending your confirmation once. An interrupted response may leave an accepted job.</p>}
       {state.kind === "cleared" && <p>Progress was cleared. Reload application details to check current status.</p>}
       {job && <><p>Job reference: <span className="application-client-id">{job.id}</span></p><p>Revocation status: <strong>{job.state}</strong></p><p>Authorizations revoked: {job.authorizationCount}. Tokens revoked: {job.tokenCount}.</p>
         {job.state === "stopped" && <p>Work stopped ({job.failure}). Earlier committed progress is preserved. Resolve the cause and sign in with fresh MFA before confirming continuation.</p>}
-        {job.state === "succeeded" && <p>Revocation completed. The application remains disabled until you explicitly re-enable it.</p>}</>}
+        {job.state === "succeeded" && <p>{base.details.retired ? "Revocation completed. The application remains permanently retired with history retained." : "Revocation completed. The application remains disabled until you explicitly re-enable it."}</p>}</>}
     </div>
     {state.kind === "problem" && <div role="alert"><p>{state.reason === "forbidden" ? "Current grant permissions are required. Confirming revocation or continuation also requires a fresh MFA sign-in." : state.reason === "expired" ? "Sign in again to check current progress." : state.reason === "stale" ? "Application or job details changed. Reload details before confirming again." : "Progress could not be confirmed. Reload details to check current state."}</p>
       {state.uncertain && <><p>Your request may already be accepted. This check sends the same request key and confirmation again; it does not create a different intent.</p><Button secondary onClick={() => { focus.current = "heading"; void controller.current?.recover(); }}>Check acceptance of this request</Button></>}

@@ -50,7 +50,7 @@ public sealed class CloneUpgradeTests
         var policy = ManagedSchemaRows.Policy();
         policy.ApplicationId = id;
         var database = services.GetRequiredService<PlatformDbContext>();
-        database.Add(policy);
+        await RetirementPredecessorRows.InsertAsync(database, policy, test.Token);
         database.Add(new SecurityAuditIntent
         {
             Event = Event,

@@ -47,8 +47,9 @@ public sealed class CatalogueUpgradeTests
         descriptor.Resources.Add(NativeResource);
         await manager.CreateAsync(descriptor, fixture.Token);
         var database = services.GetRequiredService<PlatformDbContext>();
-        GrantSchemaRows.Add(database);
+        var rows = GrantSchemaRows.Add(database);
+        await RetirementPredecessorRows.InsertAsync(database, rows.Policy, fixture.Token);
         await database.SaveChangesAsync(fixture.Token);
-        Assert.NotEmpty(await database.Set<IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy>().AsNoTracking().ToListAsync(fixture.Token));
+        Assert.True(await database.Set<IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy>().AnyAsync(fixture.Token));
     }
 }

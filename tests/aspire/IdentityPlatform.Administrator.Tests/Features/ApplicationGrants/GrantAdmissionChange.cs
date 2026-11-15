@@ -27,7 +27,6 @@ internal sealed class GrantAdmissionChange(bool expireMfa) : SaveChangesIntercep
             return result;
         }
         Armed = false;
-        Observed = true;
         if (expireMfa)
         {
             Clock.Now = Clock.Now.AddSeconds(1);
@@ -36,6 +35,7 @@ internal sealed class GrantAdmissionChange(bool expireMfa) : SaveChangesIntercep
         {
             Assert.True(await database.RoleClaims.Where(row => row.ClaimValue == GrantBoundaryEvidence.Permission).ExecuteDeleteAsync(cancellationToken) > 0);
         }
+        Observed = true;
         return result;
     }
 }

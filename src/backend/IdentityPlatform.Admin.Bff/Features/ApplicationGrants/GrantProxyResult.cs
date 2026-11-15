@@ -25,7 +25,7 @@ internal sealed record GrantProxyResult(int Status, GrantJobView? Job = null, Gr
         if (request.Mutation)
         {
             var accepted = ApplicationJson.Parse<GrantAcceptance>(bytes);
-            if (accepted.RequestKey != request.Key || !Valid(accepted.Job, request) || accepted.Job.Version != tag ||
+            if (accepted.RequestKey != request.Key || !Valid(accepted.Job, request.Id, request.JobId) || accepted.Job.Version != tag ||
                 location != request.Location(accepted.Job.Id))
             {
                 throw new InvalidDataException();
@@ -35,11 +35,11 @@ internal sealed record GrantProxyResult(int Status, GrantJobView? Job = null, Gr
         if (request.JobId is not null)
         {
             var job = ApplicationJson.Parse<GrantJobView>(bytes);
-            return Valid(job, request) && job.Version == tag ? new(StatusCodes.Status200OK, job) : throw new InvalidDataException();
+            return Valid(job, request.Id, request.JobId) && job.Version == tag ? new(StatusCodes.Status200OK, job) : throw new InvalidDataException();
         }
         var page = ApplicationJson.Parse<GrantJobPage>(bytes);
         if (page.Items is null || page.Items.Count > GrantRevocationRules.RecentLimit || page.ExpiresAt.Offset != TimeSpan.Zero ||
-            page.Items.Any(job => !Valid(job, request) || job.ExpiresAt != page.ExpiresAt) || page.Items.Select(job => job.Id).Distinct(StringComparer.Ordinal).Count() != page.Items.Count)
+            page.Items.Any(job => !Valid(job, request.Id, request.JobId) || job.ExpiresAt != page.ExpiresAt) || page.Items.Select(job => job.Id).Distinct(StringComparer.Ordinal).Count() != page.Items.Count)
         {
             throw new InvalidDataException();
         }
@@ -47,10 +47,10 @@ internal sealed record GrantProxyResult(int Status, GrantJobView? Job = null, Gr
     }
 
     /// <summary>Preserves lossless nonnegative Int64 counts and a closed state/failure vocabulary with exact target and job-version identity.</summary>
-    private static bool Valid(GrantJobView? job, GrantProxyRequest request)
+    internal static bool Valid(GrantJobView? job, string applicationId, string? jobId = null)
     {
-        if (job is null || !GrantRevocationRules.TryKey(job.Id, out _) || job.ApplicationId != request.Id ||
-            request.JobId is not null && job.Id != request.JobId || !ApplicationVersion.IsCanonical(job.Version) ||
+        if (job is null || !GrantRevocationRules.TryKey(job.Id, out _) || job.ApplicationId != applicationId ||
+            jobId is not null && job.Id != jobId || !ApplicationVersion.IsCanonical(job.Version) ||
             job.State is not (Queued or Processing or Stopped or Succeeded) || job.Failure is not (None or Authority or Target or Storage or Clock) ||
             (job.State == Stopped) != (job.Failure != None) || !Count(job.AuthorizationCount) || !Count(job.TokenCount) ||
             job.CreatedAt.Offset != TimeSpan.Zero || job.UpdatedAt.Offset != TimeSpan.Zero || job.ExpiresAt.Offset != TimeSpan.Zero ||

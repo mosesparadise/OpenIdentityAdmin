@@ -19,5 +19,9 @@
   "Given original display deadline When either timer expires Then progress and pending keys are cleared",
   "Given terminal recovered acceptance When status is reauthorized Then continuation or a new request is actionable",
   "Given default key generation When confirmed Then a fresh canonical UUID binds acceptance",
-  "Given an encoded opaque application When accepted Then transport and observation agree on its exact segment"
+  "Given an encoded opaque application When accepted Then transport and observation agree on its exact segment",
+  "Given retired details When progress is loaded Then only the receipt linked job is read and fresh submission remains closed",
+  "Given retired stopped work When explicitly continued Then one fresh approval targets the exact retained job and application version",
+  "Given corrupt linked job observations When retired recovery loads Then unrelated or mismatched job versions fail closed",
+  "Given retired job client When reading exact status Then generated GET binds encoded application and canonical job identity without a mutation"
 ]

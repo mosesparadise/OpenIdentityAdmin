@@ -4,12 +4,13 @@ import { execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
 const scratch = await mkdtemp(path.join(os.tmpdir(), 'admin-editor-tests-'));
-const modules = ['input','observation','controller','client','lifecycle','focus'];
+const modules = ['input','observation','controller','client','lifecycle','focus','retirement'];
 try {
   await symlink(path.resolve('node_modules'), path.join(scratch,'node_modules'), 'dir');
   await build({ entryPoints: ['Features/Applications/Editor/Scopes/observation.ts'], outfile: path.join(scratch, 'scope-observation.mjs'), bundle: true, platform: 'node', format: 'esm' });
+  await build({ entryPoints: ['Features/Applications/Editor/Grants/observation.ts'], outfile: path.join(scratch, 'grant-observation.mjs'), bundle: true, platform: 'node', format: 'esm' });
   for (const name of modules) {
-    const source = (await readFile(`Features/Applications/Editor/${name}.ts`, 'utf8')).replace(/from "\.\/(\w+)"/g, 'from "./$1.mjs"').replace('from "./Scopes/observation"', 'from "./scope-observation.mjs"');
+    const source = (await readFile(`Features/Applications/Editor/${name}.ts`, 'utf8')).replace(/from "\.\/(\w+)"/g, 'from "./$1.mjs"').replace('from "./Scopes/observation"', 'from "./scope-observation.mjs"').replace('from "./Grants/observation"', 'from "./grant-observation.mjs"');
     await writeFile(path.join(scratch,`${name}.mjs`), (await transform(source,{loader:'ts',target:'es2022'})).code);
   }
   await build({ stdin:{contents:'export { CloneForm } from "./Features/Applications/Editor/CloneForm"; export { CreateForm, CreateFields } from "./Features/Applications/Editor/CreateForm"; export { UpdateForm } from "./Features/Applications/Editor/UpdateForm"; export { LifecycleForm } from "./Features/Applications/Editor/LifecycleForm"; export { DetailsView } from "./Features/Applications/Editor/DetailsView"; export { ProblemView } from "./Features/Applications/Editor/ProblemView";',resolveDir:process.cwd()}, outfile:path.join(scratch,'views.mjs'),bundle:true,platform:'node',format:'esm',jsx:'automatic',external:['react','react-dom/server','react/jsx-runtime'] });

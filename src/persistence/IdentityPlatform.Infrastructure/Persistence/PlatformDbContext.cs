@@ -29,6 +29,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationCloneAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationGrantModel.Configure(builder, ProviderOptions.Provider(options).Model);
+        ApplicationRetirementModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ManagedLoginModel.Configure(builder, ProviderOptions.Provider(options).Model);
         IssuerContinuationModel.Configure(builder, ProviderOptions.Provider(options).Model);
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);

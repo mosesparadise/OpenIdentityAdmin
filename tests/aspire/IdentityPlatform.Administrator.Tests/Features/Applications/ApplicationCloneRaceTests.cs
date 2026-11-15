@@ -1,4 +1,3 @@
-using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;
 using IdentityPlatform.Administrator.Tests.Features.Catalogue;
 using IdentityPlatform.Administrator.Tests.Fixtures;
@@ -142,10 +141,10 @@ public sealed class ApplicationCloneRaceTests(BootstrapFixture fixture)
     }
 
     /// <summary>Always releases the held native commit and joins both operations, including when independent wait observation fails.</summary>
-    private static async Task<ApplicationMutationResult> QueueAsync(ApplicationMutationFixture test, GrantLifecycleRaceProbe probe, Task first,
-        Func<Task<ApplicationMutationResult>> start)
+    internal static async Task<T> QueueAsync<T>(ApplicationMutationFixture test, GrantLifecycleRaceProbe probe, Task first,
+        Func<Task<T>> start)
     {
-        Task<ApplicationMutationResult>? second = null;
+        Task<T>? second = null;
         List<Exception> failures = [];
         try
         {

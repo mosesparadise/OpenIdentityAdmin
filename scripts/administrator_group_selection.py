@@ -4,10 +4,11 @@ from test_selection import administrator_invocations, require_administrator_stor
 
 PROVIDERS = ('PostgreSql', 'SqlServer')
 DEFINITIONS = {
+    'Applications': ('application_groups', ('Registration', 'Retirement')),
     'BrowserSessions': ('browser_session_groups', ('Foundations', 'Product', 'Lifecycle')),
     'ManagedApplications': ('managed_application_groups', ('Admission', 'Issuance', 'Disclosure')),
     'ProtocolAdmission': ('protocol_admission_groups', ('Admission', 'Replay')),
-    'BrowserProtection': ('browser_protection_groups', ('Sessions', 'Applications')),
+    'BrowserProtection': ('browser_protection_groups', ('Sessions', 'Applications', 'Retirement')),
 }
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.'
 
@@ -19,7 +20,7 @@ def definition(story):
     return DEFINITIONS[story]
 
 
-def administrator_execution_invocations(matrix, provider, story=None, group=None, managed_group=None, protocol_group=None):
+def administrator_execution_invocations(matrix, provider, story=None, group=None, managed_group=None, protocol_group=None, application_group=None):
     """Default and explicit story runs include every required nonoverlapping group."""
     if group is not None and story != 'BrowserSessions':
         raise ValueError('Browser-session group cannot select another story')
@@ -27,9 +28,11 @@ def administrator_execution_invocations(matrix, provider, story=None, group=None
         raise ValueError('Managed-application group cannot select another story')
     if protocol_group is not None and story != 'ProtocolAdmission':
         raise ValueError('Protocol-admission group cannot select another story')
+    if application_group is not None and story != 'Applications':
+        raise ValueError('Application group cannot select another story')
     result = []
     for current, count in administrator_invocations(matrix, provider, story):
-        requested = {'BrowserSessions': group, 'ManagedApplications': managed_group, 'ProtocolAdmission': protocol_group}.get(current)
+        requested = {'BrowserSessions': group, 'ManagedApplications': managed_group, 'ProtocolAdmission': protocol_group, 'Applications': application_group}.get(current)
         groups = group_invocations(matrix, provider, current, requested) if current in DEFINITIONS else [(None, count)]
         result.extend((current, selected, expected) for selected, expected in groups)
     return result
@@ -71,7 +74,7 @@ def group_filter(matrix, provider, story, group):
 
 
 def browser_execution_invocations(matrix, provider, story=None, group=None):
-    """Run both protection groups by default while retaining original logical stories and native traits."""
+    """Run every protection group by default while retaining original logical stories and native traits."""
     if group is not None and story != 'BrowserProtection':
         raise ValueError('Browser-protection group requires its original browser story')
     result = []

@@ -47,5 +47,11 @@
   "Given_clone_preview_When_read_fails_or_source_version_changes_Then_no_clone_form_or_request_survives",
   "Given_clone_dispatch_When_output_is_unknown_or_hidden_Then_no_retry_or_secret_replay_occurs",
   "Given_generated_clone_transport_When_dispatched_Then_source_path_precondition_and_native_CSRF_are_fixed",
-  "Given_clone_views_When_rendered_Then_configuration_confirmation_disabled_state_and_recovery_are_explicit"
+  "Given_clone_views_When_rendered_Then_configuration_confirmation_disabled_state_and_recovery_are_explicit",
+  "Given terminal details When observed Then retirement identity chronology and immutable version remain distinct from protected registrations",
+  "Given retirement acceptance When observed Then exact key terminal successor job and location are required",
+  "Given explicit retirement When confirmed cancelled or denied Then one intent and truthful recovery survive without automatic mutation",
+  "Given retirement browser client When invoked Then canonical key precondition CSRF and fixed destination are sent once",
+  "Given retirement forms and terminal views When rendered Then permanent effects retained navigation and offline limits are explicit",
+  "Given historical punctuation identity When retirement is accepted Then exact encoded job location preserves the opaque application"
 ]

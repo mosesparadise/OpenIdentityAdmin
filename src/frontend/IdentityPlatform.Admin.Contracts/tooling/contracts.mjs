@@ -64,7 +64,7 @@ export function inventory(document, surface, allowEmpty = false) {
       if (typeof op['x-required-permission'] !== 'string' || !op['x-required-permission']) throw new ContractViolation('Missing permission');
       if (surface === 'bff' && op['x-downstream-api-version'] !== 1) throw new ContractViolation('Missing explicit downstream mapping');
       if (['put', 'patch', 'delete', 'post'].includes(method)) {
-        const versionedPost = ['applications/{id}/secret-replacements', 'applications/{id}/clone'].some(path => route === prefix + path);
+        const versionedPost = ['applications/{id}/secret-replacements', 'applications/{id}/clone', 'applications/{id}/retirement'].some(path => route === prefix + path);
         const names = method === 'post' && !versionedPost ? [] : ['If-Match'];
         if (surface === 'bff') names.push('X-CSRF-TOKEN');
         for (const name of names) {
@@ -90,7 +90,7 @@ export function securityCompatibility(previous, current, surface, allowEmpty = f
   for (const [key, old] of before) {
     const next = after.get(key);
     if (!next) throw new ContractViolation('Removed operation');
-    for (const property of ['operationId', 'security', 'x-required-permission', 'x-downstream-api-version', 'x-browser-session-status', 'x-persisted-mfa-max-age-exclusive-seconds']) {
+    for (const property of ['operationId', 'security', 'x-required-permission', 'x-required-permissions', 'x-downstream-api-version', 'x-browser-session-status', 'x-persisted-mfa-max-age-exclusive-seconds']) {
       if (!isDeepStrictEqual(old[property], next[property])) throw new ContractViolation(`Changed ${property}`);
     }
     // Header semantics need explicit review even where generic schema diff calls a relaxation additive.

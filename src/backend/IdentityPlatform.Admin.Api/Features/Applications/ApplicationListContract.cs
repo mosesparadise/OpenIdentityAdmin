@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
@@ -7,6 +8,9 @@ namespace IdentityPlatform.Admin.Api.Features.Applications;
 /// <summary>Describes the actual collection's independent security, finite query and no-store response contract.</summary>
 internal sealed class ApplicationListContract : IOpenApiDocumentTransformer
 {
+    private const string VersionRoot = "/api/v1";
+    private const string RetiredOperation = "ListRetiredApplications";
+
     private const string Bearer = "bearer";
     private const string TokenFormat = "JWT";
     private const string PermissionExtension = "x-required-permission";
@@ -31,10 +35,18 @@ internal sealed class ApplicationListContract : IOpenApiDocumentTransformer
     /// <summary>Changes only this real collection operation; dormant inventories and unrelated contracts remain untouched.</summary>
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
-        if (!document.Paths.TryGetValue(Path, out var path) || path.Operations?.TryGetValue(HttpMethod.Get, out var operation) != true ||
-            operation is null || operation.OperationId != Operation)
+        Configure(document, Path, Operation);
+        Configure(document, VersionRoot + ApplicationRetirementRules.ListPath, RetiredOperation);
+        return Task.CompletedTask;
+    }
+
+    /// <summary>Applies the same finite query and read authority to each explicitly named collection.</summary>
+    private static void Configure(OpenApiDocument document, string route, string operationId)
+    {
+        if (!document.Paths.TryGetValue(route, out var path) || path.Operations?.TryGetValue(HttpMethod.Get, out var operation) != true ||
+            operation is null || operation.OperationId != operationId)
         {
-            return Task.CompletedTask;
+            return;
         }
         document.Components ??= new();
         document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
@@ -53,7 +65,6 @@ internal sealed class ApplicationListContract : IOpenApiDocumentTransformer
             response.Headers ??= new Dictionary<string, IOpenApiHeader>();
             response.Headers[CacheControl] = new OpenApiHeader { Description = CacheDescription, Schema = new OpenApiSchema { Type = JsonSchemaType.String, Const = NoStore } };
         }
-        return Task.CompletedTask;
     }
 
     /// <summary>Publishes explicit positive pagination bounds and defaults without silently accepting alternate textual forms.</summary>

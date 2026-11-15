@@ -40,11 +40,11 @@ internal static class GrantIssuerRevocation
         test.Http.Environment.Issuer.Account.Journey.Clock, TestContext.Current.CancellationToken);
 
     /// <summary>Requires exact eligibility counts, preserved redeemed/invalid records and unchanged target configuration after bounded completion.</summary>
-    internal static async Task ReconcileAsync(ManagedCacheTestContext test)
+    internal static async Task ReconcileAsync(ManagedCacheTestContext test, GrantJobView? accepted = null)
     {
         var before = await NativeAsync(test);
         var policy = await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id);
-        var accepted = await AcceptAsync(test);
+        accepted ??= await AcceptAsync(test);
         var authorizations = before.Authorizations.Count(row => row.Status == Valid);
         var tokens = before.Tokens.Count(row => row.Status is Valid or Inactive);
         var batches = (Math.Max(authorizations, tokens) + BatchSize - 1) / BatchSize + 1;

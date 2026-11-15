@@ -4,8 +4,8 @@ import { addressable } from "./Editor/input";
 import { useApplications } from "./useApplications";
 
 /** Presents actual registered applications and finite permission, expiry, empty and dependency states. */
-export function ApplicationsPanel({ onDetails }: { onDetails?: (id: string) => void }) {
-  const { state, check } = useApplications();
+export function ApplicationsPanel({ onDetails, retired = false }: { onDetails?: (id: string) => void; retired?: boolean }) {
+  const { state, check } = useApplications(retired);
   const heading = useRef<HTMLHeadingElement>(null);
   const requested = useRef(false);
   const reload: typeof check = query => { requested.current = true; check(query); };
@@ -15,10 +15,10 @@ export function ApplicationsPanel({ onDetails }: { onDetails?: (id: string) => v
   const [pageSize, setPageSize] = useState(25);
   const ready = state.kind === "ready";
   const loading = state.kind === "loading";
-  const title = ready ? state.items.length ? "Registered applications" : "No matching applications"
+  const title = ready ? state.items.length ? retired ? "Retired applications" : "Registered applications" : "No matching applications"
     : loading ? "Loading applications…" : state.kind === "expired" ? "Sign in to view applications"
     : state.kind === "forbidden" ? "Application access is restricted" : "Applications are unavailable";
-  const description = ready ? state.items.length ? `Page ${state.page}: ${state.items.length} ${state.items.length === 1 ? "application" : "applications"} currently registered with your identity provider.` : "Try a different client ID prefix."
+  const description = ready ? state.items.length ? `Page ${state.page}: ${state.items.length} ${state.items.length === 1 ? "application" : "applications"} ${retired ? "permanently retired with history retained" : "currently registered with your identity provider"}.` : "Try a different client ID prefix."
     : loading ? "Checking your access and reading the current collection."
     : state.kind === "expired" ? "Your application access has ended or you are not signed in. Sign in again to continue."
     : state.kind === "forbidden" ? "Your account does not currently have permission to read applications. Contact your administrator."
@@ -33,8 +33,8 @@ export function ApplicationsPanel({ onDetails }: { onDetails?: (id: string) => v
       <div><label htmlFor="application-page-size">Per page</label><select id="application-page-size" value={pageSize} onChange={event => setPageSize(Number(event.target.value))}>
         <option value={25}>25</option><option value={50}>50</option><option value={100}>100</option></select></div>
       <Button type="submit">Search</Button></form>
-    {ready && state.items.length > 0 && <div className="application-table-scroll" tabIndex={0} role="region" aria-label="Registered applications table">
-      <table className="application-table"><caption className="visually-hidden">Registered applications, page {state.page}</caption>
+    {ready && state.items.length > 0 && <div className="application-table-scroll" tabIndex={0} role="region" aria-label={retired ? "Retired applications table" : "Registered applications table"}>
+      <table className="application-table"><caption className="visually-hidden">{retired ? "Retired" : "Registered"} applications, page {state.page}</caption>
         <thead><tr><th scope="col">Name</th><th scope="col">Client ID</th><th scope="col">Type</th>{onDetails && <th scope="col">Details</th>}</tr></thead>
         <tbody>{state.items.map(item => <tr key={item.id}><td>{item.displayName || "Unnamed application"}</td><td className="application-client-id">{item.clientId}</td><td>{item.clientType || "Not specified"}</td>{onDetails && <td>{addressable(item.id) ? <Button secondary onClick={() => onDetails(item.id)} aria-label={`View details for ${item.clientId}`}>View details</Button> : "Details unavailable"}</td>}</tr>)}</tbody>
       </table></div>}

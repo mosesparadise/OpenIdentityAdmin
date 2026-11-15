@@ -276,6 +276,12 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .HasColumnType("nvarchar(14)")
                         .UseCollation("Latin1_General_100_BIN2");
 
+                    b.Property<bool>("Retired")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<long>("Revision")
                         .IsConcurrencyToken()
                         .HasColumnType("bigint");
@@ -288,9 +294,87 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         {
                             t.HasCheckConstraint("CK_ApplicationPolicy_Profile", "[Profile] = 'managed-web-v1'");
 
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Retirement", "CAST([Retired] AS INTEGER) + CAST([Enabled] AS INTEGER) <= 1");
+
                             t.HasCheckConstraint("CK_ApplicationPolicy_Revision", "[Revision] >= [CredentialRevision] AND [CredentialRevision] > 0");
 
                             t.HasCheckConstraint("CK_ApplicationPolicy_Time", "[CredentialIssuedAt] >= 0 AND [CredentialExpiresAt] > [CredentialIssuedAt] AND [ObservedAt] >= [CredentialIssuedAt]");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("ActorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GrantApprovalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GrantJobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("OriginalRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ReplayUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("RequestKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("RetiredAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetiredRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ScopedKeyHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("ApplicationId");
+
+                    b.HasIndex("AuditId")
+                        .IsUnique();
+
+                    b.HasIndex("GrantApprovalId")
+                        .IsUnique();
+
+                    b.HasIndex("GrantJobId")
+                        .IsUnique();
+
+                    b.HasIndex("ScopedKeyHash")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationRetirement", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationRetirement_Reason", "[Reason] IN (1, 2, 3)");
+
+                            t.HasCheckConstraint("CK_ApplicationRetirement_Revision", "[OriginalRevision] > 0 AND [RetiredRevision] - [OriginalRevision] = 1");
+
+                            t.HasCheckConstraint("CK_ApplicationRetirement_Time", "[RetiredAt] >= 0 AND [ReplayUntil] > [RetiredAt] AND [ReplayUntil] - [RetiredAt] = 86400");
                         });
                 });
 
@@ -2075,6 +2159,33 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", "AuditId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "AuditId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantApproval", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "GrantApprovalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "GrantJobId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

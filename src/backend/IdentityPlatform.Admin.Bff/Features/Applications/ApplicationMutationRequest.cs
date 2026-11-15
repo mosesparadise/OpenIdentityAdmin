@@ -1,5 +1,6 @@
 using System.Text.Json;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
 using Microsoft.AspNetCore.Http.Features;
@@ -40,18 +41,23 @@ internal sealed class ApplicationMutationRequest
     {
         get;
     }
+    internal string? RequestKey
+    {
+        get;
+    }
     private readonly object input;
     internal string Path => ApiPath + ResourcePath(Action, Id);
     internal HttpMethod Method => Action is ApplicationProxyAction.Edit or ApplicationProxyAction.AssignScopes ? HttpMethod.Put : HttpMethod.Post;
 
     /// <summary>Keeps validated original bytes private to a newly parsed command; no request body or mutable DTO survives by reference.</summary>
-    private ApplicationMutationRequest(ApplicationProxyAction action, string? id, string? version, byte[] body, object input)
+    private ApplicationMutationRequest(ApplicationProxyAction action, string? id, string? version, byte[] body, object input, string? requestKey)
     {
         Action = action;
         Id = id;
         Version = version;
         Body = body;
         this.input = input;
+        RequestKey = requestKey;
     }
 
     /// <summary>Checks framing and preconditions before reading finite actual bytes and validating the selected Core contract.</summary>
@@ -73,6 +79,7 @@ internal sealed class ApplicationMutationRequest
             throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
         }
         var version = ReadVersion(request, action);
+        var key = ReadKey(request, action);
         try
         {
             var bytes = await ApplicationJson.ReadAsync(request.Body, BodyBytes, http.RequestAborted);
@@ -80,12 +87,26 @@ internal sealed class ApplicationMutationRequest
             {
                 throw new InvalidDataException();
             }
-            return new(action, id, version, bytes, Validate(bytes, action, now));
+            return new(action, id, version, bytes, Validate(bytes, action, now), key);
         }
         catch (Exception error) when (error is JsonException or InvalidDataException or ArgumentException)
         {
             throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
         }
+    }
+
+    /// <summary>Requires a canonical key only for the separately replayable terminal operation.</summary>
+    private static string? ReadKey(HttpRequest request, ApplicationProxyAction action)
+    {
+        if (action != ApplicationProxyAction.Retire)
+        {
+            return null;
+        }
+        if (request.Headers[GrantRevocationRules.KeyHeader] is not { Count: 1 } keys || !GrantRevocationRules.TryKey(keys[0], out _))
+        {
+            throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
+        }
+        return keys[0];
     }
 
     /// <summary>Allows only a single canonical strong precondition and distinguishes missing from malformed input.</summary>
@@ -144,7 +165,7 @@ internal sealed class ApplicationMutationRequest
             var assignment = ApplicationJson.Parse<ApplicationScopeInput>(bytes);
             return CatalogueRules.IsAssignment(assignment.Scopes) ? assignment : throw new InvalidDataException();
         }
-        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable)
+        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable or ApplicationProxyAction.Retire)
         {
             var input = ApplicationJson.Parse<ApplicationLifecycle>(bytes);
             return ApplicationLifecycleRules.Reason(input) is not null ? input : throw new InvalidDataException();
@@ -179,7 +200,7 @@ internal sealed class ApplicationMutationRequest
                 details.DisplayName == clone.DisplayName && SameExpiry(details, clone.CredentialExpiresAt) && details.Enabled == false,
             ApplicationEdit edit => details.DisplayName == edit.DisplayName && SameRedirects(details, edit.RedirectUris),
             ApplicationSecretReplacement replacement => SameExpiry(details, replacement.CredentialExpiresAt),
-            ApplicationLifecycle => details.Enabled == (Action == ApplicationProxyAction.Enable),
+            ApplicationLifecycle when Action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable => details.Enabled == (Action == ApplicationProxyAction.Enable),
             _ => false
         };
     }
@@ -214,14 +235,15 @@ internal sealed class ApplicationMutationRequest
             ApplicationProxyAction.Replace => ReplacementSuffix,
             ApplicationProxyAction.Disable => ApplicationLifecycleRules.DisableSuffix,
             ApplicationProxyAction.Enable => ApplicationLifecycleRules.EnableSuffix,
+            ApplicationProxyAction.Retire => ApplicationRetirementRules.Suffix,
             _ => throw new InvalidDataException()
         });
 }
 
-/// <summary>Closes the writable transport surface to the three reviewed application actions.</summary>
+/// <summary>Closes the writable transport surface to reviewed application actions; retirement has its own acceptance response.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

@@ -1,5 +1,6 @@
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Database;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.EntityFrameworkCore.Models;
@@ -13,10 +14,11 @@ internal static class ApplicationListReader
     private const string InvalidMetadata = "Application metadata is outside the supported projection.";
 
     /// <summary>Projects bounded SQL prefixes, rejects overflow and returns a single-query lookahead page; no native state is changed.</summary>
-    internal static async Task<ApplicationPage> ReadAsync(PlatformDbContext database, ApplicationListQuery query, DateTimeOffset expiresAt, CancellationToken token)
+    internal static async Task<ApplicationPage> ReadAsync(PlatformDbContext database, ApplicationListQuery query, DateTimeOffset expiresAt, CancellationToken token, bool retired = false)
     {
         var ordinal = database.GetDatabaseProvider().Model.SessionOrdinalCollation;
-        var source = database.Set<OpenIddictEntityFrameworkCoreApplication>().AsNoTracking();
+        var source = database.Set<OpenIddictEntityFrameworkCoreApplication>().AsNoTracking()
+            .Where(row => database.Set<ApplicationPolicy>().Any(policy => policy.ApplicationId == EF.Functions.Collate(row.Id!, ordinal) && policy.Retired) == retired);
         if (query.Search.Length != 0)
         {
             source = source.Where(row => EF.Functions.Collate(row.ClientId!, ordinal).StartsWith(query.Search));

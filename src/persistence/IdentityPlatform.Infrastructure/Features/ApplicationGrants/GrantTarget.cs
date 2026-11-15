@@ -29,7 +29,8 @@ internal static class GrantTarget
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
-        return new(policy, new ApplicationWriteState(application, descriptor, policy, null));
+        var retirement = policy.Retired ? await ApplicationRetirementBinding.ReadAsync(scope, policy, token) : null;
+        return new(policy, application, descriptor, retirement);
     }
 
     /// <summary>Checks the exact original precondition before state conflict, without treating credential age as job authority.</summary>
@@ -47,10 +48,47 @@ internal static class GrantTarget
 }
 
 /// <summary>Retains a detached policy and privately frozen native/credential expectations for the original target.</summary>
-internal sealed class GrantTargetObservation(ApplicationPolicy policy, ApplicationWriteState expected)
+internal sealed class GrantTargetObservation(ApplicationPolicy policy, object application, OpenIddictApplicationDescriptor descriptor,
+    ApplicationRetirementBinding? retirement)
 {
+    private readonly ApplicationWriteState expected = new(application, descriptor, policy, null);
     internal ApplicationPolicy Policy => policy;
+    internal ApplicationRetirementBinding? Retirement => retirement;
 
     /// <summary>Requires unchanged native configuration, credential and policy through actual independent reloads after save callbacks.</summary>
-    internal Task VerifyAsync(ProtocolStorageScope scope, CancellationToken token) => expected.VerifyAsync(scope, token);
+    internal async Task VerifyAsync(ProtocolStorageScope scope, CancellationToken token)
+    {
+        await expected.VerifyAsync(scope, token);
+        if (retirement is not null)
+        {
+            await retirement.VerifyAsync(scope, token);
+        }
+    }
+
+    /// <summary>Restricts terminal targets to their original linked job, excluding new Submit and unrelated historical continuations.</summary>
+    internal void RequireJob(Guid? id)
+    {
+        if (policy.Retired && (retirement is null || retirement.Receipt.GrantJobId != id))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
+        }
+    }
+
+    /// <summary>Freezes the intended terminal policy against the original private native descriptor; the owning transaction must attach the policy first.</summary>
+    internal ApplicationWriteState Retire(long now)
+    {
+        if (policy.Retired)
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
+        }
+        if (now < policy.ObservedAt)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        policy.Retired = true;
+        policy.Enabled = false;
+        policy.Revision = checked(policy.Revision + 1);
+        policy.ObservedAt = now;
+        return new(application, descriptor, policy, null);
+    }
 }

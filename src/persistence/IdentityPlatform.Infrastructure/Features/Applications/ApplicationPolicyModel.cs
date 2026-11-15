@@ -11,6 +11,8 @@ internal static class ApplicationPolicyModel
     private const string RevisionConstraint = "CK_ApplicationPolicy_Revision";
     private const string TimeConstraint = "CK_ApplicationPolicy_Time";
     private const string ProfileConstraint = "CK_ApplicationPolicy_Profile";
+    private const string RetirementConstraint = "CK_ApplicationPolicy_Retirement";
+    private const string RetirementSql = "CAST(\"Retired\" AS INTEGER) + CAST(\"Enabled\" AS INTEGER) <= 1";
     private const string RevisionSql = "\"Revision\" >= \"CredentialRevision\" AND \"CredentialRevision\" > 0";
     private const string TimeSql = "\"CredentialIssuedAt\" >= 0 AND \"CredentialExpiresAt\" > \"CredentialIssuedAt\" AND \"ObservedAt\" >= \"CredentialIssuedAt\"";
     private const string ProfileSql = "\"Profile\" = 'managed-web-v1'";
@@ -21,6 +23,7 @@ internal static class ApplicationPolicyModel
         var row = builder.Entity<ApplicationPolicy>();
         row.HasKey(value => value.ApplicationId);
         row.Property(value => value.Enabled).HasDefaultValue(true).IsConcurrencyToken();
+        row.Property(value => value.Retired).HasDefaultValue(false).IsConcurrencyToken();
         row.Property(value => value.ApplicationId).HasMaxLength(ApplicationProjection.IdentifierLength);
         row.Property(value => value.Profile).HasMaxLength(ApplicationEditorRules.Profile.Length);
         row.Property(value => value.Revision).IsConcurrencyToken();
@@ -32,6 +35,7 @@ internal static class ApplicationPolicyModel
             table.HasCheckConstraint(RevisionConstraint, dialect.Identifiers(RevisionSql));
             table.HasCheckConstraint(TimeConstraint, dialect.Identifiers(TimeSql));
             table.HasCheckConstraint(ProfileConstraint, dialect.Identifiers(ProfileSql));
+            table.HasCheckConstraint(RetirementConstraint, dialect.Identifiers(RetirementSql));
         });
         if (dialect.IdentityOrdinalCollation is { } ordinal)
         {

@@ -25,6 +25,7 @@ internal sealed class ApiMutationAuthority
     private readonly ApiIdentity identity;
     private readonly object command;
     private readonly string permission;
+    private readonly string? additionalPermission;
     private readonly bool fresh;
     private readonly string callback;
     private readonly ApiSourceState source;
@@ -36,13 +37,14 @@ internal sealed class ApiMutationAuthority
 
     /// <summary>Captures the first successful observation and original deadlines; no external constructor can fabricate an approved receipt.</summary>
     private ApiMutationAuthority(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership, ApiIdentity identity,
-        object command, string callback, ApiSourceState source, DateTimeOffset deadline, string permission, bool fresh)
+        object command, string callback, ApiSourceState source, DateTimeOffset deadline, string permission, bool fresh, string? additionalPermission = null)
     {
         this.scope = scope;
         this.ownership = ownership;
         this.identity = identity;
         this.command = command;
         this.permission = permission;
+        this.additionalPermission = additionalPermission;
         this.fresh = fresh;
         this.callback = callback;
         this.source = source;
@@ -66,6 +68,14 @@ internal sealed class ApiMutationAuthority
     {
         var observation = await ObserveAsync(scope, ownership, identity, GrantRevocationRules.Permission, true, callback, token);
         return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, GrantRevocationRules.Permission, true);
+    }
+
+    /// <summary>Requires both current retirement permissions from one original grants/source observation and one fresh-MFA lifetime.</summary>
+    internal static async Task<ApiMutationAuthority> AcquireRetirementAsync(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership,
+        ApiIdentity identity, ApplicationRetirementIntent command, string callback, CancellationToken token)
+    {
+        var observation = await ObserveAsync(scope, ownership, identity, LifecyclePermission, true, callback, token, GrantRevocationRules.Permission);
+        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, LifecyclePermission, true, GrantRevocationRules.Permission);
     }
 
     /// <summary>Binds only a validated catalogue action to its fixed current permission and the original fresh-MFA deadline.</summary>
@@ -106,7 +116,8 @@ internal sealed class ApiMutationAuthority
 
     /// <summary>Separates direct EF execution from native manager calls, whose owned stores acquire their own non-reentrant execution leases.</summary>
     private static async Task<(ApiSourceState Source, DateTimeOffset Deadline)> ObserveAsync(ProtocolStorageScope scope,
-        ProtocolAdmissionOwnership ownership, ApiIdentity identity, string permission, bool fresh, string callback, CancellationToken token)
+        ProtocolAdmissionOwnership ownership, ApiIdentity identity, string permission, bool fresh, string callback, CancellationToken token,
+        string? additionalPermission = null)
     {
         var database = (PlatformDbContext)scope.Owner.Database;
         ownership.RequireCurrent(database, token);
@@ -125,6 +136,10 @@ internal sealed class ApiMutationAuthority
             throw new ApiMutationDenied(StatusCodes.Status401Unauthorized);
         }
         if (!grants.Permissions(identity.Subject).Contains(permission))
+        {
+            throw new ApiMutationDenied(StatusCodes.Status403Forbidden);
+        }
+        if (additionalPermission is not null && !grants.Permissions(identity.Subject).Contains(additionalPermission))
         {
             throw new ApiMutationDenied(StatusCodes.Status403Forbidden);
         }
@@ -153,7 +168,7 @@ internal sealed class ApiMutationAuthority
     internal async Task VerifyAsync(ProtocolStorageScope current, object intent, CancellationToken token)
     {
         Require(current, intent, token);
-        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token);
+        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token, additionalPermission);
         if (observation.Source.FactorVerifiedAt != source.FactorVerifiedAt || observation.Source.Binding != source.Binding)
         {
             throw new ApiMutationDenied(StatusCodes.Status401Unauthorized);

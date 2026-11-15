@@ -44,6 +44,10 @@ internal static class ApplicationMutationWriter
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Stale);
         }
+        if (policy.Retired)
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
+        }
         if (command.Kind == ApplicationMutationKind.Clone)
         {
             var source = await ApplicationCloneSource.ReadAsync(scope, application, descriptor, policy, command, token);

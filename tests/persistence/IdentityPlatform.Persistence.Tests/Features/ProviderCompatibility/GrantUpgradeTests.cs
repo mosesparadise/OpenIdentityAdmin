@@ -46,7 +46,7 @@ public sealed class GrantUpgradeTests
         policy.ApplicationId = id;
         policy.Enabled = false;
         var database = services.GetRequiredService<PlatformDbContext>();
-        database.Add(policy);
+        await RetirementPredecessorRows.InsertAsync(database, policy, fixture.Token);
         await database.SaveChangesAsync(fixture.Token);
         await services.GetRequiredService<IOpenIddictAuthorizationManager>().CreateAsync(new OpenIddictAuthorizationDescriptor
         {

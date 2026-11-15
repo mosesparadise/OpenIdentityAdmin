@@ -20,6 +20,13 @@ export function grantClient() {
       const { data, response } = await client.GET(collection, { ...options(signal), params: { path: { id } }, pathSerializer: () => path });
       return { status: response.status, value: data };
     },
+    async single(id: string, jobId: string, signal: AbortSignal): Promise<GrantResult> {
+      if (!key(jobId)) throw new Error("Unsupported revocation identity");
+      const path = target(id) + "/" + jobId;
+      const { data, response } = await client.GET("/bff/api/v1/applications/{id}/grant-revocations/{jobId}", {
+        ...options(signal), params: { path: { id, jobId } }, pathSerializer: () => path });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
     async submit(id: string, version: string, requestKey: string, input: GrantInput, csrf: string, signal: AbortSignal, jobId?: string): Promise<GrantResult> {
       if (!key(requestKey)) throw new Error("Unsupported revocation key");
       const path = target(id, jobId);

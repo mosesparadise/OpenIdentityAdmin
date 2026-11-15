@@ -23,26 +23,26 @@ credential/consent, unchanged source and current copied configuration.
 - [x] T010 [US1] Add clone API route, fresh-MFA write authority and bounded 201 publication in src/backend/IdentityPlatform.Admin.Api/Features/Applications/.
 - [x] T011 [US1] Add fixed one-send clone proxy, strict request and destination-bound response validation (new/source ID inequality, revision 1, disabled, exact client ID/name/expiry/profile) in src/backend/IdentityPlatform.Admin.Bff/Features/Applications/.
 - [x] T012 [US1] Add reviewed clone form, matching source detail/scope version, one-time output/focus/unknown-outcome behavior in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ and its tests/.
-- [ ] T013 [US1] Add genuine clone/new-consent/native sign-in journeys for both providers and Chromium/WebKit in tests/aspire/IdentityPlatform.AppHost.Tests/Features/Samples/.
+- [x] T013 [US1] Add genuine clone/new-consent/native sign-in journeys for both providers and Chromium/WebKit in tests/aspire/IdentityPlatform.AppHost.Tests/Features/Samples/.
 - [x] T014 [US1] Regenerate authoritative contracts and extend exact native/UI inventories and clone causal witnesses in eng/, scripts/ and tests/; preserve old identities and unchanged floors/deadlines.
-- [ ] T015 [US1] Run focused and required exact-head checks, independent architecture/security/API/test/UX reviews and original evidence reconciliation; record clone acceptance and normal squash in specs/025-application-clone-retirement/verification.md and docs/roadmap.md.
+- [x] T015 [US1] Run focused and required exact-head checks, independent architecture/security/API/test/UX reviews and original evidence reconciliation; record clone acceptance and normal squash in specs/025-application-clone-retirement/verification.md and docs/roadmap.md.
 
 ## Phase 4 — US2: Permanent retirement (FR-001/006..009/011..014; SC-002/004/005)
 Goal: atomic terminal state, new durable approval/job and retained history/identity.
-- [ ] T016 [US2] Add both-provider retirement admission, replay/collision, atomicity, current dual-authority/MFA and actual mutation/issuance race tests in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/.
-- [ ] T017 [US2] Add non-null Retired default=false concurrency state with invariant retired implies enabled=false, and immutable receipt/audit/job linkage in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and both provider migrations; prove populated upgrade/history preservation.
-- [ ] T018 [US2] Implement atomic retirement and separately scoped exact replay with a new grant approval in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/; reject every incomplete existing job and preserve all rows on failure.
-- [ ] T019 [US2] Bind terminal state into issuer/write snapshots and reject ordinary mutations/clone sources in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and existing managed registration/login features, preserving GrantTarget cleanup access.
-- [ ] T020 [US2] Add dual-permission fresh-MFA API/BFF retirement admission under one authority epoch, bounded receipt/status contract and exact validators in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ and src/backend/IdentityPlatform.Admin.Bff/Features/Applications/.
-- [ ] T021 [US2] Filter retired policies before ordering/offset/lookahead in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationListReader.cs; add the separately navigable bounded retired-app list and retain authorized detail/job access; verify mixed unmanaged/system rows, page boundaries and historical native ID retired (the separate /retired-applications route must not shadow detail IDs).
+- [x] T016 [US2] Add both-provider retirement admission, replay/collision, atomicity, current dual-authority/MFA and actual mutation/issuance race tests in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/.
+- [x] T017 [US2] Add non-null Retired default=false concurrency state with invariant retired implies enabled=false, and immutable receipt/audit/job linkage in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and both provider migrations; prove populated upgrade/history preservation.
+- [x] T018 [US2] Implement atomic retirement and separately scoped exact replay with a new grant approval in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/; reject every incomplete existing job and preserve all rows on failure.
+- [x] T019 [US2] Bind terminal state into issuer/write snapshots and reject ordinary mutations/clone sources in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and existing managed registration/login features, preserving GrantTarget cleanup access.
+- [x] T020 [US2] Add dual-permission fresh-MFA API/BFF retirement admission under one authority epoch, bounded receipt/status contract and exact validators in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ and src/backend/IdentityPlatform.Admin.Bff/Features/Applications/.
+- [x] T021 [US2] Filter retired policies before ordering/offset/lookahead in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationListReader.cs; add the separately navigable bounded retired-app list and retain authorized detail/job access; verify mixed unmanaged/system rows, page boundaries and historical native ID retired (the separate /retired-applications route must not shadow detail IDs).
 - [ ] T022 [US2] Add permanent-retirement confirmation, terminal details/status navigation and offline-token/session explanation in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/; cover stale/denied/cancelled/unknown outcomes and responsive keyboard/focus behavior.
-- [ ] T023 [US2] Prove retained native/history rows, client-ID reservation, scope-reference semantics and retirement persistence through restart/cleanup in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/.
+- [x] T023 [US2] Prove retained native/history rows, client-ID reservation, scope-reference semantics and retirement persistence through restart/cleanup in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/.
 
 ## Phase 5 — US3: Recovery (FR-007/009/010/012..014; SC-003/004/005)
 Goal: durable revocation survives browser loss and explicit stopped-job recovery without
 ever restoring a retired registration. Depends on US2 admission and terminal read model.
-- [ ] T024 [US3] Add worker restart/logout/MFA-age/current-account/permission-loss, exact continuation and retained approval/history tests in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/.
-- [ ] T025 [US3] Integrate retirement receipt/job observation and existing explicitly approved continuation in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/, src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/Grants/.
+- [x] T024 [US3] Add worker restart/logout/MFA-age/current-account/permission-loss, exact continuation and retained approval/history tests in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/.
+- [x] T025 [US3] Integrate retirement receipt/job observation and existing explicitly approved continuation in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/, src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/Grants/.
 - [ ] T026 [US3] Add genuine retirement/pending/stopped/recovered journeys across both providers and retained browsers in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/; assert recovery stays reachable after normal-list exclusion, full reload/re-login and lost admission response.
 
 ## Phase 6 — Retirement delivery and cross-cutting verification
@@ -66,3 +66,25 @@ FR-010 T024..026; FR-011 T016/019/023; FR-012 T011..013/020/022/025/026;
 FR-013 T004..006/009/013..017/021/023/024/026..028; FR-014 T015/028/029.
 SC-001 T006/013/015; SC-002 T016..023; SC-003 T024..026;
 SC-004 T014/015/027/028; SC-005 T015/028/029.
+
+## Phase 7: Convergence
+
+- [x] T030 Prove genuine pre-retirement UserInfo success followed by current-authority denial before grant cleanup, and deny new authorization after retirement on both providers per FR-011 / US2 AC4 (partial).
+- [x] T031 Prove retirement versus re-enable in both observed provider commit orders, including unchanged native state and terminal history per spec: concurrent retirement/enable edge case / FR-008 (partial).
+
+## Phase 8: Convergence
+
+- [ ] T032 Partition the expanded Applications story into independently bounded registration140 and retirement36 cases per provider; require exact disjoint native identities, unchanged660-second deadlines and every coverage input per FR-013 / SC-004 (partial).
+
+## Phase 9: Convergence
+
+- [ ] T033 Bind existing security-focus and fresh-password audit assertions to the actual response document's readiness and native factor phase, preserving exact assertions and deadlines; verify corrected retained-browser cases per FR-013 / SC-005 (partial).
+
+## Phase 10: Convergence
+
+- [ ] T034 Preserve the original native retirement baseline through real logout/relogin while independently admitting only the exact new administrator sign-in rows; verify both recovery journeys on both providers/engines per FR-009 / FR-013 / SC-003 (partial).
+- [ ] T035 Partition BrowserProtection into Sessions15, existing Applications21 and Retirement2 per provider/engine; preserve exact native identities, all mandatory cells and unchanged660-second deadlines per FR-013 / SC-004 (partial).
+
+## Phase 11: Convergence
+
+- [ ] T036 Prove the retirement BFF withholds successful publication after genuine upstream commit when browser generation changes or the original useful lifetime expires; retain the exact committed receipt/job/history, one send and explicit authorized recovery on both providers per FR-012 / FR-013 / Constitution10/13 (partial).

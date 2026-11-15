@@ -28,28 +28,28 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 2088,
+      "Host": 2123,
       "Architecture": 5,
       "AppHost": 118
     },
     "PostgreSql": {
-      "Persistence": 41,
+      "Persistence": 42,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1385
+      "Administrator": 1429
     },
     "SqlServer": {
-      "Persistence": 41,
+      "Persistence": 42,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1490
+      "Administrator": 1534
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 76
+    "Administrator": 78
   },
   "lifecycle_stories": {
     "Restart": {
@@ -119,12 +119,12 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 140,
-      "SqlServer": 140
+      "PostgreSql": 179,
+      "SqlServer": 179
     },
     "ManagedApplications": {
-      "PostgreSql": 145,
-      "SqlServer": 145
+      "PostgreSql": 150,
+      "SqlServer": 150
     },
     "ApplicationGrants": {
       "PostgreSql": 94,
@@ -139,7 +139,7 @@
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 36,
+    "BrowserProtection": 38,
     "BrowserLogin": 9,
     "ApplicationEditor": 1,
     "ApplicationAuthority": 1,
@@ -375,11 +375,12 @@
         "ManagedTokenReplayTests",
         "ManagedUpdateJourneyTests",
         "ManagedScopeAssignmentTests",
-        "ManagedScopeLegacyTests"
+        "ManagedScopeLegacyTests",
+        "ManagedRetirementRaceTests"
       ],
       "counts": {
-        "PostgreSql": 66,
-        "SqlServer": 66
+        "PostgreSql": 71,
+        "SqlServer": 71
       }
     },
     "Disclosure": {
@@ -490,6 +491,80 @@
       "counts": {
         "PostgreSql": 21,
         "SqlServer": 21
+      }
+    },
+    "Retirement": {
+      "classes": [
+        "ApplicationRetirementBrowserTests"
+      ],
+      "counts": {
+        "PostgreSql": 2,
+        "SqlServer": 2
+      }
+    }
+  },
+  "application_groups": {
+    "Registration": {
+      "classes": [
+        "ApplicationCloneAtomicityTests",
+        "ApplicationCloneDenialTests",
+        "ApplicationCloneHttpAuthorityTests",
+        "ApplicationCloneHttpTests",
+        "ApplicationCloneRaceTests",
+        "ApplicationCloneTests",
+        "ApplicationDetailsHttpTests",
+        "ApplicationHttpFailureTests",
+        "ApplicationHttpTests",
+        "ApplicationHttpUpdateAuthorityTests",
+        "ApplicationHttpUpdateFailureTests",
+        "ApplicationHttpUpdateTests",
+        "ApplicationLifecycleAuthorityTests",
+        "ApplicationLifecycleBoundaryTests",
+        "ApplicationLifecycleFailureTests",
+        "ApplicationLifecycleHttpTests",
+        "ApplicationLifecycleRaceTests",
+        "ApplicationLifecycleTests",
+        "ApplicationMutationFailureTests",
+        "ApplicationMutationPublicationTests",
+        "ApplicationMutationRollbackTests",
+        "ApplicationMutationTests",
+        "ApplicationReadOwnershipTests",
+        "ApplicationReaderTests",
+        "ApplicationScopeAtomicityTests",
+        "ApplicationScopeDeletionWaitTests",
+        "ApplicationScopeDenialTests",
+        "ApplicationScopeHttpTests",
+        "ApplicationScopePublicationTests",
+        "ApplicationScopeRaceTests",
+        "ApplicationScopeTests",
+        "ApplicationTransportTests",
+        "ApplicationUpdateTests",
+        "ApplicationWorkspaceTests"
+      ],
+      "counts": {
+        "PostgreSql": 140,
+        "SqlServer": 140
+      }
+    },
+    "Retirement": {
+      "classes": [
+        "ApplicationRetirementAtomicityTests",
+        "ApplicationRetirementAuthorityTests",
+        "ApplicationRetirementBindingTests",
+        "ApplicationRetirementEffectiveAuthorityTests",
+        "ApplicationRetirementHttpTests",
+        "ApplicationRetirementListTests",
+        "ApplicationRetirementMutationRaceTests",
+        "ApplicationRetirementPublicationTests",
+        "ApplicationRetirementRaceTests",
+        "ApplicationRetirementRecoveryTests",
+        "ApplicationRetirementReferenceTests",
+        "ApplicationRetirementReplayExpiryTests",
+        "ApplicationRetirementTests"
+      ],
+      "counts": {
+        "PostgreSql": 39,
+        "SqlServer": 39
       }
     }
   }

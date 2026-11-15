@@ -12,7 +12,7 @@ internal static class ApplicationListOperation
 {
     /// <summary>Uses a fresh independent native context and declared lock order; no authentication or activity changes are committed.</summary>
     internal static async Task<(int Status, ApplicationPage? Page, long SourceExpiry)> ReadAsync(IServiceScopeFactory factory,
-        ApiIdentity identity, ApplicationListQuery query, ApiResourceProfile profile, TimeProvider clock, CancellationToken token)
+        ApiIdentity identity, ApplicationListQuery query, ApiResourceProfile profile, TimeProvider clock, CancellationToken token, bool retired = false)
     {
         await using var scope = factory.CreateAsyncScope();
         var services = scope.ServiceProvider;
@@ -25,7 +25,7 @@ internal static class ApplicationListOperation
             return (access.Status, null, access.SourceExpiry);
         }
         var expiry = DateTimeOffset.FromUnixTimeSeconds(access.SourceExpiry);
-        var page = await ApplicationListReader.ReadAsync(database, query, identity.ExpiresAt < expiry ? identity.ExpiresAt : expiry, transaction.Token);
+        var page = await ApplicationListReader.ReadAsync(database, query, identity.ExpiresAt < expiry ? identity.ExpiresAt : expiry, transaction.Token, retired);
         transaction.RequireApiRead(database, identity.Subject);
         return (StatusCodes.Status200OK, page, access.SourceExpiry);
     }

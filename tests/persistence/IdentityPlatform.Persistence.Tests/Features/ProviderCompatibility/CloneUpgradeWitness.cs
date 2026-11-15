@@ -18,6 +18,7 @@ internal static class CloneUpgradeWitness
     /// <summary>Removes only the validated empty new relation and one exact history entry; old objects remain byte-for-byte observable.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        after = RetirementUpgradeWitness.Predecessor(provider, after);
         Assert.Empty(after[Query]);
         CloneUpgradeSchema.Require(provider, after);
         var migration = provider == Postgres ? PostgresMigration : SqlMigration;
@@ -53,7 +54,7 @@ internal static class CloneUpgradeWitness
         Assert.ThrowsAny<XunitException>(() => Require(provider, before, adopted));
         var lost = new Dictionary<string, string[]>(after) { [AdministratorUpgradeWitness.PlatformHistory] = before[AdministratorUpgradeWitness.PlatformHistory] };
         Assert.ThrowsAny<XunitException>(() => Require(provider, before, lost));
-        var changed = new Dictionary<string, string[]>(after) { [ManagedApplicationUpgradeWitness.PolicyQuery] = [Unexpected] };
+        var changed = new Dictionary<string, string[]>(after) { [ManagedApplicationUpgradeWitness.PolicyQuery] = after[ManagedApplicationUpgradeWitness.PolicyQuery].Skip(1).ToArray() };
         Assert.ThrowsAny<XunitException>(() => Require(provider, before, changed));
         CloneUpgradeSchema.RejectDefects(provider, after);
     }

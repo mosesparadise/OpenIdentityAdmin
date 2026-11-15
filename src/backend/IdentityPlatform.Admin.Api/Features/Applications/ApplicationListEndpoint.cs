@@ -10,6 +10,8 @@ namespace IdentityPlatform.Admin.Api.Features.Applications;
 /// <summary>Accepts one bounded native bearer request and releases a sanitized response only after original authority and cleanup checks.</summary>
 internal static class ApplicationListEndpoint
 {
+    private const string VersionRoot = "/api/v1";
+
     private const string NoStore = "no-store";
     private const string NoSniff = "nosniff";
     private const string TransferEncoding = "Transfer-Encoding";
@@ -24,8 +26,17 @@ internal static class ApplicationListEndpoint
     private const string BearerPrefix = "Bearer ";
     private const int MaximumAuthorizationLength = 16_391;
 
+    /// <summary>Chooses only a code-owned collection path.</summary>
+    private static string CollectionPath(bool retired) => retired ? VersionRoot + ApplicationRetirementRules.ListPath : Path;
+
     /// <summary>Retains one deadline across native authentication, fresh authority, bounded query, serialization and disposal.</summary>
-    internal static async Task HandleAsync(HttpContext http)
+    internal static Task HandleAsync(HttpContext http) => HandleAsync(http, false);
+
+    /// <summary>Reads the separate retained collection without shadowing historical application identifiers.</summary>
+    internal static Task HandleRetiredAsync(HttpContext http) => HandleAsync(http, true);
+
+    /// <summary>Keeps the selected collection inside the original bounded read and publication owner.</summary>
+    private static async Task HandleAsync(HttpContext http, bool retired)
     {
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers.XContentTypeOptions = NoSniff;
@@ -35,7 +46,7 @@ internal static class ApplicationListEndpoint
         http.RequestAborted = budget.Token;
         try
         {
-            await ExecuteAsync(http, budget, clock);
+            await ExecuteAsync(http, budget, clock, retired);
         }
         catch (Exception) when (!http.Response.HasStarted)
         {
@@ -46,10 +57,10 @@ internal static class ApplicationListEndpoint
     }
 
     /// <summary>Rejects request aliases/body/input before performing independent native access-token authentication.</summary>
-    private static async Task ExecuteAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock)
+    private static async Task ExecuteAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock, bool retired)
     {
         var request = http.Request;
-        if (!ValidRequest(http) || request.QueryString.Value?.Length > ApplicationProjection.MaximumQueryCharacters ||
+        if (!ValidRequest(http, retired) || request.QueryString.Value?.Length > ApplicationProjection.MaximumQueryCharacters ||
             ApplicationListQuery.Parse(request.Query.Select(pair => new KeyValuePair<string, string[]>(pair.Key, pair.Value.ToArray()!))) is not { } query)
         {
             await ProblemAsync(http, StatusCodes.Status400BadRequest);
@@ -73,14 +84,14 @@ internal static class ApplicationListEndpoint
             return;
         }
         budget.RequireCurrent();
-        await PublishAsync(http, budget, clock, identity, query);
+        await PublishAsync(http, budget, clock, identity, query, retired);
     }
 
     /// <summary>Buffers a finite DTO until both owned scopes have disposed, then checks original token/source/deadline again.</summary>
-    private static async Task PublishAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock, ApiIdentity identity, ApplicationListQuery query)
+    private static async Task PublishAsync(HttpContext http, ApplicationReadBudget budget, TimeProvider clock, ApiIdentity identity, ApplicationListQuery query, bool retired)
     {
         var result = await ApplicationListOperation.ReadAsync(http.RequestServices.GetRequiredService<IServiceScopeFactory>(), identity, query,
-            http.RequestServices.GetRequiredService<ApiResourceProfile>(), clock, budget.Token);
+            http.RequestServices.GetRequiredService<ApiResourceProfile>(), clock, budget.Token, retired);
         budget.RequireCurrent();
         if (result.Status != StatusCodes.Status200OK || identity.ExpiresAt <= clock.GetUtcNow() || result.SourceExpiry <= clock.GetUtcNow().ToUnixTimeSeconds())
         {
@@ -104,10 +115,10 @@ internal static class ApplicationListEndpoint
     }
 
     /// <summary>Accepts only canonical HTTPS bodyless collection GETs, including the server's HTTP/QueryParts body-detection signal.</summary>
-    private static bool ValidRequest(HttpContext http) => http.Request.IsHttps && HttpMethods.IsGet(http.Request.Method) &&
-        http.Request.Path == Path && http.Request.ContentLength is null or 0 && !http.Request.Headers.ContainsKey(TransferEncoding) &&
+    private static bool ValidRequest(HttpContext http, bool retired) => http.Request.IsHttps && HttpMethods.IsGet(http.Request.Method) &&
+        http.Request.Path == CollectionPath(retired) && http.Request.ContentLength is null or 0 && !http.Request.Headers.ContainsKey(TransferEncoding) &&
         http.Features.Get<IHttpRequestBodyDetectionFeature>()?.CanHaveBody != true &&
-        (http.Features.Get<IHttpRequestFeature>()?.RawTarget is not { Length: > 0 } raw || raw.Split('?', QueryParts)[0] == Path);
+        (http.Features.Get<IHttpRequestFeature>()?.RawTarget is not { Length: > 0 } raw || raw.Split('?', QueryParts)[0] == CollectionPath(retired));
 
     /// <summary>Returns a finite safe problem without input values, native exception text or HTML authentication redirects.</summary>
     private static Task ProblemAsync(HttpContext http, int status) => Results.Problem(statusCode: status,

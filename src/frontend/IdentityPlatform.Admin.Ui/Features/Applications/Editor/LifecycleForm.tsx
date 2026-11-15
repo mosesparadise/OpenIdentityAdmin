@@ -4,7 +4,7 @@ import type { Details } from "./observation";
 import type { Errors, LifecycleDraft } from "./input";
 
 /** Explains the bounded effect before one confirmed lifecycle request; reasons contain no free text. */
-export function LifecycleForm({ details, enabled, submit, cancel }: { details: Details; enabled: boolean;
+export function LifecycleForm({ details, enabled, retire = false, submit, cancel }: { details: Details; enabled: boolean; retire?: boolean;
   submit: (input: LifecycleDraft) => Promise<Errors>; cancel: () => void }) {
   const [reason, setReason] = useState("maintenance");
   const [confirm, setConfirm] = useState(false);
@@ -16,9 +16,9 @@ export function LifecycleForm({ details, enabled, submit, cancel }: { details: D
   }}>
     <p>Application: <strong className="application-client-id">{details.clientId}</strong></p>
     <div className="editor-notice">
-      <p>{enabled ? "New sign-ins can start again. Old sign-in attempts remain invalid. Re-enabling does not extend the secret’s expiry."
+      <p>{retire ? "Retirement is permanent. New sign-ins and token issuance will stop, and grant revocation will be queued. The client ID stays reserved and history is retained. You cannot re-enable, edit or clone this application. Tokens validated offline may remain valid until expiry, and sessions in other applications may continue." : enabled ? "New sign-ins can start again. Old sign-in attempts remain invalid. Re-enabling does not extend the secret’s expiry."
         : "New sign-ins and token issuance will stop. Existing grants are not revoked. Sessions in other applications and already issued tokens validated offline may continue."}</p>
-      <p>This action requires current application lifecycle permission and a recent MFA sign-in.</p>
+      <p>{retire ? "This action requires both application lifecycle and grant-revocation permissions, plus a recent MFA sign-in. Any incomplete grant job must be resolved first." : "This action requires current application lifecycle permission and a recent MFA sign-in."}</p>
     </div>
     {Object.keys(errors).length > 0 && <div className="field-error" role="alert" tabIndex={-1} ref={summary}>Review the reason and confirmation before continuing.</div>}
     <label htmlFor="lifecycle-reason">Reason</label>
@@ -30,9 +30,9 @@ export function LifecycleForm({ details, enabled, submit, cancel }: { details: D
     <label className="editor-confirmation" htmlFor="lifecycle-confirm"><input id="lifecycle-confirm" type="checkbox" checked={confirm}
       onChange={event => setConfirm(event.target.checked)} aria-invalid={!!errors.confirmed}
       aria-describedby={errors.confirmed ? "lifecycle-confirm-error" : undefined} required />
-      I confirm that this application should be {enabled ? "re-enabled" : "disabled"}.</label>
+      I confirm that this application should be {retire ? "permanently retired with history retained" : enabled ? "re-enabled" : "disabled"}.</label>
     {errors.confirmed && <p className="field-error" id="lifecycle-confirm-error">{errors.confirmed}</p>}
-    <div className="actions"><Button type="submit">{enabled ? "Re-enable application" : "Disable application"}</Button>
+    <div className="actions"><Button type="submit">{retire ? "Permanently retire application" : enabled ? "Re-enable application" : "Disable application"}</Button>
       <Button type="button" secondary onClick={cancel}>Cancel</Button></div>
   </form>;
 }

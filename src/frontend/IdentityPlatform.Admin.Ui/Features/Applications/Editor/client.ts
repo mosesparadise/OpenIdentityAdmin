@@ -63,6 +63,12 @@ export function editorClient() {
         params: { path: { id }, header: { "If-Match": version, "X-CSRF-TOKEN": token } }, pathSerializer: () => path, body: input });
       return { status: response.status, value: data, etag: response.headers.get("etag") };
     },
+    async retire(id: string, version: string, key: string, input: LifecycleInput, token: string, signal: AbortSignal): Promise<Result> {
+      const path = target(id) + "/retirement";
+      const { data, response } = await client.POST("/bff/api/v1/applications/{id}/retirement", { ...options(signal),
+        params: { path: { id }, header: { "If-Match": version, "Idempotency-Key": key, "X-CSRF-TOKEN": token } }, pathSerializer: () => path, body: input });
+      return { status: response.status, value: data, etag: response.headers.get("etag"), location: response.headers.get("location") };
+    },
     async lifecycle(id: string, version: string, input: LifecycleInput, enabled: boolean, token: string, signal: AbortSignal): Promise<Result> {
       const route = enabled ? "/bff/api/v1/applications/{id}/enable" : "/bff/api/v1/applications/{id}/disable";
       const path = target(id) + (enabled ? "/enable" : "/disable");

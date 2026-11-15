@@ -50,6 +50,7 @@ internal static class SecurityBrowserJourney
             await page.Locator(Password).FillAsync(WrongPassword);
             await page.Locator(Submit).PressAsync(Enter);
             await page.Locator(Error).WaitForAsync();
+            await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
             Assert.True(await page.EvaluateAsync<bool>(ErrorFocus), UnfocusedError);
             await PageAsync(page, scripted);
         }

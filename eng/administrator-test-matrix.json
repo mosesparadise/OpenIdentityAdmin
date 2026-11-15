@@ -1461,7 +1461,53 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"PostgreSql\", receipt: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"PostgreSql\", receipt: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"applications.disable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"applications.write\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"grants.revoke\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"PostgreSql\", expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"PostgreSql\", expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementEffectiveAuthorityTests.Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementHttpTests.Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementListTests.Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"clone\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"clone\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"edit\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"edit\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"replace\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"replace\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"scopes\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"scopes\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReplayExpiryTests.Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -3029,7 +3075,53 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"SqlServer\", receipt: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"SqlServer\", receipt: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"applications.disable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"applications.write\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"grants.revoke\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"SqlServer\", expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"SqlServer\", expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementEffectiveAuthorityTests.Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementHttpTests.Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementListTests.Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"clone\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"clone\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"edit\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"edit\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"replace\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"replace\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"scopes\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"scopes\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReplayExpiryTests.Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -65136,6 +65228,1922 @@
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"PostgreSql\", receipt: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAtomicityTests",
+        "methodName": "Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-policy-persistence"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"PostgreSql\", receipt: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAtomicityTests",
+        "methodName": "Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-receipt-persistence"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"SqlServer\", receipt: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAtomicityTests",
+        "methodName": "Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-policy-persistence"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits(provider: \"SqlServer\", receipt: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAtomicityTests",
+        "methodName": "Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-receipt-persistence"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"applications.disable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"applications.write\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"PostgreSql\", permission: \"grants.revoke\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-dual-permission"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"applications.disable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"applications.write\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions(provider: \"SqlServer\", permission: \"grants.revoke\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-dual-permission"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_LastFreshSecondAdmission_When_MfaExpires_Then_ReplayDeniesButRecordedWorkerCanFinish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"PostgreSql\", expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-current-authority"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"PostgreSql\", expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"SqlServer\", expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-current-authority"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack(provider: \"SqlServer\", expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementAuthorityTests",
+        "methodName": "Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementBindingTests",
+        "methodName": "Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-effective-approval"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementBindingTests",
+        "methodName": "Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-effective-approval"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementBindingTests",
+        "methodName": "Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementBindingTests",
+        "methodName": "Given_LaterEffectiveContinuation_When_OlderApprovalJobIsSubstituted_Then_ExactReplayCannotReturnUnrelatedPriorWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementEffectiveAuthorityTests.Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementEffectiveAuthorityTests",
+        "methodName": "Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementEffectiveAuthorityTests.Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementEffectiveAuthorityTests",
+        "methodName": "Given_DisabledRetirementApprover_When_AnotherAdministratorContinues_Then_OriginalReceiptAndEffectiveAuthorityRemainDistinct",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementHttpTests.Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementHttpTests.Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_RetirementIsReplayedAcrossHttpsSurfaces_Then_OneTerminalVersionAndJobRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementListTests.Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementListTests",
+        "methodName": "Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementListTests.Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementListTests",
+        "methodName": "Given_InterleavedNativeAndManagedRows_When_RetirementsLeaveNormalList_Then_EachBoundedCollectionPagesBeforeLookaheadAndLegacyDetailsRemainReachable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"clone\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"clone\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"edit\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"edit\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"replace\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"replace\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"scopes\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"scopes\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"clone\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"clone\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"edit\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"edit\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"replace\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"replace\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"scopes\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"scopes\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRaceTests.Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RetirementAdmissionsActuallyContend_Then_OneJobAndApprovalCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_AcceptedRetirement_When_LifecyclePermissionIsRemoved_Then_CurrentGrantAuthorityStillFinishesTheRecordedJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_RetiredPartialJob_When_PermissionIsRestored_Then_OnlyExplicitExactContinuationResumesAndOriginalRetirementReplayObservesIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementRecoveryTests.Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementRecoveryTests",
+        "methodName": "Given_RetiredQueuedWork_When_HostedWorkerRestartsAfterProgress_Then_TheSameReceiptAndApprovalComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_AssignedScopeAndCloneHistory_When_RetirementFinishes_Then_AllReferencesRemainAndScopeDeletionIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_PersistedRetirement_When_EnabledStateOrReceiptParentIsMutated_Then_DatabaseRejectsAndCompleteStateRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReferenceTests.Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReferenceTests",
+        "methodName": "Given_StalePolicySnapshot_When_RetiredChangesWithoutRevision_Then_IndependentConcurrencyTokenRejectsWriter",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReplayExpiryTests.Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReplayExpiryTests",
+        "methodName": "Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementReplayExpiryTests.Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementReplayExpiryTests",
+        "methodName": "Given_RetirementKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldAndNewIntentsCannotRenewTerminalAdmission",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-replay-intent"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-replay-intent"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_ChangedApplication_When_OriginalVersionRetires_Then_PreconditionFailurePreservesAllRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_OrdinaryGrantHistory_When_RetirementIsRequested_Then_IncompleteWorkBlocksAndCompletedWorkIsNeverAdopted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-terminal-write"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementTests",
+        "methodName": "Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "retirement-terminal-write"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationRetirementBrowserTests",
+        "methodName": "Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationRetirementBrowserTests",
+        "methodName": "Given_LostRetirementResponse_When_UserReloadsAndSignsInAgain_Then_RetiredNavigationRecoversOnlyOriginalJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationRetirementBrowserTests",
+        "methodName": "Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationRetirementBrowserTests.Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationRetirementBrowserTests",
+        "methodName": "Given_StoppedRetirement_When_UserRelogsAndConfirmsCurrentVersions_Then_OriginalJobCompletesAndHistoryRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementMutationRaceTests",
+        "methodName": "Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedRetirementRaceTests",
+        "methodName": "Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
           "System.String"
         ]
       },

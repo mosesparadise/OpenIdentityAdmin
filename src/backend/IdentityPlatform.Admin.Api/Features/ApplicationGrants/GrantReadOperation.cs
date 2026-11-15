@@ -36,7 +36,7 @@ internal static class GrantReadOperation
         var sourceExpiry = DateTimeOffset.FromUnixTimeSeconds(access.SourceExpiry);
         var deadline = identity.ExpiresAt < sourceExpiry ? identity.ExpiresAt : sourceExpiry;
         var target = await ApplicationDetailsReader.ReadAsync(database, applicationId, deadline, transaction.Token);
-        if (target.Details is null || !target.Details.Editable)
+        if (target.Details is null || !target.Details.Editable && !target.Details.Retired)
         {
             throw new ApplicationHttpRejected(StatusCodes.Status404NotFound);
         }

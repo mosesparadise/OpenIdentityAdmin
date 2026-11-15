@@ -181,8 +181,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: ApplicationGrants, label: administrator-SqlServer-applicationgrants }
           - { profile: PostgreSql, partition: administrator, story: Catalogue, label: administrator-PostgreSql-catalogue }
           - { profile: SqlServer, partition: administrator, story: Catalogue, label: administrator-SqlServer-catalogue }
-          - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
-          - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
+          - { profile: PostgreSql, partition: administrator, story: Applications, application_group: Registration, label: administrator-PostgreSql-applications-registration }
+          - { profile: PostgreSql, partition: administrator, story: Applications, application_group: Retirement, label: administrator-PostgreSql-applications-retirement }
+          - { profile: SqlServer, partition: administrator, story: Applications, application_group: Registration, label: administrator-SqlServer-applications-registration }
+          - { profile: SqlServer, partition: administrator, story: Applications, application_group: Retirement, label: administrator-SqlServer-applications-retirement }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
           - { profile: SqlServer, partition: administrator, story: SessionRefresh, label: administrator-SqlServer-sessionrefresh }
           - { profile: PostgreSql, partition: administrator, story: ProtocolAdmission, protocol_admission_group: Admission, label: administrator-PostgreSql-protocoladmission-admission }
@@ -226,6 +228,7 @@ jobs:
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_managed_application_selection.py
+      - run: python3 scripts/test_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_browser_protection_selection.py
@@ -264,7 +267,7 @@ jobs:
       - name: Bind coverage build before execution
         run: python3 scripts/coverage_identity.py before ${{ matrix.label }}
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }} ${{ matrix.protocol_admission_group && format('--protocol-admission-group {0}', matrix.protocol_admission_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }} ${{ matrix.protocol_admission_group && format('--protocol-admission-group {0}', matrix.protocol_admission_group) || '' }} ${{ matrix.application_group && format('--application-group {0}', matrix.application_group) || '' }}
       - name: Bind original coverage report after execution
         run: python3 scripts/coverage_identity.py after ${{ matrix.label }}
       - name: Retain synthetic test and coverage evidence
@@ -310,6 +313,7 @@ jobs:
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_managed_application_selection.py
+      - run: python3 scripts/test_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_browser_protection_selection.py
@@ -663,6 +667,47 @@ jobs:
             artifacts/mutations/catalogue-${{ matrix.provider }}/evidence.json
           retention-days: 7
           if-no-files-found: error
+  application-retirement-mutations:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    name: Application retirement mutations ${{ matrix.provider }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [PostgreSql, SqlServer]
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet restore --locked-mode
+      - run: python3 scripts/test_mutations.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
+      - name: Trust local HTTPS certificate
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Verify isolated retirement critical-decision mutants
+        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite application-retirement --disposable-checkout
+      - name: Retain only sanitized mutation evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: application-retirement-mutations-${{ matrix.provider }}
+          path: artifacts/mutations/application-retirement-${{ matrix.provider }}/evidence.json
+          retention-days: 7
+          if-no-files-found: error
   sample-mutations:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
@@ -912,7 +957,7 @@ jobs:
   acceptance:
     name: Verification acceptance
     if: always()
-    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, pilot-replay-mutations, browser-session-mutations, application-mutations, managed-application-mutations, sample-mutations, contracts, admin-ui, coverage]
+    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, pilot-replay-mutations, browser-session-mutations, application-mutations, application-retirement-mutations, managed-application-mutations, sample-mutations, contracts, admin-ui, coverage]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

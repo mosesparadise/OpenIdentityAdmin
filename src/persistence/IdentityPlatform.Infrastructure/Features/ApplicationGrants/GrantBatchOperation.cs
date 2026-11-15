@@ -84,6 +84,7 @@ internal static class GrantBatchOperation
         {
             var target = await GrantTarget.ReadAsync(scope, id, token);
             GrantTarget.RequireDisabled(target.Policy);
+            target.RequireJob(attempt.JobId);
             return target;
         }
         catch (IdentityPlatform.Infrastructure.Features.Applications.ApplicationMutationRejected)
