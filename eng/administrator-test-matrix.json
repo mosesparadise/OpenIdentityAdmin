@@ -1436,7 +1436,32 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Cleanup)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Commit)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Expired)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: Catalogue)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: Provenance)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: SourceNative)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: SourcePolicy)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"disabled-audience\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"disabled-scope\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"missing-policy\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"session\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"PostgreSql\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"PostgreSql\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"PostgreSql\", cloneFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"PostgreSql\", cloneFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2979,7 +3004,32 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Cleanup)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Commit)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Expired)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: Catalogue)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: Provenance)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: SourceNative)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: SourcePolicy)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"disabled-audience\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"disabled-scope\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"missing-policy\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"session\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"SqlServer\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"SqlServer\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"SqlServer\", cloneFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"SqlServer\", cloneFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -64085,6 +64135,1004 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
         "typeName": "ManagedUserInfoTransportTests",
         "methodName": "Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-clone-source-verification"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-clone-source-verification"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_NewNativeClone_When_AuditSaveFails_Then_NoDestinationCredentialOrHistoryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: Catalogue)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: Provenance)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: SourceNative)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"PostgreSql\", defect: SourcePolicy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: Catalogue)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: Provenance)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: SourceNative)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack(provider: \"SqlServer\", defect: SourcePolicy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneAtomicityTests",
+        "methodName": "Given_PersistedClone_When_SourceCatalogueOrProvenanceIsSubstituted_Then_AllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_CurrentCloneAuthority_When_UnrelatedThenWriteGrantsAreRemoved_Then_OnlyWriteRemovalDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"disabled-audience\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"disabled-scope\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"PostgreSql\", denial: \"missing-policy\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"disabled-audience\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"disabled-scope\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged(provider: \"SqlServer\", denial: \"missing-policy\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_PreviouslyEligibleAssignment_When_CurrentCatalogueIsIneligible_Then_CloneLeavesSourceAndHistoryUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneDenialTests.Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneDenialTests",
+        "methodName": "Given_UnsupportedCloneBoundary_When_Submitted_Then_NoCredentialOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"PostgreSql\", loss: \"session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpAuthorityTests.Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation(provider: \"SqlServer\", loss: \"session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpAuthorityTests",
+        "methodName": "Given_RealCloneCredentials_When_CurrentAuthorityIsLost_Then_ApiAndBffDenyWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneHttpTests.Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_CloneCrossesHttpsBoundary_Then_PreconditionsAndNewDestinationRemainBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"PostgreSql\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"PostgreSql\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"SqlServer\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny(provider: \"SqlServer\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_CloneWaitingBehindCatalogueEdit_When_CurrentEligibilityIsObserved_Then_EligibleChangesAreAcceptedAndDisabledScopesDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_IndependentCloners_When_SameDestinationActuallyContends_Then_OneCreationAndOneConflictCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"PostgreSql\", cloneFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"PostgreSql\", cloneFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"SqlServer\", cloneFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"SqlServer\", cloneFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneRaceTests",
+        "methodName": "Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-clone-disabled"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-clone-disabled"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

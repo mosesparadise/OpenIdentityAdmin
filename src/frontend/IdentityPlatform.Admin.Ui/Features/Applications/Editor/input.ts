@@ -1,4 +1,6 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
+export type CloneInput = components["schemas"]["ApplicationClone"];
+export type CloneDraft = { confirmed: boolean; clientId: string; displayName: string; credentialExpiresAt: string };
 export type CreateInput = components["schemas"]["ApplicationCreate"];
 export type EditInput = components["schemas"]["ApplicationEdit"];
 export type LifecycleDraft = { reason: string; confirm: boolean };
@@ -69,4 +71,12 @@ export function validateReplacement(draft: ReplacementDraft, now: number): { inp
   if (draft.confirmed !== true) errors.confirmed = "Confirm that the current secret will stop working immediately.";
   if (!(utc(draft.credentialExpiresAt, true) > now)) errors.credentialExpiresAt = "Enter a future UTC date and time as YYYY-MM-DDTHH:mm:ssZ.";
   return Object.keys(errors).length ? { errors } : { errors, input: { confirmed: true, credentialExpiresAt: draft.credentialExpiresAt } };
+}
+
+/** Validates new identity and expiry while callbacks remain the exact read-only source configuration. */
+export function validateClone(draft: CloneDraft, redirects: readonly string[], now: number): { input?: CloneInput; errors: Errors } {
+  const checked = validate({ ...draft, redirectUris: redirects.join("\n") }, now);
+  if (!draft.confirmed) checked.errors.confirmed = "Confirm the reviewed configuration and new credential before cloning.";
+  if (!checked.input || Object.keys(checked.errors).length) return { errors: checked.errors };
+  return { errors: {}, input: { confirmed: true, clientId: draft.clientId, displayName: draft.displayName, credentialExpiresAt: draft.credentialExpiresAt } };
 }

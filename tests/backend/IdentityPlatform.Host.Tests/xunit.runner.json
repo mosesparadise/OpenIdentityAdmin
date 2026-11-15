@@ -1,0 +1,4 @@
+{
+  "parallelAlgorithm": "conservative",
+  "maxParallelThreads": 8
+}

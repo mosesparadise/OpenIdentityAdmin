@@ -1,5 +1,5 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { callback, text, utc, type CreateInput, type EditInput, type ReplacementInput } from "./input";
+import { callback, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 export type Details = components["schemas"]["ApplicationDetails"];
 export type Result = { status: number; value?: unknown; etag?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
@@ -97,4 +97,18 @@ export async function lifecycleChanged(result: Result, base: Observed, enabled: 
     next.details.displayName === base.details.displayName && sameCallbacks(next.details.redirectUris, base.details.redirectUris) &&
     utc(next.details.credential!.issuedAt) === utc(base.details.credential!.issuedAt) &&
     utc(next.details.credential!.expiresAt) === utc(base.details.credential!.expiresAt) ? next : null;
+}
+
+/** Binds new disabled clone identity, reviewed callbacks and fresh credential expiry without accepting source identity or inherited lifecycle. */
+export async function cloned(result: Result, base: Observed, input: CloneInput, now: number): Promise<(Observed & { secret: string }) | null> {
+  if (result.status !== 201 || !input.confirmed || base.expires <= now || !base.details.editable ||
+      !object(result.value, ["application", "clientSecret"]) || typeof result.value.clientSecret !== "string" ||
+      !/^[A-Za-z0-9+/]{43}=$/.test(result.value.clientSecret)) return null;
+  const secret = result.value.clientSecret;
+  if (btoa(atob(secret)) !== secret || atob(secret).length !== 32) return null;
+  const next = await observe({ ...result, value: result.value.application }, null, now);
+  return next && next.details.editable && next.details.enabled === false && next.details.id !== base.details.id &&
+    await version(next.etag, next.details.id, true) && next.details.clientId === input.clientId && next.details.displayName === input.displayName &&
+    sameCallbacks(next.details.redirectUris, base.details.redirectUris) && utc(next.details.credential!.expiresAt) === utc(input.credentialExpiresAt, true) &&
+    utc(input.credentialExpiresAt, true) > now ? { ...next, secret } : null;
 }

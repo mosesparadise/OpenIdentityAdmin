@@ -67,6 +67,12 @@ internal sealed class ApplicationMutationCommand
             ? new(ApplicationMutationKind.Create, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, expiry) : null;
     }
 
+    /// <summary>Binds confirmed new identity and expiry to an exact source version; reusable configuration is observed only under ownership.</summary>
+    internal static ApplicationMutationCommand? Clone(string id, string version, ApplicationClone input, DateTimeOffset now) =>
+        Target(id, version) && ApplicationCloneRules.IsValid(input, now) &&
+        ApplicationEditorRules.TryReadExpiry(input.CredentialExpiresAt, now, out var expiry)
+            ? new(ApplicationMutationKind.Clone, id, version, input.ClientId, input.DisplayName, [], expiry) : null;
+
     /// <summary>Allows edits to presentation and exact redirects only, bound to one canonical resource precondition.</summary>
     internal static ApplicationMutationCommand? Edit(string id, string version, ApplicationEdit input)
     {
@@ -105,7 +111,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

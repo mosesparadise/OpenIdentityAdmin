@@ -37,6 +37,7 @@ internal static class ManagedScopeUpgradeWitness
     /// <summary>Requires exactly the new history, nullable columns and empty reference table before removing those additions for older witnesses.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        after = CloneUpgradeWitness.Predecessor(provider, after);
         Assert.Empty(after[ReferenceQuery]);
         RequireColumns(provider, after[DatabaseSnapshot.Columns]);
         ManagedScopeSchemaIndexes.Require(provider, after);

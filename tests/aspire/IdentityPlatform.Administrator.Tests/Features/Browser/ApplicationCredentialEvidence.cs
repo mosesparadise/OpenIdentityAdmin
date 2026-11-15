@@ -28,7 +28,7 @@ internal static class ApplicationCredentialEvidence
     private static readonly TimeSpan Budget = TimeSpan.FromSeconds(12);
 
     /// <summary>Varies only the secret between two requests sharing one original budget; invalid client proof and nonexistent code must remain distinguishable.</summary>
-    internal static async Task RequireAsync(Uri issuer, string clientId, string secret, string callback)
+    internal static async Task RequireAsync(Uri issuer, string clientId, string secret, string callback, string? rejectedSecret = null)
     {
         ApplicationEditorBinding.Secret(secret);
         using var budget = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
@@ -36,7 +36,7 @@ internal static class ApplicationCredentialEvidence
         using var client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false }) { Timeout = Timeout.InfiniteTimeSpan };
         var code = ManagedAuthorizationRequest.Random();
         var verifier = ManagedAuthorizationRequest.Random();
-        await RequireErrorAsync(client, issuer, clientId, Wrong(secret), callback, code, verifier,
+        await RequireErrorAsync(client, issuer, clientId, rejectedSecret ?? Wrong(secret), callback, code, verifier,
             HttpStatusCode.Unauthorized, InvalidClient, budget.Token);
         await RequireErrorAsync(client, issuer, clientId, secret, callback, code, verifier,
             HttpStatusCode.BadRequest, InvalidGrant, budget.Token);

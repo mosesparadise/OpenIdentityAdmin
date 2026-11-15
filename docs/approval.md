@@ -1,5 +1,18 @@
 # Documentation approval
 
+**Current continuation (14 November 2026):** the user instructed “Please proceed with the
+next item in the roadmap” after feature024 delivery and explicitly selected “Permanent
+retirement with history retained” for M04-A Delete application. This authorizes feature025
+clone and permanent retirement as separately reviewed implementation increments under the
+existing v0.2 approval and normal exact-head checks/squash workflow. The selected deletion
+behavior stops issuance, revokes grants, hides the normal entry, retains history and reserves
+the client ID; it does not authorize physical purge or a new retention policy. The concrete
+[specification](../specs/025-application-clone-retirement/spec.md) and
+[plan](../specs/025-application-clone-retirement/plan.md) record current permissions, fresh
+MFA, atomicity, recovery and verification obligations. No production activation, refresh,
+external declaration or historical diagnostic extension is authorized. Existing manual,
+Firefox/A-009, historical findings and public-release gates remain open.
+
 **Sample integration continuation (14 November 2026):** the user replied “Please
 proceed” after the recommended manual administrator UI registration/protected local
 sample setup and offline JWT sample-API validation were presented. This continues

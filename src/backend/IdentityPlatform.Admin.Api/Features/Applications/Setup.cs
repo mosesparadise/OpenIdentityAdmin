@@ -7,6 +7,8 @@ namespace IdentityPlatform.Admin.Api.Features.Applications;
 /// <summary>Publishes the explicitly selected collection, create and details version; protocol routes remain separate.</summary>
 internal static class Setup
 {
+    private const string CloneOperation = "CloneApplication";
+    private const string CloneSummary = "Clone current managed configuration into a disabled application with a new one-time secret";
     private const string DetailsPath = "/applications/{id}";
     private const string ReplacementPath = DetailsPath + "/secret-replacements";
     private const string DisableOperation = "DisableApplication";
@@ -63,7 +65,11 @@ internal static class Setup
             ApplicationUpdateEndpoint.HandleAsync(context, id, ApplicationMutationKind.Enable))
             .WithName(EnableOperation).WithSummary(EnableSummary)
             .Accepts<ApplicationLifecycle>(JsonType).Produces<ApplicationDetails>();
-        foreach (var endpoint in new[] { edit, replace, disable, enable })
+        var clone = endpoints.MapManagementGroup().MapPost(DetailsPath + ApplicationCloneRules.Suffix, (HttpContext context, string id) =>
+            ApplicationCreateEndpoint.HandleCloneAsync(context, id))
+            .WithName(CloneOperation).WithSummary(CloneSummary).Accepts<ApplicationClone>(JsonType)
+            .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created);
+        foreach (var endpoint in new[] { edit, replace, disable, enable, clone })
         {
             endpoint.ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound)

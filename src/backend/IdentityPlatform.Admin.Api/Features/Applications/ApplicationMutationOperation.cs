@@ -20,7 +20,7 @@ internal static class ApplicationMutationOperation
             var completed = await request.RunAsync(factory, (scope, token) => ExecuteOwnedAsync(scope, identity, command, profile, budget, correlation, token));
             completed.Authority.RequirePublication(clock, budget);
             var details = completed.State.Details(completed.Authority.Deadline);
-            return new(command.Kind == ApplicationMutationKind.Create ? StatusCodes.Status201Created : StatusCodes.Status200OK,
+            return new(command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.Clone ? StatusCodes.Status201Created : StatusCodes.Status200OK,
                 details, completed.State.Version, completed.State.Credential(details),
                 command.Kind == ApplicationMutationKind.AssignScopes ? completed.State.Scopes(completed.Authority.Deadline) : null);
         }
@@ -40,8 +40,8 @@ internal static class ApplicationMutationOperation
         budget.RequireCurrent();
         var state = await ApplicationMutationWriter.StageAsync(scope, command, token);
         await authority.VerifyAsync(scope, command, token);
-        var audit = await ApplicationMutationWriter.AuditAsync(scope, command, state, identity.Subject, correlation, token);
-        await ApplicationMutationWriter.VerifyAuditAsync(scope, command, state, identity.Subject, audit, token);
+        var audit = await ApplicationMutationAudit.AuditAsync(scope, command, state, identity.Subject, correlation, token);
+        await ApplicationMutationAudit.VerifyAuditAsync(scope, command, state, identity.Subject, audit, token);
         await state.VerifyAsync(scope, token);
         await authority.VerifyAsync(scope, command, token);
         ApplicationMutationWriter.Now(scope, command);

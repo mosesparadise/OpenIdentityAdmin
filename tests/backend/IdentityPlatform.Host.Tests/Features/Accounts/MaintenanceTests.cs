@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 namespace IdentityPlatform.Host.Tests.Features.Accounts;
 
 /// <summary>Verifies cleanup composition, fixed scheduling, safe failed-pass telemetry and cooperative shutdown.</summary>
+[Collection(AdministratorTelemetryIsolation.Name)]
 public sealed class MaintenanceTests
 {
     private const string MeterName = "IdentityPlatform.Administrator.Cleanup";

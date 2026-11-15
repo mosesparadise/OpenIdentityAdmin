@@ -205,6 +205,28 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", b =>
+                {
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SourceApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("SourceVersion")
+                        .IsRequired()
+                        .HasMaxLength(86)
+                        .HasColumnType("nvarchar(86)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("ApplicationCloneAuditDetail", "platform");
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -2035,6 +2057,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", "AuditId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

@@ -17,31 +17,13 @@ internal static class ApplicationMutationWriter
 {
     private const int SecretBytes = 32;
     private const string PilotClient = "identityplatform-pilot";
-    private const string Actor = "User";
-    private const string Target = "Application";
-    private const string Accepted = "Accepted";
-    private const string Created = "ApplicationCreated";
-    private const string Edited = "ApplicationEdited";
-    private const string Replaced = "ApplicationSecretReplaced";
-    private const string Disabled = "ApplicationDisabled";
-    private const string Enabled = "ApplicationEnabled";
-    private const string ScopesAssigned = "ApplicationScopesAssigned";
-
     /// <summary>Uses real managers for all native writes and leaves version/policy persistence inside the same original transaction.</summary>
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         if (command.Kind == ApplicationMutationKind.Create)
         {
-            if (Reserved(command.ClientId!))
-            {
-                throw new ApplicationMutationRejected(ApplicationMutationFailure.Forbidden);
-            }
-            if (await manager.FindByClientIdAsync(command.ClientId!, token) is not null)
-            {
-                throw new ApplicationMutationRejected(ApplicationMutationFailure.Duplicate);
-            }
-            return await CreateAsync(scope, manager, command, token);
+            return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
         var application = await manager.FindByIdAsync(command.ApplicationId!, token)
             ?? throw new ApplicationMutationRejected(ApplicationMutationFailure.Missing);
@@ -62,39 +44,12 @@ internal static class ApplicationMutationWriter
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Stale);
         }
-        return await UpdateAsync(scope, manager, application, descriptor, policy, command, token);
-    }
-
-    /// <summary>Creates the native hash first, then appends the managed lifecycle row without auto-adopting any existing registration.</summary>
-    private static async Task<ApplicationWriteState> CreateAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager,
-        ApplicationMutationCommand command, CancellationToken token)
-    {
-        var now = Now(scope, command);
-        var secret = Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
-        var descriptor = ManagedApplicationProfile.Create(command, secret);
-        var application = await manager.CreateAsync(descriptor, token);
-        var id = await manager.GetIdAsync(application, token) ?? throw ProtocolStorageOwner.Unavailable();
-        if (!ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength))
+        if (command.Kind == ApplicationMutationKind.Clone)
         {
-            throw ProtocolStorageOwner.Unavailable();
+            var source = await ApplicationCloneSource.ReadAsync(scope, application, descriptor, policy, command, token);
+            return await ApplicationCreation.StageAsync(scope, manager, command, source, token);
         }
-        await RequireMutableAsync(scope, id, command.ClientId!, token);
-        var policy = new ApplicationPolicy
-        {
-            ApplicationId = id,
-            Revision = 1,
-            CredentialRevision = 1,
-            CredentialIssuedAt = now,
-            CredentialExpiresAt = command.CredentialExpiry!.Value.ToUnixTimeSeconds(),
-            ObservedAt = now
-        };
-        var expected = new ApplicationWriteState(application, descriptor, policy, secret);
-        await scope.Owner.RunAsync(async current =>
-        {
-            scope.Owner.Database.Add(policy);
-            await scope.Owner.Database.SaveChangesAsync(current);
-        }, token, write: true);
-        return expected;
+        return await UpdateAsync(scope, manager, application, descriptor, policy, command, token);
     }
 
     /// <summary>Advances one aggregate revision; only explicit replacement changes the secret and credential lifecycle.</summary>
@@ -210,66 +165,24 @@ internal static class ApplicationMutationWriter
         }
     }
 
+    /// <summary>Rejects reserved or existing destination identities without adopting their native state.</summary>
+    internal static async Task RequireNewIdentityAsync(IOpenIddictApplicationManager manager, string clientId, CancellationToken token)
+    {
+        if (Reserved(clientId))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Forbidden);
+        }
+        if (await manager.FindByClientIdAsync(clientId, token) is not null)
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Duplicate);
+        }
+    }
+
     /// <summary>Rejects case aliases of reserved registrations independently of provider collation.</summary>
     private static bool Reserved(string clientId) => string.Equals(clientId, AdministratorProtocolIdentity.ClientId, StringComparison.OrdinalIgnoreCase) ||
         string.Equals(clientId, PilotClient, StringComparison.OrdinalIgnoreCase);
 
-    /// <summary>Adds exactly one sanitized intent with finite action, actor, target and correlation fields in the owning database transaction.</summary>
-    internal static ValueTask<ApplicationAuditStamp> AuditAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, ApplicationWriteState state,
-        string actor, Guid correlation, CancellationToken token) => scope.Owner.RunAsync(async current =>
-    {
-        var stamp = new ApplicationAuditStamp(Guid.NewGuid(), correlation, Now(scope, command));
-        scope.Owner.Database.Add(new SecurityAuditIntent
-        {
-            Id = stamp.Id,
-            Event = Event(command.Kind),
-            ActorType = Actor,
-            ActorId = actor,
-            TargetType = Target,
-            TargetId = state.Id,
-            Outcome = Accepted,
-            CorrelationId = stamp.Correlation,
-            OccurredAt = stamp.At
-        });
-        if (command.Reason is { } reason)
-        {
-            scope.Owner.Database.Add(new ApplicationLifecycleAuditDetail { AuditId = stamp.Id, ReasonCode = reason });
-        }
-        await scope.Owner.Database.SaveChangesAsync(current);
-        return stamp;
-    }, token, write: true);
 
-    /// <summary>Requires the exact persisted audit after internal saves rather than trusting a tracked intent that could have been suppressed or altered.</summary>
-    internal static ValueTask VerifyAuditAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, ApplicationWriteState state,
-        string actor, ApplicationAuditStamp stamp, CancellationToken token) => scope.Owner.RunAsync(async current =>
-    {
-        var row = await ((PlatformDbContext)scope.Owner.Database).Set<SecurityAuditIntent>().AsNoTracking().SingleOrDefaultAsync(value => value.Id == stamp.Id, current);
-        if (row is null || row.Event != Event(command.Kind) || row.ActorType != Actor || row.ActorId != actor || row.TargetType != Target ||
-            row.TargetId != state.Id || row.Outcome != Accepted || row.CorrelationId != stamp.Correlation || row.OccurredAt != stamp.At || row.RelatedCorrelationId is not null)
-        {
-            throw ProtocolStorageOwner.Unavailable();
-        }
-        if (command.Reason is { } reason)
-        {
-            var detail = await scope.Owner.Database.Set<ApplicationLifecycleAuditDetail>().AsNoTracking().SingleOrDefaultAsync(value => value.AuditId == stamp.Id, current);
-            if (detail is null || detail.ReasonCode != reason)
-            {
-                throw ProtocolStorageOwner.Unavailable();
-            }
-        }
-    }, token);
-
-    /// <summary>Maps only the closed mutation action set to an audit name owned by this feature.</summary>
-    private static string Event(ApplicationMutationKind kind) => kind switch
-    {
-        ApplicationMutationKind.Create => Created,
-        ApplicationMutationKind.Edit => Edited,
-        ApplicationMutationKind.Replace => Replaced,
-        ApplicationMutationKind.Disable => Disabled,
-        ApplicationMutationKind.Enable => Enabled,
-        ApplicationMutationKind.AssignScopes => ScopesAssigned,
-        _ => throw ProtocolStorageOwner.Unavailable()
-    };
 }
 
 /// <summary>Freezes the nonsecret audit identity and time for exact post-save comparison.</summary>

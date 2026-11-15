@@ -52,7 +52,7 @@
     {
       "id": "application-audit-atomicity",
       "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs",
-      "before": "        await ApplicationMutationWriter.VerifyAuditAsync(scope, command, state, identity.Subject, audit, token);",
+      "before": "        await ApplicationMutationAudit.VerifyAuditAsync(scope, command, state, identity.Subject, audit, token);",
       "after": "        _ = audit;",
       "marker": "application-audit-atomicity-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack"
@@ -64,6 +64,22 @@
       "after": "command.CredentialExpiry is { } expiry && expiry <= DateTimeOffset.MinValue",
       "marker": "application-credential-expiry-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack"
+    },
+    {
+      "id": "application-clone-disabled",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationCreation.cs",
+      "before": "Enabled = source is null,",
+      "after": "Enabled = true,",
+      "marker": "application-clone-disabled-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged"
+    },
+    {
+      "id": "application-clone-source-verification",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs",
+      "before": "            await cloneSource.VerifyAsync(scope, token);",
+      "after": "            _ = cloneSource;",
+      "marker": "application-clone-source-verification-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneAtomicityTests.Given_CloneSourcePolicyCorruption_When_FinalVerificationRuns_Then_NoChangedSourceOrDestinationCommits"
     }
   ]
 }

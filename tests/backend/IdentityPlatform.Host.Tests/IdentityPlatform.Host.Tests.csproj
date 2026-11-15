@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <None Update="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../../../src/samples/IdentityPlatform.Sample.Client/IdentityPlatform.Sample.Client.csproj" />
     <ProjectReference Include="../../../src/samples/IdentityPlatform.Sample.Api/IdentityPlatform.Sample.Api.csproj" />
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />

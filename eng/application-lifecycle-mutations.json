@@ -27,7 +27,7 @@
     },
     {
       "id": "application-lifecycle-reason",
-      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationAudit.cs",
       "before": "if (detail is null || detail.ReasonCode != reason)",
       "after": "if (detail is null)",
       "marker": "application-lifecycle-reason-bypass",

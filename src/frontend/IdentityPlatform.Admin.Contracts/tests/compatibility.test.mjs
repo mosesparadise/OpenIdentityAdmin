@@ -104,8 +104,28 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 29);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/scopes', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/api/v1/audiences', '/bff/api/v1/audiences/antiforgery', '/bff/api/v1/audiences/deletions/{jobId}', '/bff/api/v1/audiences/{id}', '/bff/api/v1/scopes', '/bff/api/v1/scopes/antiforgery', '/bff/api/v1/scopes/deletions/{jobId}', '/bff/api/v1/scopes/{id}', '/bff/session'].sort());
+  assert.equal(inventory(browserStatus, 'bff').size, 30);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/clone', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/scopes', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/api/v1/audiences', '/bff/api/v1/audiences/antiforgery', '/bff/api/v1/audiences/deletions/{jobId}', '/bff/api/v1/audiences/{id}', '/bff/api/v1/scopes', '/bff/api/v1/scopes/antiforgery', '/bff/api/v1/scopes/deletions/{jobId}', '/bff/api/v1/scopes/{id}', '/bff/session'].sort());
+  const clone = browserStatus.paths['/bff/api/v1/applications/{id}/clone'].post;
+  assert.equal(clone.operationId, 'CloneBrowserApplication');
+  assert.equal(clone['x-required-permission'], 'applications.write');
+  assert.equal(clone['x-persisted-mfa-max-age-exclusive-seconds'], 300);
+  assert.deepEqual(clone.security, [{ BrowserSession: [] }]);
+  for (const header of ['If-Match', 'X-CSRF-TOKEN']) {
+    assert.equal(clone.parameters.find(parameter => parameter.in === 'header' && parameter.name === header).required, true);
+  }
+  assert.equal(clone.responses['201'].headers.ETag.required, true);
+  const unboundClone = structuredClone(browserStatus);
+  unboundClone.paths['/bff/api/v1/applications/{id}/clone'].post.parameters = clone.parameters.filter(parameter => parameter.name !== 'If-Match');
+  assert.throws(() => inventory(unboundClone, 'bff'), ContractViolation);
+
+  for (const mutate of [op => { op.security = [{}]; }, op => { delete op['x-required-permission']; },
+    op => { op.parameters.find(parameter => parameter.name === 'If-Match').required = false; },
+    op => { op.parameters.find(parameter => parameter.name === 'X-CSRF-TOKEN').required = false; }]) {
+    const candidate = structuredClone(browserStatus);
+    mutate(candidate.paths['/bff/api/v1/applications/{id}/clone'].post);
+    assert.throws(() => compatibility(browserStatus, candidate, 'bff'), ContractViolation);
+  }
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');

@@ -1,15 +1,17 @@
+import { assignment } from "./Scopes/observation";
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
-import { validate, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
-import { created, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
-export type EditorAction = "edit" | "replace" | "disable" | "enable";
-export type Outcome = "not-sent" | "unknown" | "created" | "updated" | "replaced";
+import { validate, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
+import { created, cloned, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
+export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone";
+export type Outcome = "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
 export type EditorState =
   | { kind: "list" | "form" }
   | { kind: "working"; operation: "read" | "create" | EditorAction }
   | ({ kind: "details" | "edit-form" | "replacement-form" | "disable-form" | "enable-form" | "updated" } & Observed)
-  | ({ kind: "created" | "replaced"; secret: string } & Observed)
-  | { kind: "problem"; reason: Reason; outcome: Outcome; target?: { id: string; action: EditorAction } };
+  | ({ kind: "clone-form"; scopes: string[] } & Observed)
+  | ({ kind: "created" | "replaced" | "cloned"; secret: string } & Observed)
+  | { kind: "problem"; reason: Reason; outcome: Outcome; target?: { id: string; action: EditorAction; clientId?: string } };
 
 /** Owns one ephemeral editor operation and never retries a mutation or retains a credential-bearing wire DTO. */
 export class EditorController {
@@ -22,7 +24,7 @@ export class EditorController {
   private dispatched = false;
   private deadline?: number;
   private completed?: Outcome;
-  private target?: { id: string; action: EditorAction };
+  private target?: { id: string; action: EditorAction; clientId?: string };
   constructor(private readonly client: EditorClient, private readonly publish: (state: EditorState) => void, private readonly now = Date.now) {}
 
   /** Binds the editor to the actual session observation; the BFF independently owns and verifies its durable browser generation. */
@@ -93,17 +95,47 @@ export class EditorController {
     return {};
   }
   /** Opens an explicit mutation form while dropping secret output and preserving original observation authority. */
-  open(action: EditorAction): void {
+  open(action: Exclude<EditorAction, "clone">): void {
     this.checkDeadline();
-    if (this.stopped || !["details", "created", "updated", "replaced"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
+    if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
     const { details, expires, etag } = this.state;
     this.cancel(); this.completed = undefined; this.target = { id: details.id, action };
     this.emit({ kind: action === "edit" ? "edit-form" : action === "replace" ? "replacement-form" : action === "disable" ? "disable-form" : "enable-form", details: structuredClone(details), expires, etag }); this.arm(expires);
   }
+  /** Reads assignment names against the same source version before presenting clone confirmation; late responses cannot reopen a cleared editor. */
+  async openClone(): Promise<void> {
+    this.checkDeadline();
+    if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
+    const base: Observed = { details: structuredClone(this.state.details), expires: this.state.expires, etag: this.state.etag };
+    this.completed = undefined; this.target = { id: base.details.id, action: "clone" };
+    const operation = this.begin("read", base.expires);
+    try {
+      const result = await this.client.scopes(base.details.id, operation.signal);
+      if (!this.live(operation.version)) return;
+      if (result.status !== 200) { this.fail(reason(result.status), "not-sent"); return; }
+      const selected = await assignment(result, base.details.id, this.now());
+      if (!this.live(operation.version)) return;
+      if (!selected) { this.fail("unavailable", "not-sent"); return; }
+      if (selected.etag !== base.etag) { this.fail("stale", "not-sent"); return; }
+      const expires = Math.min(base.expires, selected.expires, this.session!.expires);
+      if (expires <= this.now()) { this.fail("display-expired", "not-sent"); return; }
+      this.emit({ ...base, scopes: selected.scopes, expires, kind: "clone-form" }); this.arm(expires);
+    } catch { if (this.live(operation.version)) this.fail("unavailable", "not-sent"); }
+  }
+  /** Sends a confirmed clone once; neither source grants nor credential material enters the request. */
+  async clone(draft: CloneDraft): Promise<Errors> {
+    if (this.stopped || this.state.kind !== "clone-form") return {};
+    const base = this.state, checked = validateClone({ ...draft }, base.details.redirectUris, this.now());
+    if (!checked.input) return checked.errors;
+    const input = checked.input;
+    this.target = { id: base.details.id, action: "clone", clientId: input.clientId };
+    return this.mutate(base, "clone", (proof, signal) => this.client.clone(base.details.id, base.etag!, input, proof, signal),
+      result => cloned(result, base, input, this.now()), utc(input.credentialExpiresAt, true));
+  }
   /** Cancels a draft without another read or restoring a previously displayed secret. */
   cancelForm(): void {
     this.checkDeadline();
-    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form" && this.state.kind !== "disable-form" && this.state.kind !== "enable-form") return;
+    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form" && this.state.kind !== "disable-form" && this.state.kind !== "enable-form" && this.state.kind !== "clone-form") return;
     const { details, expires, etag } = this.state;
     this.emit({ kind: "details", details, expires, etag });
   }
@@ -152,21 +184,22 @@ export class EditorController {
       this.dispatched = true;
       const result = await send(proof.value.requestToken, operation.signal);
       if (!this.live(operation.version)) return {};
-      if (result.status !== 200) { this.fail(reason(result.status), "unknown"); return {}; }
+      if (result.status !== (action === "clone" ? 201 : 200)) { this.fail(reason(result.status), "unknown"); return {}; }
       const value = await inspect(result);
       if (!this.live(operation.version)) return {};
       if (!value) { this.fail("unavailable", "unknown"); return {}; }
       const expires = Math.min(base.expires, value.expires, this.session!.expires, secretExpiry ?? Infinity);
       if (expires <= this.now()) { this.fail("display-expired", "unknown"); return {}; }
-      this.dispatched = false; this.completed = value.secret === undefined ? "updated" : "replaced";
-      this.emit(value.secret === undefined ? { ...value, expires, kind: "updated" } : { ...value, secret: value.secret, expires, kind: "replaced" }); this.arm(expires);
+      this.dispatched = false; this.completed = value.secret === undefined ? "updated" : action === "clone" ? "cloned" : "replaced";
+      if (action === "clone") this.target = { id: value.details.id, action: "replace" };
+      this.emit(value.secret === undefined ? { ...value, expires, kind: "updated" } : { ...value, secret: value.secret, expires, kind: action === "clone" ? "cloned" : "replaced" }); this.arm(expires);
     } catch { if (this.live(operation.version)) this.fail("unavailable", this.dispatched ? "unknown" : "not-sent"); }
     return {};
   }
   /** Drops the secret reference and removes its view, retaining only a separately validated sanitized projection. */
   dismiss(): void {
     this.checkDeadline();
-    if (this.state.kind !== "created" && this.state.kind !== "replaced") return;
+    if (this.state.kind !== "created" && this.state.kind !== "replaced" && this.state.kind !== "cloned") return;
     const { details, expires, etag } = this.state;
     this.emit({ kind: "details", details, expires, etag });
   }
@@ -196,7 +229,7 @@ export class EditorController {
     this.checkDeadline(); return version === this.generation && this.currentSession();
   }
   private currentSession(): boolean { return !!this.session && this.session.expires > this.now(); }
-  private outcome(): Outcome { return this.dispatched ? "unknown" : ["created", "updated", "replaced"].includes(this.state.kind) ? this.state.kind as Outcome : this.state.kind === "problem" ? this.state.outcome : this.completed ?? "not-sent"; }
+  private outcome(): Outcome { return this.dispatched ? "unknown" : ["created", "updated", "replaced", "cloned"].includes(this.state.kind) ? this.state.kind as Outcome : this.state.kind === "problem" ? this.state.outcome : this.completed ?? "not-sent"; }
   private fail(reason: Reason, outcome: Outcome): void { this.cancel(); this.emit({ kind: "problem", reason, outcome, ...(this.target ? { target: this.target } : {}) }); }
   private cancel(): void { ++this.generation; this.abort?.abort(); clearTimeout(this.timer); this.dispatched = false; this.deadline = undefined; }
   private emit(value: EditorState): void { this.state = value; this.publish(value); }

@@ -17,6 +17,7 @@ internal sealed class ApplicationWriteState
     private readonly ImmutableArray<string> redirects;
     private readonly ImmutableArray<string> permissions;
     private readonly ApplicationScopeSelection? selection;
+    private readonly ApplicationCloneSource? cloneSource;
     private readonly long revision;
     private readonly long credentialRevision;
     private readonly long issuedAt;
@@ -32,10 +33,12 @@ internal sealed class ApplicationWriteState
     internal string Version => ApplicationVersion.Create(Id, revision);
 
     /// <summary>Copies native presentation and lifecycle values so later entity mutation cannot alter the expected commit.</summary>
-    internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret, ApplicationScopeSelection? selection = null)
+    internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret,
+        ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null)
     {
         this.application = application;
         this.selection = selection;
+        this.cloneSource = cloneSource;
         permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
         clientId = descriptor.ClientId!;
         displayName = descriptor.DisplayName!;
@@ -73,6 +76,10 @@ internal sealed class ApplicationWriteState
         if (selection is not null)
         {
             await selection.VerifyAsync(scope, token);
+        }
+        if (cloneSource is not null)
+        {
+            await cloneSource.VerifyAsync(scope, token);
         }
         await ApplicationMutationWriter.RequireMutableAsync(scope, Id, clientId, token);
         var row = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()

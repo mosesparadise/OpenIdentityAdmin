@@ -8,6 +8,10 @@ namespace IdentityPlatform.Admin.Api.Features.Applications;
 /// <summary>Describes implemented application editor operations, their exact authority and noncacheable credential-safe projections.</summary>
 internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
 {
+    private const string Clone = Details + ApplicationCloneRules.Suffix;
+    private const string CloneOperation = "CloneApplication";
+    private const string CloneSchema = "ApplicationClone";
+    private const string CloneConfirmation = "confirmed";
     private const string Lifecycle = "ApplicationLifecycle";
     private const string Reason = "reason";
     private const string Confirm = "confirm";
@@ -55,6 +59,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
+        Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
         Apply(document, Replacement, HttpMethod.Post, ReplacementOperation);
@@ -63,7 +68,19 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, ScopePath, HttpMethod.Get, ReadScopesOperation);
         Apply(document, ScopePath, HttpMethod.Put, AssignScopesOperation);
         LifecycleInput(document);
+        CloneInput(document);
         return Task.CompletedTask;
+    }
+
+    /// <summary>Documents explicit confirmation without accepting native source configuration or credentials as clone input.</summary>
+    private static void CloneInput(OpenApiDocument document)
+    {
+        if (document.Components?.Schemas?.TryGetValue(CloneSchema, out var value) == true && value is OpenApiSchema schema)
+        {
+            schema.Properties![CloneConfirmation] = new OpenApiSchema { Type = JsonSchemaType.Boolean, Enum = [JsonValue.Create(true)] };
+            schema.Required ??= new HashSet<string>();
+            schema.Required.Add(CloneConfirmation);
+        }
     }
 
     /// <summary>Publishes the exact finite wire vocabulary and true-only confirmation shared by the actual lifecycle routes.</summary>
@@ -95,12 +112,12 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
         operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : path == Replacement ? Credentials : read ? Read : Write));
-        if (path is Replacement or Disable or Enable || path == ScopePath && !read)
+        if (path is Replacement or Disable or Enable or Clone || path == ScopePath && !read)
         {
             operation.Extensions[FreshMfa] = new JsonNodeExtension(JsonValue.Create(MfaSeconds));
         }
         Parameters(operation, create, read, path == ScopePath);
-        Responses(operation, create, read, path == ScopePath);
+        Responses(operation, create || path == Clone, read, path == ScopePath);
     }
 
     /// <summary>Documents exact resource identity, mandatory update precondition and each native browser mutation proof.</summary>
