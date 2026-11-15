@@ -153,3 +153,21 @@ Corrected exact local static gate (`scripts/check-static-analysis.py --self-test
 zero-warning/error build, whitespace and IDE0005 verification, code-quality checks with
 unchanged legacy baseline, and all three seeded analyzer/style negative controls. The
 cancel-focus correction is independently source-reviewed. Full hosted acceptance remains open.
+
+### Source-time regression added during final review
+
+The coverage reviewer identified an unexercised clone-specific denial when the persisted
+source observation is ahead of the current clock. A new real-provider case sets that
+watermark one second ahead while identity/MFA and requested credential expiry stay current.
+It requires status 400, no credential/projection/version, no destination or clone provenance,
+unchanged full source/policy/audit snapshots, and continued validity of the source secret.
+Both provider cases pass (2/2, no skips, 1m30s), and independent source review confirms the
+intended branch. Build12 has no warnings/errors, formatting and quality checks pass.
+
+Native discovery now retains 3,027 administrator identities, adding exactly these two
+cases to the previously reviewed inventory. The clone suite now contains 50 cases;
+Applications has 140 cases per provider, administrator ordinary totals are 1,385/1,490,
+and complete provider totals 1,787/1,894. All 28 workflow Python control scripts pass
+against the corrected inventories. CI 609 (`43656525088`, head `7c57b05`) began before
+this addition and cannot establish acceptance of the new head. Full exact-head hosted
+browser/coverage/mutation and final artifact reviews remain required.

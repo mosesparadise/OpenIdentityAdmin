@@ -1460,7 +1460,8 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"PostgreSql\", cloneFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -3027,7 +3028,8 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneRaceTests.Given_SourceAndClone_When_EachCommitOrderingIsObserved_Then_CopyUsesOnlyItsLockedSourceVersion(provider: \"SqlServer\", cloneFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_CurrentManagedSource_When_Cloned_Then_NewDisabledIdentityAndSecretLeaveSourceUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_ExpiredFreshMfa_When_CloneSubmitted_Then_SourceAndAuditRemainUnchanged(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -65093,6 +65095,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
         "typeName": "ApplicationCloneTests",
         "methodName": "Given_UsedDestinationOrChangedSource_When_CloneSubmitted_Then_NoAdditionalApplicationOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationCloneTests.Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationCloneTests",
+        "methodName": "Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

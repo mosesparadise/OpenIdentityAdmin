@@ -29,6 +29,7 @@ public sealed class ApplicationCloneTests(BootstrapFixture fixture)
     private const int InitialScopeRevision = 2;
     private const int MfaSeconds = 300;
     private const int GrantMinutes = 10;
+    private const int FutureObservationSeconds = 1;
     private const string Destination = "independent-clone";
     private const string Display = "Independent clone";
     private const string CloneEvent = "ApplicationCloned";
@@ -113,6 +114,32 @@ public sealed class ApplicationCloneTests(BootstrapFixture fixture)
         Assert.Equal(403, (await test.ExecuteAsync(Command(test, source))).Status);
         Assert.Equal(1, await test.AuditsAsync());
         Assert.Null(await scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>().FindByClientIdAsync(Destination, test.Token));
+    }
+
+    /// <summary>A future source watermark cannot be copied even while the approving identity and credential deadline remain current.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Given_FutureSourceObservation_When_CloneSubmitted_Then_NoDestinationCredentialOrAuditCommits(string provider)
+    {
+        await using var test = await ApplicationMutationFixture.CreateAsync(fixture, provider);
+        var source = await test.ExecuteAsync(test.Create());
+        Assert.Equal(201, source.Status);
+        await using var scope = test.Scope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var observed = test.Clock.Now.AddSeconds(FutureObservationSeconds).ToUnixTimeSeconds();
+        Assert.Equal(1, await database.Set<ApplicationPolicy>().Where(row => row.ApplicationId == source.Application!.Id)
+            .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.ObservedAt, observed), test.Token));
+        var before = await ApplicationUpdateSnapshot.ReadAsync(test, source.Application!.Id);
+        var denied = await test.ExecuteAsync(Command(test, source));
+        Assert.Equal(400, denied.Status);
+        Assert.Null(denied.Application);
+        Assert.Null(denied.Credential);
+        Assert.Null(denied.Version);
+        Assert.Equal(before.Digest, (await ApplicationUpdateSnapshot.ReadAsync(test, source.Application.Id)).Digest);
+        Assert.Empty(await database.Set<ApplicationCloneAuditDetail>().AsNoTracking().ToArrayAsync(test.Token));
+        Assert.Null(await scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>().FindByClientIdAsync(Destination, test.Token));
+        Assert.True(await test.AcceptsAsync(source.Application.Id, source.Credential!.ClientSecret));
     }
 
     /// <summary>Requires each native hash to accept only its own generated credential, without logging either secret.</summary>
