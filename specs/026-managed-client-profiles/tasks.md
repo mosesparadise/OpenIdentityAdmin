@@ -75,3 +75,11 @@ A local unit run exposed a distinct test observation race after a failed sample
 callback. The corrected test acquires the existing browser lease before checking
 that admission and its ticket are gone. The local coverage run passed 94 Core,
 2,133 Host, 5 Architecture and 118 AppHost cases with the existing deadlines.
+
+
+Independent review tightened the expected subject and disclosure checks for the native
+journey. The fixture now sets a verified email on the account that actually signs in
+and obtains that account’s subject independently of the consent record. Both providers
+returned the exact requested scope in the token response. The consent record, signed
+tokens and UserInfo identified the fixture account, and UserInfo omitted its
+unrequested email. The two-provider TRX SHA-256 is `f268e3aa566680ba3f4817ff9eb610085b5fcb31ebc37c96d2ff97b5cec9ad17`.

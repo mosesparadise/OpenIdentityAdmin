@@ -20,6 +20,7 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
     private const int AssignedRevision = 2;
     private const string RequestedScopes = "openid orders.read";
     private const string EmailScope = "email";
+    private const string ScopeField = "scope";
     private const string AccessTokenField = "access_token";
     private const string IncorrectSecret = "unused-native-client-secret";
 
@@ -61,16 +62,25 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         Assert.Equal(registration.Id, details.ApplicationId);
         Assert.Equal([EmailScope, ManagedConsentTest.ApiScope], details.Scopes);
         Assert.Equal(ApplicationVersion.Create(registration.Id, AssignedRevision), assigned.Headers.ETag?.ToString());
+        await VerifyConsentedTokensAsync(registration);
+    }
+
+    /// <summary>Verifies the scoped token response and UserInfo against the account that signs in and its available email.</summary>
+    private static async Task VerifyConsentedTokensAsync(ManagedCacheTestContext registration)
+    {
+        var subject = await ManagedConsentTest.EmailAsync(registration, ManagedConsentTest.Address, verified: true);
         var flow = new ManagedTokenFlow(registration, RequestedScopes);
         await flow.ApproveAsync();
         using var response = await flow.ExchangeAsync(await flow.CodeAsync());
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         using var body = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        Assert.Equal(RequestedScopes, body.RootElement.GetProperty(ScopeField).GetString());
         var row = Assert.Single((await registration.SnapshotAsync(applicationOnly: true)).Interactions, value => value.RequestId == flow.RequestId);
-        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, row.UserId!, applicationOnly: true, multipleFlows: true,
+        Assert.Equal(subject, row.UserId);
+        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, subject, applicationOnly: true, multipleFlows: true,
             projection: new(RequestedScopes, ManagedConsentTest.Resource));
         using var userInfo = await ManagedConsentTest.ReadAsync(registration, body.RootElement.GetProperty(AccessTokenField).GetString()!);
-        await ManagedConsentTest.RequireAsync(userInfo, row.UserId!, null, false);
+        await ManagedConsentTest.RequireAsync(userInfo, subject, null, false);
     }
 
     /// <summary>Registers through the protected BFF and binds the returned native client identity to the exact submitted settings.</summary>
