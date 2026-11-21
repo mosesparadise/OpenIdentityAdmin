@@ -21,6 +21,8 @@ The [22 October advisory reassessment](vendor/configuration-review-2026-10-22.js
 
 The [26 October configuration reassessment](vendor/configuration-review-2026-10-26.json) reviews extraction of identical documentation option registration for the generic BFF host. Default and local-demo pipelines still do not map viewers. It updates only the changed setup-file hash and preserves prior advisory evidence, dispositions and every activation/release block.
 
+The [21 November advisory review](vendor/advisory-review-2026-11-21.json) records the two open DOMPurify findings approved for internal CI. The Swagger bundle embeds affected version 3.4.16. Its inspected Markdown sanitizer call uses string output, and its hook only adds a link attribute. Both viewers remain disabled. Activation requires verification of patched viewer assets and completion of the existing inventory, notice and authorization gates.
+
 ## Dormant browser-session contract
 
 The native `bff-v1.browser.json` export and generated TypeScript declarations describe the explicitly composed `/bff/session` handler. They are generated and checked alongside the empty production inventories and separate synthetic management fixtures. The route is version-neutral; its contract version is 1. Its public unauthenticated response and optional cookie authority are narrowly classified by validation; ordinary management permission/version/CSRF requirements remain mandatory. Callback/resume and inert HTML pages are excluded. This adds no React client, API proxy or production documentation activation.
