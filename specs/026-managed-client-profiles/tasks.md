@@ -61,3 +61,17 @@ The protected BFF registration, real human consent, wrong Basic credential rejec
 secretless S256 exchange and user-bound token verification passed once on each provider.
 The original native journey TRX SHA-256 is
 `90e57b128387db901471fef81eea1c76819ed9169ea061fe9373cdf69323938d`.
+
+The expanded native journey passed on both providers. After the original identity-only
+exchange it read the empty assignment, checked that secret replacement was refused,
+assigned email and an API scope through the BFF and read back revision two. Fresh
+consent for only the API scope produced a token for its audience. UserInfo returned the
+subject without the unrequested email. Original TRX SHA-256 `9cbb90c47676699c58e215cb5f30ddcc06ef170b48bb8317556d517ff40aafd3`.
+
+CI636 did not pass. Its Host partition exceeded the 180-second limit before a final
+report was produced. The separate SQL Server/WebKit retirement test host crashed
+before publishing either case result. Both hosted WebKit sample journeys passed.
+A local unit run exposed a distinct test observation race after a failed sample
+callback. The corrected test acquires the existing browser lease before checking
+that admission and its ticket are gone. The local coverage run passed 94 Core,
+2,133 Host, 5 Architecture and 118 AppHost cases with the existing deadlines.

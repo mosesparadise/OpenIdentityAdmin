@@ -17,6 +17,10 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
     private const string NativeProfile = "managed-native-v1";
     private static readonly string[] Redirects = [Callback];
     private const string Display = "Native application link";
+    private const int AssignedRevision = 2;
+    private const string RequestedScopes = "openid orders.read";
+    private const string EmailScope = "email";
+    private const string AccessTokenField = "access_token";
     private const string IncorrectSecret = "unused-native-client-secret";
 
     /// <summary>Requires a strong native code verifier and validates the resulting user-bound tokens without a client secret.</summary>
@@ -31,6 +35,42 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         using var wrong = await flow.ExchangeAsync(code, secret: IncorrectSecret);
         Assert.True(wrong.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized);
         await ManagedJourneyEvidence.ExchangeAsync(registration, flow, code, denyManagement: true);
+        await VerifyScopeAssignmentAsync(registration);
+    }
+
+    /// <summary>Assigns scopes over the protected browser surface and verifies only the consented API scope and audience reach the native client.</summary>
+    private static async Task VerifyScopeAssignmentAsync(ManagedCacheTestContext registration)
+    {
+        var http = registration.Http;
+        var path = ApplicationScopeHttpTests.Path(registration.Id);
+        using var original = await http.CatalogueAsync(HttpMethod.Get, path, direct: false);
+        Assert.Equal(HttpStatusCode.OK, original.StatusCode);
+        var empty = await original.Content.ReadFromJsonAsync<ApplicationScopes>(cancellationToken: TestContext.Current.CancellationToken);
+        Assert.NotNull(empty);
+        Assert.Equal(registration.Id, empty.ApplicationId);
+        Assert.Empty(empty.Scopes);
+        Assert.Equal(ApplicationVersion.Create(registration.Id, 1), original.Headers.ETag?.ToString());
+        using var replacement = await http.UpdateAsync(registration.Id, ApplicationHttpUpdateEvidence.Replacement(http.Now), original.Headers.ETag!.ToString(), replacement: true);
+        Assert.Equal(HttpStatusCode.Conflict, replacement.StatusCode);
+
+        await ManagedConsentTest.SeedAsync(registration);
+        using var assigned = await http.CatalogueAsync(HttpMethod.Get, path, direct: false);
+        Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
+        var details = await assigned.Content.ReadFromJsonAsync<ApplicationScopes>(cancellationToken: TestContext.Current.CancellationToken);
+        Assert.NotNull(details);
+        Assert.Equal(registration.Id, details.ApplicationId);
+        Assert.Equal([EmailScope, ManagedConsentTest.ApiScope], details.Scopes);
+        Assert.Equal(ApplicationVersion.Create(registration.Id, AssignedRevision), assigned.Headers.ETag?.ToString());
+        var flow = new ManagedTokenFlow(registration, RequestedScopes);
+        await flow.ApproveAsync();
+        using var response = await flow.ExchangeAsync(await flow.CodeAsync());
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        var row = Assert.Single((await registration.SnapshotAsync(applicationOnly: true)).Interactions, value => value.RequestId == flow.RequestId);
+        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, row.UserId!, applicationOnly: true, multipleFlows: true,
+            projection: new(RequestedScopes, ManagedConsentTest.Resource));
+        using var userInfo = await ManagedConsentTest.ReadAsync(registration, body.RootElement.GetProperty(AccessTokenField).GetString()!);
+        await ManagedConsentTest.RequireAsync(userInfo, row.UserId!, null, false);
     }
 
     /// <summary>Registers through the protected BFF and binds the returned native client identity to the exact submitted settings.</summary>
