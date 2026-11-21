@@ -1,6 +1,21 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current delivery — application cloning and permanent retirement, 15 November 2026
+## Current delivery — managed client profiles, 21 November 2026
+
+Feature026 covers the selected M04-B client profiles, M04-C credentials and M04-D
+integration documentation. The managed web editor now exposes the registered client
+ID, callbacks, S256 configuration and a placeholder for the application's secret.
+PR141 reached main at `d69b874` after all 149 CI632 jobs and the original evidence
+review passed. [Feature026 verification](../../specs/026-managed-client-profiles/verification.md)
+
+PR142 adds the PostgreSQL and SQL Server storage prerequisite. PR143 builds on it
+with public native registration and a secretless authorization-code exchange.
+CI636 recorded a Host unit timeout and a SQL Server/WebKit retirement test-host
+crash. Each pull request requires its own current hosted evidence before delivery.
+The remaining browser, machine, device, asymmetric-key and protected-documentation
+work is tracked in the [feature026 register](../../specs/026-managed-client-profiles/tasks.md).
+
+## Previous delivery — application cloning and permanent retirement, 15 November 2026
 
 Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed
 confidential web profile. The user selected permanent retirement with history retained.
