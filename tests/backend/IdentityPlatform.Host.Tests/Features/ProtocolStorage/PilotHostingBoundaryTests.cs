@@ -23,7 +23,7 @@ public sealed class PilotHostingBoundaryTests
         var clock = new TimerObservation();
         services.AddSingleton<TimeProvider>(clock);
         services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow().SetAuthorizationEndpointUris(Authorize)
-            .SetTokenEndpointUris(Token).AddEphemeralEncryptionKey().AddEphemeralSigningKey();
+            .SetTokenEndpointUris(Token).AddRegistrationTestKeys();
         await using var provider = services.BuildServiceProvider();
         var http = new DefaultHttpContext { RequestServices = provider };
         http.Request.Host = new HostString(Host);

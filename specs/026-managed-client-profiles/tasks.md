@@ -130,3 +130,20 @@ that same socket. A Linux check using the compiled fixture verified that a secon
 listener could not claim the port before host construction, a trusted HTTPS
 request succeeded after handoff, and a new listener could claim the port after
 host shutdown and disposal.
+
+CI647's Host project exceeded its 180-second deadline. The partial stream
+contained 2,125 of 2,135 Host cases, including all 12 added cases. It did
+not produce a final Host report. Both hosted local-demo jobs passed in this
+run. The earlier CI646 PostgreSQL local-demo navigation failure remains
+unexplained.
+
+Across six Host test classes, 31 cases constructed a new pair of 4096-bit
+RSA keys to exercise registration, handler selection or request extraction.
+These tests now generate separate process-local signing and encryption
+templates and import private parameters into independent credentials for
+each probe. They retain OpenIddict 7.7.2's RSA sizes and algorithms. A local
+covered run of the six classes passed the same 55 case IDs before and after
+the change. TRX execution time fell from 21.4 seconds to 4.4 seconds.
+The hosted deadline, concurrency settings and assertions remain in force.
+The full local covered unit partition then passed all 2,352 required cases
+without skips. Host completed its 2,135 cases in 79 seconds of TRX time.
