@@ -306,6 +306,13 @@ class FailureReceiptTests(unittest.TestCase):
             'governance-setup-stage LeaseCreate', 'governance-setup-stage -1'))
         self.assertEqual([{'setup': 'HostBuild'}, {'setup': 'LeaseCreate'}], verifier.report_checkpoints(root))
 
+    def test_consent_diagnostics_admit_only_reviewed_labels(self):
+        stages = ('ConsentAssignment', 'ConsentPresentation', 'ConsentPolicyReview', 'ConsentSubmit', 'ConsentObservation')
+        root = report()
+        labels = [*stages, 'ConsentSubmit synthetic-secret', 'ConsentUnknown']
+        ET.SubElement(root, 'StdOut').text = '\n'.join('governance-setup-stage ' + value for value in labels)
+        self.assertEqual([{'setup': value} for value in stages], verifier.report_checkpoints(root))
+
     def test_Given_RepeatedOrInvalidCheckpoints_When_Projected_Then_OutputStaysClosedAndBounded(self):
         """Only known stages and six-digit provider codes can appear in the final 32 observations."""
         root = report()

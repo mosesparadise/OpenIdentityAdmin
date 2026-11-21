@@ -13,7 +13,7 @@ public sealed class SetupDiagnosticTests
     private const string Failed = "failed-sink";
     private const string Cancelled = "cancelled-sink";
     private const string Valid = "valid-stages";
-    private const int StageCount = 26;
+    private const int StageCount = 31;
     private const string Canary = "synthetic-secret-must-not-escape";
     private const int UnknownStage = -1;
     private static readonly string[] Providers = ["PostgreSql", "SqlServer"];
@@ -68,7 +68,7 @@ public sealed class SetupDiagnosticTests
         Assert.Equal(StageCount, lines.Count);
         Assert.Equal(StageCount, lines.Distinct(StringComparer.Ordinal).Count());
         Assert.Equal("governance-setup-stage HostBuilder", lines[0]);
-        Assert.Equal("governance-setup-stage ConnectionReady", lines[^1]);
+        Assert.Equal("governance-setup-stage ConsentObservation", lines[^1]);
         Assert.All(lines, line => Assert.StartsWith("governance-setup-stage ", line, StringComparison.Ordinal));
         lines.Clear();
         SetupDiagnostics.Failure(new OperationCanceledException(Canary), true, lines.Add);

@@ -61,4 +61,5 @@ internal enum SetupStage
     EnrollmentStage, EnrollmentVerify, EnrollmentReady,
     WitnessCreate, WitnessSecurityPreparation, RequestPreparation, CodePreparation,
     AuthHealthy, LifecycleCaptured, ConnectionReady,
+    ConsentAssignment, ConsentPresentation, ConsentPolicyReview, ConsentSubmit, ConsentObservation,
 }
