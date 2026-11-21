@@ -250,10 +250,10 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .HasColumnType("nvarchar(400)")
                         .UseCollation("Latin1_General_100_BIN2");
 
-                    b.Property<long>("CredentialExpiresAt")
+                    b.Property<long?>("CredentialExpiresAt")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CredentialIssuedAt")
+                    b.Property<long?>("CredentialIssuedAt")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CredentialRevision")
@@ -272,8 +272,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.Property<string>("Profile")
                         .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
                         .UseCollation("Latin1_General_100_BIN2");
 
                     b.Property<bool>("Retired")
@@ -292,13 +292,13 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("ApplicationPolicy", "platform", t =>
                         {
-                            t.HasCheckConstraint("CK_ApplicationPolicy_Profile", "[Profile] = 'managed-web-v1'");
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Profile", "RIGHT([Profile], 1) = '1' AND ([Profile] IN ('managed-web-v1', 'managed-web-key-v1', 'managed-machine-v1', 'managed-machine-key-v1') OR [Profile] IN ('managed-native-v1', 'managed-browser-v1', 'managed-device-v1'))");
 
                             t.HasCheckConstraint("CK_ApplicationPolicy_Retirement", "CAST([Retired] AS INTEGER) + CAST([Enabled] AS INTEGER) <= 1");
 
-                            t.HasCheckConstraint("CK_ApplicationPolicy_Revision", "[Revision] >= [CredentialRevision] AND [CredentialRevision] > 0");
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Revision", "[Revision] >= 1 AND [Revision] >= [CredentialRevision] AND (([Profile] IN ('managed-web-v1', 'managed-web-key-v1', 'managed-machine-v1', 'managed-machine-key-v1') AND [CredentialRevision] > 0) OR ([Profile] IN ('managed-native-v1', 'managed-browser-v1', 'managed-device-v1') AND [CredentialRevision] = 0))");
 
-                            t.HasCheckConstraint("CK_ApplicationPolicy_Time", "[CredentialIssuedAt] >= 0 AND [CredentialExpiresAt] > [CredentialIssuedAt] AND [ObservedAt] >= [CredentialIssuedAt]");
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Time", "[ObservedAt] >= 0 AND (([Profile] IN ('managed-web-v1', 'managed-web-key-v1', 'managed-machine-v1', 'managed-machine-key-v1') AND [CredentialIssuedAt] IS NOT NULL AND [CredentialExpiresAt] IS NOT NULL AND [CredentialIssuedAt] >= 0 AND [CredentialExpiresAt] > [CredentialIssuedAt] AND [ObservedAt] >= [CredentialIssuedAt]) OR ([Profile] IN ('managed-native-v1', 'managed-browser-v1', 'managed-device-v1') AND [CredentialIssuedAt] IS NULL AND [CredentialExpiresAt] IS NULL))");
                         });
                 });
 

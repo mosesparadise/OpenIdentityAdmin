@@ -56,6 +56,7 @@ public sealed class RetirementUpgradeTests
         Assert.NotNull(application);
         Assert.True(await manager.ValidateClientSecretAsync(application, secret, test.Token));
         Assert.Empty(await database.Set<ApplicationRetirement>().AsNoTracking().ToArrayAsync(test.Token));
+        await ProfileStorageRoundTrip.RequireAsync(test, provider, after);
     }
 
     /// <summary>Uses native managers plus explicit predecessor policy columns, including actual prior secret material and both enabled states.</summary>

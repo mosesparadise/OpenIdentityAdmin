@@ -1,0 +1,63 @@
+{
+  "PostgreSql": {
+    "columns": {
+      "Old": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialExpiresAt", "6", null, "NO", "bigint", null, null, "64", "2", "0", null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "int8", null, null, null, null, "6", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialIssuedAt", "5", null, "NO", "bigint", null, null, "64", "2", "0", null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "int8", null, null, null, null, "5", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "Profile", "2", null, "NO", "character varying", "14", "56", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "varchar", null, null, null, null, "2", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"]
+      ],
+      "New": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialExpiresAt", "6", null, "YES", "bigint", null, null, "64", "2", "0", null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "int8", null, null, null, null, "6", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialIssuedAt", "5", null, "YES", "bigint", null, null, "64", "2", "0", null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "int8", null, null, null, null, "5", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "Profile", "2", null, "NO", "character varying", "32", "128", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "$catalog", "pg_catalog", "varchar", null, null, null, null, "2", "NO", "NO", null, null, null, null, null, "NO", "NEVER", null, "YES"]
+      ]
+    },
+    "table_constraints": {
+      "Old": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy_CredentialExpiresAt_not_null", "$catalog", "platform", "ApplicationPolicy", "CHECK", "NO", "NO", "YES", null],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy_CredentialIssuedAt_not_null", "$catalog", "platform", "ApplicationPolicy", "CHECK", "NO", "NO", "YES", null]
+      ],
+      "New": []
+    },
+    "check_constraints": {
+      "Old": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy_CredentialExpiresAt_not_null", "CredentialExpiresAt IS NOT NULL"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy_CredentialIssuedAt_not_null", "CredentialIssuedAt IS NOT NULL"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Profile", "((\"Profile\")::text = 'managed-web-v1'::text)"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Revision", "((\"Revision\" >= \"CredentialRevision\") AND (\"CredentialRevision\" > 0))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Time", "((\"CredentialIssuedAt\" >= 0) AND (\"CredentialExpiresAt\" > \"CredentialIssuedAt\") AND (\"ObservedAt\" >= \"CredentialIssuedAt\"))"]
+      ],
+      "New": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Profile", "((\"right\"((\"Profile\")::text, 1) = '1'::text) AND (((\"Profile\")::text = ANY ((ARRAY['managed-web-v1'::character varying, 'managed-web-key-v1'::character varying, 'managed-machine-v1'::character varying, 'managed-machine-key-v1'::character varying])::text[])) OR ((\"Profile\")::text = ANY ((ARRAY['managed-native-v1'::character varying, 'managed-browser-v1'::character varying, 'managed-device-v1'::character varying])::text[]))))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Revision", "((\"Revision\" >= 1) AND (\"Revision\" >= \"CredentialRevision\") AND ((((\"Profile\")::text = ANY ((ARRAY['managed-web-v1'::character varying, 'managed-web-key-v1'::character varying, 'managed-machine-v1'::character varying, 'managed-machine-key-v1'::character varying])::text[])) AND (\"CredentialRevision\" > 0)) OR (((\"Profile\")::text = ANY ((ARRAY['managed-native-v1'::character varying, 'managed-browser-v1'::character varying, 'managed-device-v1'::character varying])::text[])) AND (\"CredentialRevision\" = 0))))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Time", "((\"ObservedAt\" >= 0) AND ((((\"Profile\")::text = ANY ((ARRAY['managed-web-v1'::character varying, 'managed-web-key-v1'::character varying, 'managed-machine-v1'::character varying, 'managed-machine-key-v1'::character varying])::text[])) AND (\"CredentialIssuedAt\" IS NOT NULL) AND (\"CredentialExpiresAt\" IS NOT NULL) AND (\"CredentialIssuedAt\" >= 0) AND (\"CredentialExpiresAt\" > \"CredentialIssuedAt\") AND (\"ObservedAt\" >= \"CredentialIssuedAt\")) OR (((\"Profile\")::text = ANY ((ARRAY['managed-native-v1'::character varying, 'managed-browser-v1'::character varying, 'managed-device-v1'::character varying])::text[])) AND (\"CredentialIssuedAt\" IS NULL) AND (\"CredentialExpiresAt\" IS NULL))))"]
+      ]
+    }
+  },
+  "SqlServer": {
+    "columns": {
+      "Old": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialExpiresAt", "6", null, "NO", "bigint", null, null, "19", "10", "0", null, null, null, null, null, null, null, null, null, null],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialIssuedAt", "5", null, "NO", "bigint", null, null, "19", "10", "0", null, null, null, null, null, null, null, null, null, null],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "Profile", "2", null, "NO", "nvarchar", "14", "28", null, null, null, null, null, null, "UNICODE", null, null, "Latin1_General_100_BIN2", null, null, null]
+      ],
+      "New": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialExpiresAt", "6", null, "YES", "bigint", null, null, "19", "10", "0", null, null, null, null, null, null, null, null, null, null],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "CredentialIssuedAt", "5", null, "YES", "bigint", null, null, "19", "10", "0", null, null, null, null, null, null, null, null, null, null],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "ApplicationPolicy", "Profile", "2", null, "NO", "nvarchar", "32", "64", null, null, null, null, null, null, "UNICODE", null, null, "Latin1_General_100_BIN2", null, null, null]
+      ]
+    },
+    "check_constraints": {
+      "Old": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Profile", "([Profile]='managed-web-v1')"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Revision", "([Revision]>=[CredentialRevision] AND [CredentialRevision]>(0))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Time", "([CredentialIssuedAt]>=(0) AND [CredentialExpiresAt]>[CredentialIssuedAt] AND [ObservedAt]>=[CredentialIssuedAt])"]
+      ],
+      "New": [
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Profile", "(right([Profile],(1))='1' AND ([Profile]='managed-machine-key-v1' OR [Profile]='managed-machine-v1' OR [Profile]='managed-web-key-v1' OR [Profile]='managed-web-v1' OR ([Profile]='managed-device-v1' OR [Profile]='managed-browser-v1' OR [Profile]='managed-native-v1')))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Revision", "([Revision]>=(1) AND [Revision]>=[CredentialRevision] AND (([Profile]='managed-machine-key-v1' OR [Profile]='managed-machine-v1' OR [Profile]='managed-web-key-v1' OR [Profile]='managed-web-v1') AND [CredentialRevision]>(0) OR ([Profile]='managed-device-v1' OR [Profile]='managed-browser-v1' OR [Profile]='managed-native-v1') AND [CredentialRevision]=(0)))"],
+        ["platform", "ApplicationPolicy", "$catalog", "platform", "CK_ApplicationPolicy_Time", "([ObservedAt]>=(0) AND (([Profile]='managed-machine-key-v1' OR [Profile]='managed-machine-v1' OR [Profile]='managed-web-key-v1' OR [Profile]='managed-web-v1') AND [CredentialIssuedAt] IS NOT NULL AND [CredentialExpiresAt] IS NOT NULL AND [CredentialIssuedAt]>=(0) AND [CredentialExpiresAt]>[CredentialIssuedAt] AND [ObservedAt]>=[CredentialIssuedAt] OR ([Profile]='managed-device-v1' OR [Profile]='managed-browser-v1' OR [Profile]='managed-native-v1') AND [CredentialIssuedAt] IS NULL AND [CredentialExpiresAt] IS NULL))"]
+      ]
+    }
+  }
+}

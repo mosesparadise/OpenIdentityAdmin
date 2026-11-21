@@ -36,8 +36,8 @@
     {
       "id": "managed-current-credential",
       "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs",
-      "before": "policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
-      "after": "policy.CredentialExpiresAt < ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
+      "before": "expiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
+      "after": "expiresAt < ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
       "marker": "managed-current-credential-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish"
     },

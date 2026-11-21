@@ -82,6 +82,7 @@ public sealed class ManagedSchemaTests
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
         ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
+        await ClientProfileStorageChecks.RequireAsync(fixture);
     }
 
     /// <summary>Stale aggregate and clock-only writers fail on both engines; observing a clock never silently changes the public aggregate version.</summary>

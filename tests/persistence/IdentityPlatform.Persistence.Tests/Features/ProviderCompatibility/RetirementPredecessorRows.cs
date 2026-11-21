@@ -17,6 +17,6 @@ internal static class RetirementPredecessorRows
         database.Entry(policy).State = EntityState.Detached;
         Assert.Equal(1, await database.Database.ExecuteSqlRawAsync(database.GetDatabaseProvider().Model.Identifiers(Insert),
             [policy.ApplicationId, policy.Profile, policy.Enabled, policy.Revision, policy.CredentialRevision,
-                policy.CredentialIssuedAt, policy.CredentialExpiresAt, policy.ObservedAt], token));
+                policy.CredentialIssuedAt!.Value, policy.CredentialExpiresAt!.Value, policy.ObservedAt], token));
     }
 }

@@ -20,11 +20,11 @@ internal sealed class ApplicationPolicy
     {
         get; set;
     }
-    public long CredentialIssuedAt
+    public long? CredentialIssuedAt
     {
         get; set;
     }
-    public long CredentialExpiresAt
+    public long? CredentialExpiresAt
     {
         get; set;
     }
