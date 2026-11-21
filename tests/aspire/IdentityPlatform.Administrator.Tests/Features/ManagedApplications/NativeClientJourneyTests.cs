@@ -19,6 +19,7 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
     private static readonly string[] Redirects = [Callback];
     private const string Display = "Native application link";
     private const int AssignedRevision = 2;
+    private const int LifecycleTransitions = 2;
     private const string RequestedScopes = "openid orders.read";
     private const string EmailScope = "email";
     private const string ScopeField = "scope";
@@ -63,6 +64,10 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         Assert.Equal(registration.Id, details.ApplicationId);
         Assert.Equal([EmailScope, ManagedConsentTest.ApiScope], details.Scopes);
         Assert.Equal(ApplicationVersion.Create(registration.Id, AssignedRevision), assigned.Headers.ETag?.ToString());
+        await ManagedLifecycleJourneyTests.TransitionAsync(registration, false, AssignedRevision);
+        using var disabled = await registration.SendAsync(NativeCacheFlow.Initial(NativeCacheProfile.Random(), registration.ClientIdentifier, registration.CallbackUri));
+        await ManagedCacheTestContext.UnavailableAsync(disabled);
+        await ManagedLifecycleJourneyTests.TransitionAsync(registration, true, AssignedRevision + 1);
         await VerifyConsentedTokensAsync(registration);
     }
 
@@ -83,7 +88,7 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         var access = body.RootElement.GetProperty(AccessTokenField).GetString()!;
         using var userInfo = await ManagedConsentTest.ReadAsync(registration, access);
         await ManagedConsentTest.RequireAsync(userInfo, subject, null, false);
-        var retirement = await ManagedRetirementRaceTests.RetireAsync(registration);
+        var retirement = await ManagedRetirementRaceTests.RetireAsync(registration, LifecycleTransitions);
         await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, subject, applicationOnly: true, multipleFlows: true, projection: projection);
         await ManagedRetirementRaceTests.RequireIssuerDenialAsync(registration, access);
         await GrantIssuerRevocation.ReconcileAsync(registration, retirement.Job);

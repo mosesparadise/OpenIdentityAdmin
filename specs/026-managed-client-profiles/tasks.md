@@ -91,3 +91,18 @@ and callback before the worker ran. The worker then revoked the eligible grants,
 preserved history and completed the recorded job. The native and existing confidential
 retirement controls both passed on PostgreSQL and SQL Server (four cases, zero skips).
 Original TRX SHA-256 `467982fe4be2b9ea2b4ee530209d512e67c6c160f9c03038242fae091378269d`.
+
+CI642’s PostgreSQL consent-policy mutation failed outside its required assertion.
+Its report recorded one failed execution, a matching test method and an unknown
+error category. It produced no acceptance receipt for that job. The unmodified
+consent test passed locally on PostgreSQL and SQL Server. Five fixed diagnostic
+labels now identify how far a future execution reaches without retaining account
+data, form content or error text.
+
+The native journey now disables the assigned registration, checks that a new
+authorization request is refused, re-enables the same client and completes a fresh
+scoped sign-in before permanent retirement. Retirement preserved both earlier
+lifecycle audit records. The normal native and confidential retirement journeys,
+consent tests and diagnostic controls passed locally (14 cases, both providers).
+Original TRX SHA-256 `ae0425cb26a8bc83e8c630351584e875f7ae769a6da918749e3df9fb14a0f61a`. The dedicated lifecycle mutation still uses a
+confidential client. Public native coverage here comes from the ordinary journey.

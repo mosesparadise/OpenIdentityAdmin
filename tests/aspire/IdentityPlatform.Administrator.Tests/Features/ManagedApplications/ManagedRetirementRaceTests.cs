@@ -52,9 +52,10 @@ public sealed class ManagedRetirementRaceTests(BootstrapFixture fixture)
     }
 
     /// <summary>Retires the current managed registration and independently verifies its committed terminal receipt and preserved configuration.</summary>
-    internal static async Task<ApplicationRetirementAcceptance> RetireAsync(ManagedCacheTestContext test)
+    internal static async Task<ApplicationRetirementAcceptance> RetireAsync(ManagedCacheTestContext test, int priorLifecycleTransitions = 0)
     {
         var before = await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id);
+        Assert.Equal(priorLifecycleTransitions, before.LifecycleAudits.Length);
         using var retirement = await test.Http.CatalogueAsync(HttpMethod.Post,
             ApplicationHttpFixture.ApiCollection + Separator + Uri.EscapeDataString(test.Id) + RetirementSuffix, Input,
             ApplicationVersion.Create(test.Id, before.Policy.Revision), direct: true, key: Guid.NewGuid().ToString(GuidFormat));
@@ -122,7 +123,7 @@ public sealed class ManagedRetirementRaceTests(BootstrapFixture fixture)
         Assert.Equal(policy.NativeDigest, changed.NativeDigest);
         Assert.Equal(policy.Policy.CredentialExpiresAt, changed.Policy.CredentialExpiresAt);
         Assert.True(changed.Policy.Retired);
-        Assert.Empty(changed.LifecycleAudits);
+        Assert.Equal(ApplicationUpdateSnapshot.Hash(policy.LifecycleAudits), ApplicationUpdateSnapshot.Hash(changed.LifecycleAudits));
         await using var scope = test.Http.Scope();
         var receipt = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationRetirement>().AsNoTracking().SingleAsync(TestContext.Current.CancellationToken);
         Assert.Equal(Guid.Parse(accepted.Job.Id), receipt.GrantJobId);
