@@ -1,10 +1,10 @@
-using System.Net;
 using System.Net.Http.Json;
+using System.Net;
 using System.Text.Json;
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
+using IdentityPlatform.Core.Features.Applications;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
