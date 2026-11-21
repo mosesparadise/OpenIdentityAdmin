@@ -4,6 +4,8 @@
 
 The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/026-managed-client-profiles/spec.md) and [task register](../specs/026-managed-client-profiles/tasks.md) track protocol prerequisites, credential management, integration examples and protected documentation.
 
+Managed web integration settings are available on main. The authorized application details view shows the client ID, exact callbacks and S256 configuration with a server-side secret placeholder. Public native registration and asymmetric authentication remain in development. [PR141](https://github.com/mosesparadise/OpenIdentityAdmin/pull/141) · [Verification](../specs/026-managed-client-profiles/verification.md)
+
 ## Latest completed delivery — application cloning and permanent retirement, 15 November 2026
 
 Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed
