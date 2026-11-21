@@ -106,3 +106,16 @@ lifecycle audit records. The normal native and confidential retirement journeys,
 consent tests and diagnostic controls passed locally (14 cases, both providers).
 Original TRX SHA-256 `ae0425cb26a8bc83e8c630351584e875f7ae769a6da918749e3df9fb14a0f61a`. The dedicated lifecycle mutation still uses a
 confidential client. Public native coverage here comes from the ordinary journey.
+
+CI642’s PostgreSQL managed issuance report contained 71 passing cases and one
+failure in the confidential disable/re-enable journey. Its second sign-in to the
+independent client received HTTP 400 at MFA, where HTTP 302 was expected. The
+case ended 94 ms after a 30-second authenticator interval boundary. The report
+did not retain the selected counter or the issuer’s reason for rejection.
+
+The repeated successful-sign-in fixture now prepares an unused synthetic code
+that stays valid over the next real counter transition. If its choices are spent
+it waits at most one rollover before starting the ceremony. It submits once.
+The ordinary replay and boundary fixtures retain their original selection order.
+Both provider journeys and both deterministic counter-selection controls passed.
+Original TRX SHA-256 `371b24cd209a32d7ce321ae600fa2ec31b53071a2bb6ef48bc5f5c5c9d75524c`.

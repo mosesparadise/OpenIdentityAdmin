@@ -35,6 +35,11 @@ public sealed class OracleTests
         var selected = FactorOracle.UnusedCode(PublishedBase32Seed, accepted, ObservedAt);
         Assert.Equal(Current, selected);
         Assert.DoesNotContain(selected, accepted);
+        Assert.Equal(Current, FactorOracle.AvailableCode(PublishedBase32Seed, accepted, ObservedAt, validAfterRollover: true));
+        var onlyExpiring = new HashSet<string>([FirstAdjacent, PreviousCounter, SecondNextCounter, Current], StringComparer.Ordinal);
+        Assert.Equal(SecondPreviousCounter, FactorOracle.UnusedCode(PublishedBase32Seed, onlyExpiring, ObservedAt));
+        Assert.Null(FactorOracle.AvailableCode(PublishedBase32Seed, onlyExpiring, ObservedAt, validAfterRollover: true));
+        Assert.NotNull(FactorOracle.AvailableCode(PublishedBase32Seed, onlyExpiring, ObservedAt + FactorOracle.StepSeconds, validAfterRollover: true));
         accepted.Add(Current);
         Assert.Throws<Xunit.Sdk.TrueException>(() => FactorOracle.UnusedCode(PublishedBase32Seed, accepted, ObservedAt));
         Assert.Equal(FirstAdjacent, FactorOracle.UnusedCode(PublishedBase32Seed, new HashSet<string>(StringComparer.Ordinal), ObservedAt));

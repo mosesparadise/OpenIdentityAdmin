@@ -9,7 +9,7 @@ using OpenIddict.Abstractions;
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
 /// <summary>Retains the real independent verifier/state/nonce and drives genuine protected managed human forms before native issuance.</summary>
-internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requestedScopes = "openid")
+internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requestedScopes = "openid", string? preparedFactor = null)
 {
     private const string Grant = "grant_type";
     private const string CodeGrant = "authorization_code";
@@ -79,7 +79,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requ
         using var password = await ManagedHumanHttp.PasswordAsync(test, form);
         await ManagedHumanHttp.EntryAsync(password);
         var mfa = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, password.Headers.Location!);
-        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
+        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa, preparedFactor);
         await ManagedHumanHttp.EntryAsync(factor);
         return await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri, inspectConsent);
     }
