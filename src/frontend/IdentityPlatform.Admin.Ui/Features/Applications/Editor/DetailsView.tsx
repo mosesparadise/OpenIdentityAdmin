@@ -18,6 +18,21 @@ export function DetailsView({ details, secret, dismiss, edit, replace, clone, cl
       {details.credential && <><div><dt>Secret issued (UTC)</dt><dd><time dateTime={details.credential.issuedAt}>{details.credential.issuedAt}</time></dd></div>
         <div><dt>Secret expires (UTC)</dt><dd><time dateTime={details.credential.expiresAt}>{details.credential.expiresAt}</time>{Date.parse(details.credential.expiresAt) <= Date.now() && " — expired"}</dd></div></>}
     </dl>
+    {details.editable && <details className="editor-help"><summary>Client integration settings</summary>
+      <p>Use your deployment’s issuer address for discovery. Configure the server-side OIDC client with
+        the following settings and choose one registered callback for each sign-in.</p>
+      <pre className="integration-example">{JSON.stringify({
+        client_id: details.clientId,
+        redirect_uris: details.redirectUris,
+        response_types: ["code"],
+        token_endpoint_auth_method: "client_secret_basic",
+        code_challenge_method: "S256",
+        scope: "openid",
+        client_secret: "<read from your server-side secret store>"
+      }, null, 2)}</pre>
+      <p>Generate a fresh PKCE verifier and challenge for each request. Request additional scopes only
+        after assignment to this application.</p>
+    </details>}
     {details.retirement && <p>Retired at <time dateTime={details.retirement.retiredAt}>{details.retirement.retiredAt}</time>. History and the client ID are retained. This application cannot be re-enabled. Tokens validated offline may remain valid until expiry, and sessions in other applications may continue.</p>}
     <p className="editor-help">{details.retired ? "Retained details support auditing and grant-revocation recovery." : details.editable ? "Client ID cannot be changed. Details never return a previously issued secret." : "System-owned and unmanaged registrations cannot be changed through this editor."}</p>
     {details.editable && <div className="actions"><Button onClick={edit}>Edit application</Button><Button secondary onClick={replace}>Replace secret</Button><Button secondary ref={cloneRef} onClick={clone}>Clone application</Button><Button secondary ref={lifecycleRef} onClick={lifecycle}>{details.enabled ? "Disable application" : "Re-enable application"}</Button><Button secondary ref={retireRef} onClick={retire}>Retire application</Button></div>}

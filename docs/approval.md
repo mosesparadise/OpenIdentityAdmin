@@ -1,6 +1,13 @@
 # Documentation approval
 
-**Current continuation (14 November 2026):** the user instructed “Please proceed with the
+**Managed client profile batch (21 November 2026).** The user requested the next
+three roadmap items after the feature025 lifecycle delivery and confirmed the
+recommendation. M04-B, M04-C and M04-D are selected for internal development
+under v0.2. The initial native callback policy is claimed HTTPS. The
+[feature plan](../specs/026-managed-client-profiles/plan.md) records the protocol,
+authorization and release-evidence dependencies.
+
+**Application lifecycle continuation (14 November 2026):** the user instructed “Please proceed with the
 next item in the roadmap” after feature024 delivery and explicitly selected “Permanent
 retirement with history retained” for M04-A Delete application. This authorizes feature025
 clone and permanent retirement as separately reviewed implementation increments under the

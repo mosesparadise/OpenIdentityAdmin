@@ -28,6 +28,13 @@ internal static class ApplicationEditorJourney
     private const int LifetimeMinutes = 30;
     private const int SecretLength = 44;
 
+    private const string IntegrationSummary = "Client integration settings";
+    private const string IntegrationExample = "pre.integration-example";
+
+    private const string ClientIdProperty = "client_id";
+    private const string RedirectsProperty = "redirect_uris";
+    private const string SecretProperty = "client_secret";
+    private const string SecretPlaceholder = "<read from your server-side secret store>";
     private const string EditAction = "Edit application";
     private const string DetailsTitle = "Application details";
     private const string StaleDraft = "Stale draft";
@@ -96,7 +103,7 @@ internal static class ApplicationEditorJourney
         }
         finally { await other.CloseAsync(); }
         await ApplicationCredentialEvidence.RequireAsync(issuer, Client, output, callback ?? UpdatedCallback);
-        var replacement = await ReplaceAsync(page, now, output, presentation);
+        var replacement = await ReplaceAsync(page, now, output, callback ?? UpdatedCallback, presentation);
         return new(id, Client, callback ?? UpdatedCallback, replacement, output);
     }
 
@@ -179,7 +186,7 @@ internal static class ApplicationEditorJourney
     }
 
     /// <summary>Requires unchecked confirmation, independent output and synchronous pagehide erasure, then verifies no browser persistence.</summary>
-    private static async Task<string> ReplaceAsync(IPage page, DateTimeOffset now, string previous, Func<IPage, Task>? presentation)
+    private static async Task<string> ReplaceAsync(IPage page, DateTimeOffset now, string previous, string callback, Func<IPage, Task>? presentation)
     {
         await Button(page, ReplaceAction).ClickAsync();
         await HeadingAsync(page, ReplaceAction);
@@ -199,12 +206,36 @@ internal static class ApplicationEditorJourney
         await HeadingAsync(page, ReplacedTitle);
         var output = await page.Locator(Secret).InputValueAsync();
         Assert.True(output.Length == SecretLength && output != previous);
+        await RequireIntegrationAsync(page, callback, previous, output);
         await page.EvaluateAsync(HidePage);
+        Assert.Equal(0, await page.Locator(IntegrationExample).CountAsync());
         Assert.Equal(0, await page.Locator(Secret).CountAsync());
         await HeadingAsync(page, ProblemTitle);
         await BrowserSecretOracle.StorageAsync(page, [previous, output]);
         await PresentationAsync(page, presentation);
         return output;
+    }
+
+    /// <summary>Reads the current callback using only the keyboard while both issued credentials stay out of the integration example.</summary>
+    private static async Task RequireIntegrationAsync(IPage page, string callback, string previous, string current)
+    {
+        var summary = page.GetByText(IntegrationSummary, new()
+        {
+            Exact = true
+        });
+        var example = page.Locator(IntegrationExample);
+        Assert.False(await example.IsVisibleAsync());
+        await summary.FocusAsync();
+        await page.Keyboard.PressAsync(EnterKey);
+        Assert.True(await summary.EvaluateAsync<bool>(SummaryFocus));
+        Assert.True(await example.IsVisibleAsync());
+        var settings = await example.InnerTextAsync();
+        BrowserSecretOracle.RequireAbsent([settings], [previous, current]);
+        using var document = System.Text.Json.JsonDocument.Parse(settings);
+        var root = document.RootElement;
+        Assert.Equal(Client, root.GetProperty(ClientIdProperty).GetString());
+        Assert.Equal(callback, Assert.Single(root.GetProperty(RedirectsProperty).EnumerateArray()).GetString());
+        Assert.Equal(SecretPlaceholder, root.GetProperty(SecretProperty).GetString());
     }
 
     /// <summary>Checks forms and safe failure states in both themes and each required width without recording authenticated pixels.</summary>

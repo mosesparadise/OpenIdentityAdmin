@@ -364,6 +364,14 @@ test('Given_update_views_When_rendered_Then_confirmation_immutable_identity_and_
    assert.ok(problem.includes('Reload current details'));assert.ok(problem.includes('Your draft will not be reapplied'));assert.equal(problem.includes('may have been created'),false);assert.equal(problem.includes(secret),false);
   }
  }
+ const registration={...details, redirectUris:[...details.redirectUris,'https://other.example/exact']};
+ const markup=renderToStaticMarkup(createElement(DetailsView,{details:registration,secret,dismiss:()=>{}}));
+ const integration=markup.match(/<pre class="integration-example">([^<]+)<\/pre>/);
+ assert.ok(integration);
+ const config=JSON.parse(integration[1].replaceAll('&quot;','"').replaceAll('&lt;','<').replaceAll('&gt;','>'));
+ assert.deepEqual(config,{client_id:registration.clientId,redirect_uris:registration.redirectUris,response_types:['code'],
+   token_endpoint_auth_method:'client_secret_basic',code_challenge_method:'S256',scope:'openid',client_secret:'<read from your server-side secret store>'});
+ for(const retired of [true,false])assert.doesNotMatch(renderToStaticMarkup(createElement(DetailsView,{details:{...details,editable:false,retired},dismiss:()=>{}})),/Client integration settings/);
  const html=renderToStaticMarkup(createElement(DetailsView,{details,dismiss:()=>{},edit:()=>{},replace:()=>{}}));assert.ok(html.includes('Edit application'));assert.ok(html.includes('Replace secret'));assert.equal(html.includes('not yet available'),false);
  const errors=validateReplacement({confirmed:false,credentialExpiresAt:''},now).errors;
  const fields=renderToStaticMarkup(createElement(CreateFields,{draft,errors,mode:'replace',setDraft:()=>{},summary:{current:null}}));assert.ok(fields.includes('href="#editor-confirmed"'));assert.ok(fields.includes('Confirm replacement'));

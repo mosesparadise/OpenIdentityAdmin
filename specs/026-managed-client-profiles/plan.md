@@ -1,0 +1,7 @@
+# Delivery plan
+
+Extend the existing registration model, editor, BFF and API together. `ManagedApplicationProfile` currently checks an exact confidential web descriptor, including PKCE and an absent JWKS. Introduce explicit, finite profile-specific descriptor and issuer checks before exposing a new create option. Cover existing records, read-only foreign registrations, cloning, replacement, retirement, jobs and consent. Scope assignment must continue to bind issuance to current catalogue data. Include actual token and resource use for each new profile on PostgreSQL and SQL Server. Browser and native flows need real redirect and PKCE tests. Device and machine registration depend on their corresponding M07 protocol subsets.
+
+Keep assertion validation and token creation in OpenIddict. Bind approval, audit, issuer replay decisions and key replacement to the same client and credential revision. Verify the old assertion/key fails after replacement and the current key works. Validate submitted public key material locally and reject private parameters and remote key references.
+
+Start the integration view with the delivered managed web profile, whose registration, callback and token exchange already have an Aspire sample. Derive its example from the validated BFF detail response. Broader profile examples depend on their actual end-to-end support. Extend authoritative contracts and generated browser bindings with each feature. Reconcile viewer provenance and advisories before exposing authenticated documentation routes.
