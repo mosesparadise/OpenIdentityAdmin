@@ -49,7 +49,7 @@ internal static class ApplicationDetailsReader
             return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
         if (policy.Profile != ApplicationEditorRules.Profile || policy.Revision < 1 || policy.CredentialRevision < 1 ||
-            policy.CredentialIssuedAt < 0 || policy.CredentialExpiresAt <= policy.CredentialIssuedAt || policy.ObservedAt < policy.CredentialIssuedAt ||
+            policy.CredentialIssuedAt is not { } issuedAt || policy.CredentialExpiresAt is not { } expiresAt || issuedAt < 0 || expiresAt <= issuedAt || policy.ObservedAt < issuedAt ||
             (!row.NativeProfile || row.ApplicationType != OpenIddictConstants.ApplicationTypes.Web || row.ClientType != OpenIddictConstants.ClientTypes.Confidential ||
             row.ConsentType != OpenIddictConstants.ConsentTypes.Explicit) || row.Redirects is null || row.Redirects.Length > NativeJsonBytes ||
             row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements is null || row.Requirements.Length > NativeNamesLength)
@@ -63,7 +63,7 @@ internal static class ApplicationDetailsReader
         }
         var retirement = await ApplicationRetirementReader.ReadAsync(database, policy, token);
         return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
-            policy.Profile, !policy.Retired, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry, policy.Enabled,
+            policy.Profile, !policy.Retired, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), expiry, policy.Enabled,
             policy.Retired, retirement),
             ApplicationVersion.Create(row.Id, policy.Revision), descriptor.Permissions
                 .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))

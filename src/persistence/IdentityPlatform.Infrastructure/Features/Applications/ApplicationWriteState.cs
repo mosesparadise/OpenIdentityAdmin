@@ -47,8 +47,8 @@ internal sealed class ApplicationWriteState
         Id = policy.ApplicationId;
         revision = policy.Revision;
         credentialRevision = policy.CredentialRevision;
-        issuedAt = policy.CredentialIssuedAt;
-        expiresAt = policy.CredentialExpiresAt;
+        issuedAt = policy.CredentialIssuedAt ?? throw ProtocolStorageOwner.Unavailable();
+        expiresAt = policy.CredentialExpiresAt ?? throw ProtocolStorageOwner.Unavailable();
         observedAt = policy.ObservedAt;
         enabled = policy.Enabled;
         retired = policy.Retired;

@@ -34,15 +34,15 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
         var policy = await scope.Owner.RunAsync(current => new ValueTask<ApplicationPolicy?>(scope.Owner.Database.Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == id, current)), token);
         if (policy is null || policy.Retired || !policy.Enabled || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||
-            policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt > policy.ObservedAt ||
-            policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt))
+            policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt is not { } issuedAt || issuedAt > policy.ObservedAt ||
+            policy.CredentialExpiresAt is not { } expiresAt || expiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt))
         {
             return null;
         }
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
         return ManagedApplicationProfile.MatchesManagement(descriptor) && !string.IsNullOrEmpty(descriptor.ClientSecret)
-            ? new(new(id!, clientId, policy.Revision, policy.CredentialRevision, policy.CredentialExpiresAt, policy.ObservedAt,
+            ? new(new(id!, clientId, policy.Revision, policy.CredentialRevision, expiresAt, policy.ObservedAt,
                 descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray()),
                 descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray(), ManagedApplicationProfile.Matches(descriptor)) : null;
     }

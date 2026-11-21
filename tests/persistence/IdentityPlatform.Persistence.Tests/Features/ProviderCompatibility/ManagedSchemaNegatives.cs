@@ -17,7 +17,7 @@ internal static class ManagedSchemaNegatives
     [
         row => row.Revision = 0, row => row.CredentialRevision = 0, row => row.CredentialRevision = row.Revision + 1,
         row => row.CredentialIssuedAt = -1, row => row.CredentialExpiresAt = row.CredentialIssuedAt,
-        row => row.ObservedAt = row.CredentialIssuedAt - 1, row => row.Profile = UnknownProfile
+        row => row.ObservedAt = row.CredentialIssuedAt!.Value - 1, row => row.Profile = UnknownProfile
     ];
     private static readonly Action<ManagedLoginInteraction>[] InvalidInteractions =
     [

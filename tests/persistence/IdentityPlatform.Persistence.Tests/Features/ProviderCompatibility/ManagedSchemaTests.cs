@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -82,6 +83,8 @@ public sealed class ManagedSchemaTests
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
         ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
+        Assert.Equal(TestDatabaseProviders.Resolve(provider).Migrations(DatabaseStore.Platform), await database.Database.GetAppliedMigrationsAsync(fixture.Token));
+        await ClientProfileStorageChecks.RequireAsync(fixture);
     }
 
     /// <summary>Stale aggregate and clock-only writers fail on both engines; observing a clock never silently changes the public aggregate version.</summary>

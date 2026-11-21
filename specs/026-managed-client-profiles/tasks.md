@@ -19,3 +19,19 @@ focus, long callback reflow, page-hide clearing and observation expiry passed.
 The shared authenticated editor journey now checks the current saved callback,
 keyboard disclosure and page-hide removal after actual credential replacement.
 The pinned provider/browser matrix and original CI evidence review are pending.
+
+### Profile storage prerequisite for T002–T005
+
+Both Platform provider migrations can now represent public native, browser and device
+registrations without credential timestamps or a credential revision. Confidential web
+and machine profiles with a shared secret or a public authentication key require a
+positive credential revision and an ordered lifetime. Application and issuer eligibility
+still require the exact delivered web profile. This increment supplies storage only.
+
+Local Release persistence tests ran 14 cases, seven on each provider. They checked
+the profile combinations, partial metadata, alias rejection, populated predecessor
+upgrades, native credential preservation, nonempty retirement history, repeated upgrades
+and guarded downgrade. A downgrade of a database containing a newer profile fails
+atomically. The provider-independent row and schema comparison covers both migration
+histories. Original TRX SHA-256 was
+`f1f89dc8b59237a5d2bf54d4aa90608cb10c101db876070ce003253f11b8d48c`.
