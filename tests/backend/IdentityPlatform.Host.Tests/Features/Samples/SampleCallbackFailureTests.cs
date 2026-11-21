@@ -91,8 +91,11 @@ public sealed class SampleCallbackFailureTests
         }
         catch (Exception exception) when (onStarting && (exception is HttpRequestException or OperationCanceledException || exception is InvalidOperationException { Message: ResponseFailureMessage })) { /* A failed started response is aborted instead of completed. */ }
         Assert.NotNull(browserId);
+        // Transport failure can reach the client while the callback still holds the lease during cleanup.
+        using var ended = await browser.App.Services.GetRequiredService<BrowserAttempts>().EnterAsync(browserId, TestContext.Current.CancellationToken)
+            .WaitAsync(TimeSpan.FromSeconds(WitnessSeconds), TestContext.Current.CancellationToken);
+        Assert.Null(ended);
         Assert.Null(browser.App.Services.GetRequiredService<SampleTickets>().FindBrowser(browserId));
-        Assert.Null(await browser.App.Services.GetRequiredService<BrowserAttempts>().EnterAsync(browserId, TestContext.Current.CancellationToken));
     }
 
     /// <summary>A real native signing event resuming after cancellation cannot create authority after the callback cleanup has ended admission.</summary>
