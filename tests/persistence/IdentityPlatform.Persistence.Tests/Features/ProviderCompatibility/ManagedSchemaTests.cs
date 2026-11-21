@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using IdentityPlatform.Infrastructure.Features.Health;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -83,7 +83,7 @@ public sealed class ManagedSchemaTests
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
         ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
-        Assert.Equal(SchemaCatalog.Platform(TestDatabaseProviders.Resolve(provider)), await database.Database.GetAppliedMigrationsAsync(fixture.Token));
+        Assert.Equal(TestDatabaseProviders.Resolve(provider).Migrations(DatabaseStore.Platform), await database.Database.GetAppliedMigrationsAsync(fixture.Token));
         await ClientProfileStorageChecks.RequireAsync(fixture);
     }
 
