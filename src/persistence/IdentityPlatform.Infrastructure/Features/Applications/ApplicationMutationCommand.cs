@@ -67,6 +67,17 @@ internal sealed class ApplicationMutationCommand
             ? new(ApplicationMutationKind.Create, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, expiry) : null;
     }
 
+    /// <summary>Snapshots a public client without accepting a credential or arbitrary protocol settings.</summary>
+    internal static ApplicationMutationCommand? CreateNative(ApplicationNativeCreate input)
+    {
+        var frozen = input with
+        {
+            RedirectUris = input.RedirectUris?.ToArray()!
+        };
+        return ApplicationEditorRules.Validate(frozen).Count == 0
+            ? new(ApplicationMutationKind.CreateNative, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, null) : null;
+    }
+
     /// <summary>Binds confirmed new identity and expiry to an exact source version; reusable configuration is observed only under ownership.</summary>
     internal static ApplicationMutationCommand? Clone(string id, string version, ApplicationClone input, DateTimeOffset now) =>
         Target(id, version) && ApplicationCloneRules.IsValid(input, now) &&
@@ -111,7 +122,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

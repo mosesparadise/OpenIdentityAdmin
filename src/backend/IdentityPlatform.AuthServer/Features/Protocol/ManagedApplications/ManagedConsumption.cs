@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
@@ -12,6 +13,7 @@ internal sealed class ManagedConsumption
     private readonly OpenIddictServerEvents.ProcessSignInContext context;
     private readonly ManagedConsumptionInput input;
     private readonly string rowDigest;
+    private readonly ManagedRegistration redeemedRegistration;
     private ProtocolStorageScope? issuance;
     private ProtocolStoragePhase? phase;
 
@@ -21,6 +23,10 @@ internal sealed class ManagedConsumption
         this.context = context;
         this.input = input;
         rowDigest = FactorBinding.Digest(binding.Row);
+        redeemedRegistration = binding.Registration with
+        {
+            Redirects = [.. binding.Registration.Redirects]
+        };
     }
 
     /// <summary>Finds only the private receipt attached after completed native redemption.</summary>
@@ -74,7 +80,7 @@ internal sealed class ManagedConsumption
         var binding = await ManagedTokenBinding.ReadAsync(scope, original, context.ClientId!, token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var entry = await manager.FindByIdAsync(original.GetTokenId()!, token);
-        if (binding is null || (originalRow && rowDigest != FactorBinding.Digest(binding.Row)) || entry is null ||
+        if (binding is null || !redeemedRegistration.Matches(binding.Registration) || (originalRow && rowDigest != FactorBinding.Digest(binding.Row)) || entry is null ||
             await manager.GetStatusAsync(entry, token) != OpenIddictConstants.Statuses.Redeemed)
         {
             return false;

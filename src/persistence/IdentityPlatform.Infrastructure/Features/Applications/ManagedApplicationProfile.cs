@@ -15,12 +15,13 @@ internal static class ManagedApplicationProfile
     internal static string OpenIdPermissionsDigest => FactorBinding.Digest(Permissions.Order(StringComparer.Ordinal).ToArray());
 
     /// <summary>Builds a native descriptor from immutable validated intent without allowing arbitrary grants, scopes or settings.</summary>
-    internal static OpenIddictApplicationDescriptor Create(ApplicationMutationCommand command, string secret)
+    internal static OpenIddictApplicationDescriptor Create(ApplicationMutationCommand command, string? secret)
     {
+        var native = command.Kind == ApplicationMutationKind.CreateNative;
         var result = new OpenIddictApplicationDescriptor
         {
-            ApplicationType = OpenIddictConstants.ApplicationTypes.Web,
-            ClientType = OpenIddictConstants.ClientTypes.Confidential,
+            ApplicationType = native ? OpenIddictConstants.ApplicationTypes.Native : OpenIddictConstants.ApplicationTypes.Web,
+            ClientType = native ? OpenIddictConstants.ClientTypes.Public : OpenIddictConstants.ClientTypes.Confidential,
             ConsentType = OpenIddictConstants.ConsentTypes.Explicit,
             ClientId = command.ClientId,
             ClientSecret = secret,
@@ -39,9 +40,26 @@ internal static class ManagedApplicationProfile
     /// <summary>Allows only finite additional scope permissions for administration; this does not activate extended issuer eligibility.</summary>
     internal static bool MatchesManagement(OpenIddictApplicationDescriptor value) =>
         value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web && value.ClientType == OpenIddictConstants.ClientTypes.Confidential &&
+        MatchesCodeProfile(value, ApplicationEditorRules.IsRedirect);
+
+    /// <summary>Requires an exact association between persisted profile and the native authentication and grant configuration.</summary>
+    internal static bool MatchesProfile(string profile, OpenIddictApplicationDescriptor value) => profile switch
+    {
+        ApplicationEditorRules.NativeProfile => MatchesNative(value),
+        ApplicationEditorRules.Profile => MatchesManagement(value) && !string.IsNullOrEmpty(value.ClientSecret),
+        _ => false
+    };
+
+    /// <summary>Requires native public S256 with an OS-associated HTTPS callback and no client credential.</summary>
+    internal static bool MatchesNative(OpenIddictApplicationDescriptor value) =>
+        value.ApplicationType == OpenIddictConstants.ApplicationTypes.Native && value.ClientType == OpenIddictConstants.ClientTypes.Public &&
+        value.ClientSecret is null && MatchesCodeProfile(value, ApplicationEditorRules.IsNativeRedirect);
+
+    /// <summary>Validates the exact common code grant before applying a profile-specific callback policy.</summary>
+    private static bool MatchesCodeProfile(OpenIddictApplicationDescriptor value, Func<string?, bool> callback) =>
         value.ConsentType == OpenIddictConstants.ConsentTypes.Explicit && ApplicationEditorRules.IsClientId(value.ClientId) &&
         ApplicationEditorRules.IsText(value.DisplayName, ApplicationProjection.DisplayNameLength) &&
-        value.RedirectUris.Count is > 0 and <= ApplicationEditorRules.MaximumRedirects && value.RedirectUris.All(uri => ApplicationEditorRules.IsRedirect(uri.OriginalString)) &&
+        value.RedirectUris.Count is > 0 and <= ApplicationEditorRules.MaximumRedirects && value.RedirectUris.All(uri => callback(uri.OriginalString)) &&
         value.Permissions.IsSupersetOf(Permissions) && AdditionalPermissions(value.Permissions) && value.Requirements.SetEquals(Requirements) && value.PostLogoutRedirectUris.Count == 0 &&
         value.JsonWebKeySet is null && value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
 

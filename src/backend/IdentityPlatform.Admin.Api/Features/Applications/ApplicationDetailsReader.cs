@@ -48,26 +48,37 @@ internal static class ApplicationDetailsReader
         {
             return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
-        if (policy.Profile != ApplicationEditorRules.Profile || policy.Revision < 1 || policy.CredentialRevision < 1 ||
-            policy.CredentialIssuedAt is not { } issuedAt || policy.CredentialExpiresAt is not { } expiresAt || issuedAt < 0 || expiresAt <= issuedAt || policy.ObservedAt < issuedAt ||
-            (!row.NativeProfile || row.ApplicationType != OpenIddictConstants.ApplicationTypes.Web || row.ClientType != OpenIddictConstants.ClientTypes.Confidential ||
-            row.ConsentType != OpenIddictConstants.ConsentTypes.Explicit) || row.Redirects is null || row.Redirects.Length > NativeJsonBytes ||
+        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects is null || row.Redirects.Length > NativeJsonBytes ||
             row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements is null || row.Requirements.Length > NativeNamesLength)
         {
             throw new InvalidDataException();
         }
         var descriptor = Descriptor(row);
-        if (!ManagedApplicationProfile.MatchesManagement(descriptor))
-        {
-            throw new InvalidDataException();
-        }
+        var credential = Credential(policy, row, descriptor);
         var retirement = await ApplicationRetirementReader.ReadAsync(database, policy, token);
         return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
-            policy.Profile, !policy.Retired, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), expiry, policy.Enabled,
+            policy.Profile, !policy.Retired, credential, expiry, policy.Enabled,
             policy.Retired, retirement),
             ApplicationVersion.Create(row.Id, policy.Revision), descriptor.Permissions
                 .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))
                 .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).Order(StringComparer.Ordinal).ToArray());
+    }
+
+    /// <summary>Requires matching profile, credential kind and native capabilities without retrieving a stored secret.</summary>
+    private static ApplicationCredentialMetadata? Credential(ApplicationPolicy policy, Row row, OpenIddictApplicationDescriptor descriptor)
+    {
+        if (policy.Profile == ApplicationEditorRules.NativeProfile && row.NoSecret && ManagedApplicationProfile.MatchesNative(descriptor) &&
+            policy.CredentialRevision == 0 && policy.CredentialIssuedAt is null && policy.CredentialExpiresAt is null)
+        {
+            return null;
+        }
+        if (policy.Profile == ApplicationEditorRules.Profile && row.HasSecret && ManagedApplicationProfile.MatchesManagement(descriptor) &&
+            policy.CredentialRevision >= 1 && policy.CredentialIssuedAt is { } issued && policy.CredentialExpiresAt is { } expires &&
+            issued >= 0 && expires > issued && policy.ObservedAt >= issued)
+        {
+            return new(DateTimeOffset.FromUnixTimeSeconds(issued), DateTimeOffset.FromUnixTimeSeconds(expires));
+        }
+        throw new InvalidDataException();
     }
 
     /// <summary>Limits database output before materialization and computes profile flags without retrieving protected native columns.</summary>
@@ -81,7 +92,7 @@ internal static class ApplicationDetailsReader
         row.Requirements == null ? null : row.Requirements.Substring(0, NativeNamesLength + Probe),
         row.ApplicationType == null ? null : row.ApplicationType.Substring(0, ApplicationProjection.ClientTypeLength + Probe),
         row.ConsentType == null ? null : row.ConsentType.Substring(0, ApplicationProjection.ClientTypeLength + Probe),
-        row.ClientSecret != null && row.ClientSecret != string.Empty &&
+        row.ClientSecret == null, row.ClientSecret != null && row.ClientSecret != string.Empty,
         row.JsonWebKeySet == null && (row.PostLogoutRedirectUris == null || row.PostLogoutRedirectUris == EmptyArray) &&
         (row.Properties == null || row.Properties == EmptyObject) && (row.Settings == null || row.Settings == EmptyObject) &&
         (row.DisplayNames == null || row.DisplayNames == EmptyObject)));
@@ -102,9 +113,9 @@ internal static class ApplicationDetailsReader
         {
             ClientId = row.ClientId,
             DisplayName = row.DisplayName,
-            ApplicationType = OpenIddictConstants.ApplicationTypes.Web,
-            ClientType = OpenIddictConstants.ClientTypes.Confidential,
-            ConsentType = OpenIddictConstants.ConsentTypes.Explicit
+            ApplicationType = row.ApplicationType,
+            ClientType = row.ClientType,
+            ConsentType = row.ConsentType
         };
         result.RedirectUris.UnionWith(redirects.Select(value => new Uri(value)));
         result.Permissions.UnionWith(permissions);
@@ -119,7 +130,7 @@ internal static class ApplicationDetailsReader
         await database.Set<PilotManifest>().AsNoTracking().AnyAsync(row => row.ApplicationId == id, token);
 
     /// <summary>Contains only bounded presentation/profile metadata; no native credential or arbitrary object is retained.</summary>
-    private sealed record Row(string Id, string ClientId, string? DisplayName, string? ClientType, string? Redirects, string? Permissions, string? Requirements, string? ApplicationType, string? ConsentType, bool NativeProfile);
+    private sealed record Row(string Id, string ClientId, string? DisplayName, string? ClientType, string? Redirects, string? Permissions, string? Requirements, string? ApplicationType, string? ConsentType, bool NoSecret, bool HasSecret, bool NativeProfile);
 }
 
 /// <summary>Retains one bounded already validated native observation without exposing additional fields through existing editor contracts.</summary>

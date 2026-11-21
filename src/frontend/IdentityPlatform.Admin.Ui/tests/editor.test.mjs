@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { validate, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
 import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
@@ -151,8 +151,13 @@ test('Given_generated_transport_When_operations_run_Then_paths_proofs_and_creden
  globalThis.fetch=async request=>{requests.push(request);return new Response(JSON.stringify(request.method==='POST'?success.value:request.url.endsWith('antiforgery')?proof.value:details),{status:request.method==='POST'?201:200,headers})};
  try{const client=editorClient(),signal=new AbortController().signal;assert.deepEqual(await client.token(signal),proof);assert.equal((await client.details("opaque /!?'id",signal)).status,200);assert.deepEqual(await client.create(input,proof.value.requestToken,signal),success);
   assert.equal(requests[0].url,'https://bff.example.test/bff/api/v1/applications/antiforgery');assert.equal(new URL(requests[1].url).pathname,'/bff/api/v1/applications/opaque%20%2F%21%3F%27id');assert.equal(requests[2].url,'https://bff.example.test/bff/api/v1/applications');assert.equal(requests[2].method,'POST');assert.equal(requests[2].headers.get('content-type'),'application/json');assert.equal(requests[2].headers.get('X-CSRF-TOKEN'),proof.value.requestToken);assert.deepEqual(await requests[2].json(),input);
+  const native = validateNative(draft).input;
+  await client.createNative(native, proof.value.requestToken, signal);
+  assert.equal(requests[3].url, 'https://bff.example.test/bff/api/v1/applications/native-registrations');
+  assert.equal(requests[3].headers.get('X-CSRF-TOKEN'), proof.value.requestToken);
+  assert.deepEqual(await requests[3].json(), native);
   for(const request of requests){assert.equal(request.credentials,'same-origin');assert.equal(request.cache,'no-store');assert.equal(request.redirect,'error');assert.equal(request.headers.has('authorization'),false)}
-  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,3);
+  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,4);
  }finally{globalThis.fetch=original;delete globalThis.window;}
 });
 
@@ -609,4 +614,68 @@ test('Given historical punctuation identity When retirement is accepted Then exa
  const id="historical'identity",base={details:{...details,id},etag:tag(id),expires:now+60000};
  const response={...retirementResponse,value:{...retirementResponse.value,applicationId:id,applicationVersion:tag(id).replace('-1"','-2"'),job:{...retirementJob,applicationId:id}},location:`/bff/api/v1/applications/historical%27identity/grant-revocations/${retirementJobId}`};
  assert.equal((await retired(response,base,retirementKey,now)).details.id,id);
+});
+
+test('Given_a_native_registration_When_created_Then_the_exact_public_client_is_displayed_without_a_secret', async t => {
+ const { input: native } = validateNative({ ...draft, credentialExpiresAt: '' });
+ assert.deepEqual(native, { clientId: draft.clientId, displayName: draft.displayName, redirectUris: [draft.redirectUris] });
+ const application = { ...details, profile: 'managed-native-v1', credential: null };
+ const result = { status: 201, value: application, etag: read.etag };
+ let submissions = 0;
+ const { owner, states, calls } = setup(t, { createNative: async body => {
+   submissions++;
+   assert.deepEqual(body, native);
+   return result;
+ }});
+ owner.newForm();
+ await owner.create(draft, true);
+ assert.equal(submissions, 1);
+ assert.equal(calls.create, 0);
+ assert.equal(states.at(-1).kind, 'details');
+ owner.open('replace');
+ await owner.openClone();
+ assert.equal(states.at(-1).kind, 'details');
+ const html = renderToStaticMarkup(createElement(DetailsView, { details: states.at(-1).details, dismiss: () => {} }));
+ assert.ok(html.includes('Managed public native application'));
+ assert.ok(html.includes('none') && html.includes(draft.redirectUris) && html.includes('S256'));
+ assert.doesNotMatch(html, /client_secret|Replace secret|Clone application/);
+ const base = states.at(-1);
+ const nextTag = read.etag.replace('-1"', '-2"');
+ const changed = { ...application, displayName: 'Renamed native' };
+ assert.ok(await edited({ status: 200, value: changed, etag: nextTag }, base, { displayName: changed.displayName, redirectUris: changed.redirectUris }, now));
+ const disabled = { status: 200, value: { ...application, enabled: false }, etag: nextTag };
+ const inactive = await lifecycleChanged(disabled, base, false, now);
+ assert.ok(inactive);
+ const enabled = { status: 200, value: application, etag: read.etag.replace('-1"', '-3"') };
+ assert.ok(await lifecycleChanged(enabled, inactive, true, now));
+ const terminal = { ...application, editable: false, enabled: false, retired: true, retirement: { retiredAt: new Date(now).toISOString().replace('.000Z','Z'), jobId: '233e4567-e89b-42d3-a456-426614174000' } };
+ assert.ok(await observe({ status: 200, value: terminal, etag: nextTag }, application.id, now));
+ owner.suspend();
+ assert.equal(states.at(-1).outcome, 'native-created');
+ const lost = setup(t, { createNative: async () => { throw new Error('connection closed'); } });
+ lost.owner.newForm();
+ await lost.owner.create(draft, true);
+ assert.equal(lost.states.at(-1).outcome, 'native-unknown');
+ for (const state of [states.at(-1), lost.states.at(-1)]) {
+   const problem = renderToStaticMarkup(createElement(ProblemView, { state }));
+   assert.doesNotMatch(problem, /replace|one-time secret|undisplayed secret/i);
+ }
+ let clock = now;
+ const held = deferred();
+ const pending = setup(t, { createNative: () => held.promise }, () => clock);
+ pending.owner.newForm();
+ const send = pending.owner.create(draft, true);
+ await Promise.resolve();
+ clock = session.expires;
+ pending.owner.checkDeadline();
+ held.resolve(result);
+ await send;
+ assert.equal(pending.states.at(-1).outcome, 'native-unknown');
+ assert.equal(pending.states.at(-1).reason, 'expired');
+ for (const invalid of ['https://127.0.0.1/cb','https://[::1]/cb','https://app.localhost/cb','https://app/cb','myapp:/cb']) {
+   assert.ok(validateNative({ ...draft, redirectUris: invalid }).errors.redirectUris);
+ }
+ for (const value of [details, { ...application, credential: details.credential }, { ...application, redirectUris: ['https://other.example/cb'] }, { ...application, clientSecret: secret }]) {
+   assert.equal(await observe({ ...result, value }, null, now, native), null);
+ }
 });

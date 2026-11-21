@@ -35,3 +35,29 @@ and guarded downgrade. A downgrade of a database containing a newer profile fail
 atomically. The provider-independent row and schema comparison covers both migration
 histories. Original TRX SHA-256 was
 `f1f89dc8b59237a5d2bf54d4aa90608cb10c101db876070ce003253f11b8d48c`.
+
+### Native application registration draft
+
+T002 and T006 now include a separate public native create operation on the versioned
+API and BFF. The editor submits the client ID, display name and exact HTTPS callbacks.
+The issuer binds a credential-free code exchange to the current public registration,
+exact redirect and S256 verifier. The application owner configures the operating
+system's association for its HTTPS callback. The server validates the registered URL
+and its exact use. The integration example specifies token endpoint authentication
+method `none` and omits a client secret.
+
+Local verification covered 44 native contract cases, 47 contract tooling cases, 45
+application input/editor cases, 150 UI cases and all 93 test selection cases. Both
+generated client checks and the six-asset UI reproducibility check passed. Lifecycle
+and uncertainty projections include public registrations with no credential metadata.
+
+The storage follow-up aligns both runtime readiness catalogs with the migrated schema.
+All eight focused database cases passed against PostgreSQL and SQL Server on the corrected
+storage head. Hosted approval and wider cross-profile, manual and browser acceptance
+remain open. PR141's original hosted run failed its contract advisory gate. Its passing
+native, browser and mutation evidence is specific to that earlier source.
+
+The protected BFF registration, real human consent, wrong Basic credential rejection,
+secretless S256 exchange and user-bound token verification passed once on each provider.
+The original native journey TRX SHA-256 is
+`90e57b128387db901471fef81eea1c76819ed9169ea061fe9373cdf69323938d`.

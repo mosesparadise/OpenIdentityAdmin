@@ -13,7 +13,7 @@ export async function retired(result: Result, base: Observed, requestKey: string
   const at = utc(value.retiredAt);
   const target = encodeURIComponent(base.details.id).replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
   if (!linked || result.etag !== linked.version || result.location !== `/bff/api/v1/applications/${target}/grant-revocations/${linked.id}` ||
-      at !== utc(linked.createdAt) || at > now || at < utc(base.details.credential!.issuedAt)) return null;
+      at !== utc(linked.createdAt) || at > now || (base.details.credential && at < utc(base.details.credential.issuedAt))) return null;
   const expires = Math.min(base.expires, utc(linked.expiresAt));
   return { details: { ...structuredClone(base.details), enabled: false, editable: false, retired: true,
     retirement: { jobId: linked.id, retiredAt: value.retiredAt as string }, expiresAt: new Date(expires).toISOString() }, expires, etag: value.applicationVersion };

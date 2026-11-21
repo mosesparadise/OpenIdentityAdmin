@@ -59,6 +59,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
+        Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, ApplicationNativeCreateEndpoint.Operation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -108,7 +109,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

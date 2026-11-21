@@ -4,6 +4,8 @@
 
 The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/026-managed-client-profiles/spec.md) and [task register](../specs/026-managed-client-profiles/tasks.md) track protocol prerequisites, credential management, integration examples and protected documentation.
 
+The active drafts add web integration settings, shared profile storage, and public native registration with claimed HTTPS callbacks. Browser, machine and device flows, asymmetric client authentication and protected documentation remain open. The two documentation viewers remain disabled. The hosted contract gate on the web settings draft requires a disposition for two DOMPurify advisories in the embedded Swagger bundle.
+
 ## Latest completed delivery — application cloning and permanent retirement, 15 November 2026
 
 Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed

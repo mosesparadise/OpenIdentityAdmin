@@ -53,5 +53,6 @@
   "Given explicit retirement When confirmed cancelled or denied Then one intent and truthful recovery survive without automatic mutation",
   "Given retirement browser client When invoked Then canonical key precondition CSRF and fixed destination are sent once",
   "Given retirement forms and terminal views When rendered Then permanent effects retained navigation and offline limits are explicit",
-  "Given historical punctuation identity When retirement is accepted Then exact encoded job location preserves the opaque application"
+  "Given historical punctuation identity When retirement is accepted Then exact encoded job location preserves the opaque application",
+  "Given_a_native_registration_When_created_Then_the_exact_public_client_is_displayed_without_a_secret"
 ]

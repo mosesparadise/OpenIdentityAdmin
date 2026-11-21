@@ -20,8 +20,9 @@ internal sealed class ApplicationWriteState
     private readonly ApplicationCloneSource? cloneSource;
     private readonly long revision;
     private readonly long credentialRevision;
-    private readonly long issuedAt;
-    private readonly long expiresAt;
+    private readonly string profile;
+    private readonly long? issuedAt;
+    private readonly long? expiresAt;
     private readonly long observedAt;
     private readonly bool enabled;
     private readonly bool retired;
@@ -47,8 +48,9 @@ internal sealed class ApplicationWriteState
         Id = policy.ApplicationId;
         revision = policy.Revision;
         credentialRevision = policy.CredentialRevision;
-        issuedAt = policy.CredentialIssuedAt ?? throw ProtocolStorageOwner.Unavailable();
-        expiresAt = policy.CredentialExpiresAt ?? throw ProtocolStorageOwner.Unavailable();
+        profile = policy.Profile;
+        issuedAt = policy.CredentialIssuedAt;
+        expiresAt = policy.CredentialExpiresAt;
         observedAt = policy.ObservedAt;
         enabled = policy.Enabled;
         retired = policy.Retired;
@@ -66,11 +68,11 @@ internal sealed class ApplicationWriteState
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
-        if (await manager.GetIdAsync(application, token) != Id || !ManagedApplicationProfile.MatchesManagement(descriptor) ||
+        if (await manager.GetIdAsync(application, token) != Id || !ManagedApplicationProfile.MatchesProfile(profile, descriptor) ||
             !descriptor.Permissions.Order(StringComparer.Ordinal).SequenceEqual(permissions, StringComparer.Ordinal) ||
             descriptor.ClientId != clientId || descriptor.DisplayName != displayName ||
             !descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).SequenceEqual(redirects) ||
-            string.IsNullOrEmpty(descriptor.ClientSecret) || (secret is null && descriptor.ClientSecret != originalHash) ||
+            (secret is null && descriptor.ClientSecret != originalHash) ||
             (secret is not null && !await manager.ValidateClientSecretAsync(application, secret, token)))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -86,7 +88,7 @@ internal sealed class ApplicationWriteState
         await ApplicationMutationWriter.RequireMutableAsync(scope, Id, clientId, token);
         var row = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(value => value.ApplicationId == Id, current), token);
-        if (row is null || row.Retired != retired || row.Enabled != enabled || row.Profile != ApplicationEditorRules.Profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
+        if (row is null || row.Retired != retired || row.Enabled != enabled || row.Profile != profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
             row.CredentialIssuedAt != issuedAt || row.CredentialExpiresAt != expiresAt || row.ObservedAt != observedAt)
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -94,8 +96,9 @@ internal sealed class ApplicationWriteState
     }
 
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>
-    internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, ApplicationEditorRules.Profile,
-        !retired, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry, enabled, retired);
+    internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, profile,
+        !retired, issuedAt is { } issued && expiresAt is { } expires ? new(DateTimeOffset.FromUnixTimeSeconds(issued), DateTimeOffset.FromUnixTimeSeconds(expires)) : null,
+        authorityExpiry, enabled, retired);
 
     /// <summary>Projects the exact persisted permission expectation only after commit and cleanup, without changing existing editor wire contracts.</summary>
     internal ApplicationScopes Scopes(DateTimeOffset authorityExpiry) => new(Id, permissions

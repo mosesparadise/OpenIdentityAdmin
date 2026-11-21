@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 2123,
+      "Host": 2133,
       "Architecture": 5,
       "AppHost": 118
     },
@@ -37,14 +37,14 @@
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1429
+      "Administrator": 1430
     },
     "SqlServer": {
       "Persistence": 42,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1534
+      "Administrator": 1535
     }
   },
   "browser": {
@@ -123,8 +123,8 @@
       "SqlServer": 179
     },
     "ManagedApplications": {
-      "PostgreSql": 150,
-      "SqlServer": 150
+      "PostgreSql": 151,
+      "SqlServer": 151
     },
     "ApplicationGrants": {
       "PostgreSql": 94,
@@ -376,11 +376,12 @@
         "ManagedUpdateJourneyTests",
         "ManagedScopeAssignmentTests",
         "ManagedScopeLegacyTests",
-        "ManagedRetirementRaceTests"
+        "ManagedRetirementRaceTests",
+        "NativeClientJourneyTests"
       ],
       "counts": {
-        "PostgreSql": 71,
-        "SqlServer": 71
+        "PostgreSql": 72,
+        "SqlServer": 72
       }
     },
     "Disclosure": {

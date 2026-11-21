@@ -8,14 +8,19 @@ namespace IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 internal sealed class ProtocolInferenceGuard(ProtocolHostRequest request, ProtocolProfiles? profiles = null) : IOpenIddictServerHandler<OpenIddictServerEvents.ProcessRequestContext>
 {
     /// <summary>Checks the actual inferred endpoint against the immutable middleware decision.</summary>
-    public ValueTask HandleAsync(OpenIddictServerEvents.ProcessRequestContext context)
+    public async ValueTask HandleAsync(OpenIddictServerEvents.ProcessRequestContext context)
     {
         request.RequireInferred(context);
         if (profiles is { Managed: true } && !request.IsPilot && ManagedTokenTransport.Candidate(context))
         {
-            return ManagedTokenTransport.ValidateAsync(context);
+            await ManagedTokenTransport.ValidateAsync(context);
+            return;
         }
-        return profiles is { Managed: true } && !request.IsPilot && ManagedTransport.Candidate(context)
-            ? ManagedTransport.ValidateAsync(context) : AdministratorTransportGuard.ValidateAsync(context, request);
+        if (profiles is { Managed: true } && !request.IsPilot && await NativeTokenTransport.TryHandleAsync(context))
+        {
+            return;
+        }
+        await (profiles is { Managed: true } && !request.IsPilot && ManagedTransport.Candidate(context)
+            ? ManagedTransport.ValidateAsync(context) : AdministratorTransportGuard.ValidateAsync(context, request));
     }
 }
