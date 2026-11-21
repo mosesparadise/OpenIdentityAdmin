@@ -8,10 +8,13 @@ ID, callbacks, S256 configuration and a placeholder for the application's secret
 PR141 reached main at `d69b874` after all 149 CI632 jobs and the original evidence
 review passed. [Feature026 verification](../../specs/026-managed-client-profiles/verification.md)
 
-PR142 adds the PostgreSQL and SQL Server storage prerequisite. PR143 builds on it
+PR142 delivered the PostgreSQL and SQL Server storage prerequisite at `7461cdd`.
+All 149 CI638 jobs passed. PR143 builds on it
 with public native registration and a secretless authorization-code exchange.
 CI636 recorded a Host unit timeout and a SQL Server/WebKit retirement test-host
-crash. Each pull request requires its own current hosted evidence before delivery.
+crash. CI642 recorded a PostgreSQL consent-policy mutation failure outside its
+required assertion and a separate MFA failure in the confidential lifecycle journey.
+PR143 requires current hosted evidence before delivery.
 The remaining browser, machine, device, asymmetric-key and protected-documentation
 work is tracked in the [feature026 register](../../specs/026-managed-client-profiles/tasks.md).
 

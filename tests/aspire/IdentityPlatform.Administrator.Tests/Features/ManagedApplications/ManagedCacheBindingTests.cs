@@ -101,7 +101,7 @@ public sealed class ManagedCacheBindingTests(BootstrapFixture fixture)
         await using (var scope = test.Http.Scope())
         {
             var policy = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationPolicy>().AsNoTracking().SingleAsync(TestContext.Current.CancellationToken);
-            test.Http.Environment.Issuer.Account.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt);
+            test.Http.Environment.Issuer.Account.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(Assert.IsType<long>(policy.CredentialExpiresAt));
         }
         using var expired = await test.SendAsync(ManagedCacheTestContext.Initial());
         await ManagedCacheTestContext.UnavailableAsync(expired);

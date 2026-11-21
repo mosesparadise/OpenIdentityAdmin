@@ -25,6 +25,14 @@ also passed on each provider. The independent reviews reconciled 143 original
 archives, all 17 coverage floors and the 161 mutation controls. [Hosted CI633](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44888508741)
 
 After PR141 landed, resolving the task-register conflict against main preserved
-that exact tree. CI638 verifies the new integration commit
-`113eb4822e5f99c76f4ce2f4057e413197e521cc`. Its result and the squash
-commit remain to be recorded. [Hosted CI638](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44894745010)
+that tree. CI638 tested source `113eb4822e5f99c76f4ce2f4057e413197e521cc`
+at merge `04e379ec226e480d1a0bd6cb991a77197da913c8`. All 149 jobs passed.
+PR142 squash-merged as `7461cdd72307b68cb102cb5598d6e88c1571e224`, with the
+same tree. [Hosted CI638](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44894745010)
+
+The final run supplied 143 original archives. Reviewers verified 6,599 passing
+native cases, all 84 persistence cases, 149 UI cases, 47 contract tooling cases,
+all 17 module coverage floors and 161 causal mutation kills with passing baseline
+and restoration controls. The rollback evidence includes a populated public native
+row. The retirement history in the migration fixture is synthetic. The storage
+increment does not activate additional client types in the issuer.

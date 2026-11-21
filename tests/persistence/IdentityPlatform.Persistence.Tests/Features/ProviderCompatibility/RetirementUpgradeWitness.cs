@@ -28,6 +28,7 @@ internal static class RetirementUpgradeWitness
     /// <summary>Rejects migration-created retirements and requires false default on every existing policy before removing only the new physical field.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        after = ProfileStorageWitness.Predecessor(provider, after);
         Assert.Empty(after[Query]);
         RetirementUpgradeSchema.Require(provider, after);
         var ordinal = Position(after);
