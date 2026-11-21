@@ -1,0 +1,44 @@
+{
+  "reviewedDate": "2026-11-21",
+  "scope": "Internal CI for the dormant documentation viewers. The user approved retaining both findings as open and requiring verified patched bundles before viewer activation.",
+  "previousAssessment": "advisory-review-2026-10-29.json",
+  "reviewSource": "6da1c52974d81031f002cee924de34d80491d3f6",
+  "reviewedResponseSha256": "fee478013509915cc5b39932381816b84adb0615935fd0034e61b250fbebffa1",
+  "sourceReviewReceiptSha256": "bed0a1bb0a208b507dca1a02520f722597e2db1c63509dc768a7a120a829b138",
+  "swagger": {
+    "package": "Swashbuckle.AspNetCore.SwaggerUI",
+    "version": "10.3.1",
+    "archiveSha256": "352ff4796322763191788f29c861922aa169d23b2451aff2663dca77bba581d7",
+    "swaggerUiDist": "5.33.3",
+    "embeddedBundleSha256": "3861ec4cc8e7b9fa9f250280da9350436e418137788282c753b9a2ac5fb7bd2f",
+    "dompurify": "3.4.16"
+  },
+  "scalar": {
+    "package": "Scalar.AspNetCore",
+    "version": "2.18.3",
+    "archiveSha256": "57b25adb25faaed5789031ba5e940173538879b4012408d014bdddd5b15f403c",
+    "embeddedBundleSha256": "dcb027152bf20bf2f6dcd66e8f9fb073c1a9e274cf0b94b939a7d99ab8947060",
+    "observation": "The bounded source review found no DOMPurify marker. The component inventory remains incomplete."
+  },
+  "findings": [
+    {
+      "npmId": 1247849,
+      "ghsa": "GHSA-cg2g-xh64-v4q7",
+      "severity": "low",
+      "affectedRange": ">=3.4.4 <=3.4.16",
+      "status": "open",
+      "observedCallPath": "Swagger checks Markdown source is a string, renders with Remarkable, sanitizes string, then renders sanitized HTML. Its explicit sanitizer options lack SAFE_FOR_TEMPLATES and all DOM-returning/IN_PLACE flags. No attached-shadow-root or template-evaluation stage identified in this bounded path."
+    },
+    {
+      "npmId": 1247850,
+      "ghsa": "GHSA-mrv2-3pqr-j5jr",
+      "severity": "low",
+      "affectedRange": "<=3.4.16",
+      "status": "open",
+      "observedCallPath": "One observed sanitizer call uses a string and no IN_PLACE. One observed registered beforeSanitizeElements hook adds rel=noopener noreferrer to href elements; it does not remove parent/sibling nodes."
+    }
+  ],
+  "activationBlocked": true,
+  "inventoryComplete": false,
+  "activationRequirement": "Verify a patched compatible viewer bundle by inspecting the actual NuGet-embedded asset, then complete the existing documentation activation review. Upstream lists DOMPurify 3.4.17 as patched for both findings."
+}

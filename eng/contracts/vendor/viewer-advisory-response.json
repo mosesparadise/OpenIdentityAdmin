@@ -86,6 +86,35 @@
         "score": 0,
         "vectorString": null
       }
+    },
+    {
+      "id": 1247849,
+      "url": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+      "title": "DOMPurify SAFE_FOR_TEMPLATES bypass: split template expressions survive in attached shadow root content on DOM output modes",
+      "severity": "low",
+      "vulnerable_versions": ">=3.4.4 <=3.4.16",
+      "cwe": [
+        "CWE-79"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    },
+    {
+      "id": 1247850,
+      "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+      "title": "DOMPurify IN_PLACE: hook that removes a parent or sibling leaves the detached subtree's event handlers armed (incomplete fix for GHSA-p98j-92pf-mc4p)",
+      "severity": "low",
+      "vulnerable_versions": "<=3.4.16",
+      "cwe": [
+        "CWE-79",
+        "CWE-693"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
     }
   ],
   "nanoid": [
