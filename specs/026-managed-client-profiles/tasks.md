@@ -83,3 +83,11 @@ and obtains that account’s subject independently of the consent record. Both p
 returned the exact requested scope in the token response. The consent record, signed
 tokens and UserInfo identified the fixture account, and UserInfo omitted its
 unrequested email. The two-provider TRX SHA-256 is `f268e3aa566680ba3f4817ff9eb610085b5fcb31ebc37c96d2ff97b5cec9ad17`.
+
+The native journey also retires the registration after successful scoped UserInfo.
+The signed token and its corresponding persisted token rows remained valid immediately
+after retirement. The issuer denied UserInfo and new authorization for the same client
+and callback before the worker ran. The worker then revoked the eligible grants,
+preserved history and completed the recorded job. The native and existing confidential
+retirement controls both passed on PostgreSQL and SQL Server (four cases, zero skips).
+Original TRX SHA-256 `467982fe4be2b9ea2b4ee530209d512e67c6c160f9c03038242fae091378269d`.

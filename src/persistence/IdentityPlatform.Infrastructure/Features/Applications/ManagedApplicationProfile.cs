@@ -5,7 +5,7 @@ using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.Infrastructure.Features.Applications;
 
-/// <summary>Defines exactly the managed confidential web profile; native managers remain responsible for secret hashing and protocol metadata.</summary>
+/// <summary>Defines the managed confidential web and public native descriptors used for registration and current-profile checks.</summary>
 internal static class ManagedApplicationProfile
 {
     private static readonly string[] Permissions = [OpenIddictConstants.Permissions.Endpoints.Authorization,

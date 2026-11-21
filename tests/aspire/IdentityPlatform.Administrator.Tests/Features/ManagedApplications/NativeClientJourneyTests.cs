@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
@@ -77,10 +78,15 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         Assert.Equal(RequestedScopes, body.RootElement.GetProperty(ScopeField).GetString());
         var row = Assert.Single((await registration.SnapshotAsync(applicationOnly: true)).Interactions, value => value.RequestId == flow.RequestId);
         Assert.Equal(subject, row.UserId);
-        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, subject, applicationOnly: true, multipleFlows: true,
-            projection: new(RequestedScopes, ManagedConsentTest.Resource));
-        using var userInfo = await ManagedConsentTest.ReadAsync(registration, body.RootElement.GetProperty(AccessTokenField).GetString()!);
+        var projection = new ManagedTokenProjection(RequestedScopes, ManagedConsentTest.Resource);
+        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, subject, applicationOnly: true, multipleFlows: true, projection: projection);
+        var access = body.RootElement.GetProperty(AccessTokenField).GetString()!;
+        using var userInfo = await ManagedConsentTest.ReadAsync(registration, access);
         await ManagedConsentTest.RequireAsync(userInfo, subject, null, false);
+        var retirement = await ManagedRetirementRaceTests.RetireAsync(registration);
+        await ManagedTokenOracle.ValidateAsync(registration, flow, body.RootElement, subject, applicationOnly: true, multipleFlows: true, projection: projection);
+        await ManagedRetirementRaceTests.RequireIssuerDenialAsync(registration, access);
+        await GrantIssuerRevocation.ReconcileAsync(registration, retirement.Job);
     }
 
     /// <summary>Registers through the protected BFF and binds the returned native client identity to the exact submitted settings.</summary>

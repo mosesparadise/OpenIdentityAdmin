@@ -45,6 +45,15 @@ public sealed class ManagedRetirementRaceTests(BootstrapFixture fixture)
         var access = body.RootElement.GetProperty(AccessField).GetString()!;
         using var control = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.RequireAsync(control, subject, null, false);
+        var accepted = await RetireAsync(test);
+        await ManagedTokenOracle.ValidateAsync(test, flow, body.RootElement, subject);
+        await RequireIssuerDenialAsync(test, access);
+        await GrantIssuerRevocation.ReconcileAsync(test, accepted.Job);
+    }
+
+    /// <summary>Retires the current managed registration and independently verifies its committed terminal receipt and preserved configuration.</summary>
+    internal static async Task<ApplicationRetirementAcceptance> RetireAsync(ManagedCacheTestContext test)
+    {
         var before = await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id);
         using var retirement = await test.Http.CatalogueAsync(HttpMethod.Post,
             ApplicationHttpFixture.ApiCollection + Separator + Uri.EscapeDataString(test.Id) + RetirementSuffix, Input,
@@ -52,14 +61,18 @@ public sealed class ManagedRetirementRaceTests(BootstrapFixture fixture)
         Assert.Equal(HttpStatusCode.Accepted, retirement.StatusCode);
         var accepted = (await retirement.Content.ReadFromJsonAsync<ApplicationRetirementAcceptance>(TestContext.Current.CancellationToken))!;
         await RequireTerminalAsync(test, before, accepted);
-        await ManagedTokenOracle.ValidateAsync(test, flow, body.RootElement, subject);
-        var unchanged = await ManagedUserInfoEvidence.CaptureAsync(test);
+        return accepted;
+    }
+
+    /// <summary>Checks that the retired client loses UserInfo and new authorization at its own callback before grant cleanup.</summary>
+    internal static async Task RequireIssuerDenialAsync(ManagedCacheTestContext test, string access)
+    {
+        var before = await ManagedUserInfoEvidence.DigestAsync(test);
         using var denied = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.DeniedAsync(denied);
-        using var admission = await test.SendAsync(ManagedCacheTestContext.Initial());
+        using var admission = await test.SendAsync(NativeCacheFlow.Initial(NativeCacheProfile.Random(), test.ClientIdentifier, test.CallbackUri));
         await ManagedCacheTestContext.UnavailableAsync(admission);
-        await unchanged.RequireAsync(test, commits: 0);
-        await GrantIssuerRevocation.ReconcileAsync(test, accepted.Job);
+        Assert.Equal(before, await ManagedUserInfoEvidence.DigestAsync(test));
     }
 
     /// <summary>Both commit orders retain early durable redemption; a retirement winner prevents issuance, and a prior issuer winner remains prior issuance.</summary>
