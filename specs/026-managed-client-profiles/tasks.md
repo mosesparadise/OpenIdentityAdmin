@@ -119,3 +119,16 @@ it waits at most one rollover before starting the ceremony. It submits once.
 The ordinary replay and boundary fixtures retain their original selection order.
 Both provider journeys and both deterministic counter-selection controls passed.
 Original TRX SHA-256 `371b24cd209a32d7ce321ae600fa2ec31b53071a2bb6ef48bc5f5c5c9d75524c`.
+
+CI642 also recorded a SQL Server catalogue mutation failure outside its required
+assertion. That job produced no acceptance receipt. The PostgreSQL/Chromium
+consent case failed before browser creation when Kestrel attempted to listen
+on the previously bound BFF port. The original report identifies the address
+collision but does not identify the competing listener.
+
+The HTTPS fixture now starts listening when it reserves the loopback socket,
+before publishing the origin used to configure clients. Kestrel then receives
+that same socket. A Linux check using the compiled fixture verified that a second
+listener could not claim the port before host construction, a trusted HTTPS
+request succeeded after handoff, and a new listener could claim the port after
+host shutdown and disposal.
