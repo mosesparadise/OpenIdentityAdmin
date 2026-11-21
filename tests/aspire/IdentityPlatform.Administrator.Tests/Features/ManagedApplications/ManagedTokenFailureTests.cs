@@ -88,14 +88,20 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
         using var secret = await flow.ExchangeAsync(code, secret: NativeCacheProfile.Random());
         await ManagedTokenEvidence.ErrorAsync(secret, HttpStatusCode.Unauthorized, InvalidClient);
         Assert.Equal(before, await ManagedHumanEvidence.DigestAsync(test));
+        await RequireBoundExchangeAsync(test, flow, code, before);
+        using var accepted = await flow.ExchangeAsync(code);
+        Assert.Equal(HttpStatusCode.OK, accepted.StatusCode);
+    }
+
+    /// <summary>Checks that a client with a mismatched verifier or redirect receives invalid_grant and leaves the original human decision intact.</summary>
+    internal static async Task RequireBoundExchangeAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, string code, string before)
+    {
         using var verifier = await flow.ExchangeAsync(code, proof: NativeCacheProfile.Random());
         await ManagedTokenEvidence.ErrorAsync(verifier, HttpStatusCode.BadRequest, InvalidGrant);
         Assert.Equal(before, await ManagedHumanEvidence.DigestAsync(test));
         using var callback = await flow.ExchangeAsync(code, callback: ForeignCallback);
         await ManagedTokenEvidence.ErrorAsync(callback, HttpStatusCode.BadRequest, InvalidGrant);
         Assert.Equal(before, await ManagedHumanEvidence.DigestAsync(test));
-        using var accepted = await flow.ExchangeAsync(code);
-        Assert.Equal(HttpStatusCode.OK, accepted.StatusCode);
     }
 
     /// <summary>A separate connection observes committed redemption before the deliberately failed final save; original replay cannot resurrect it.</summary>

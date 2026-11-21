@@ -25,7 +25,8 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private const string StrictOrigin = "strict-origin";
     private const string NoStore = "no-store";
     private const int CleanupSeconds = 30;
-    private readonly Socket socket = SocketTransportOptions.CreateDefaultBoundListenSocket(new IPEndPoint(IPAddress.Loopback, 0));
+    private const int ReservationBacklog = 1;
+    private readonly Socket socket;
     private readonly ConcurrentDictionary<long, TaskCompletionSource> pending = new();
     private int claimed;
     private long requests;
@@ -66,8 +67,18 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     /// <summary>Fixes the public identity before any credential, registration or account profile is constructed, without releasing the port.</summary>
     internal BrowserHttpsEndpoint(bool ipAddress = false)
     {
-        Address = new UriBuilder(Uri.UriSchemeHttps, ipAddress ? IPAddress.Loopback.ToString() : HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
-        Policy = new(Address);
+        socket = SocketTransportOptions.CreateDefaultBoundListenSocket(new IPEndPoint(IPAddress.Loopback, 0));
+        try
+        {
+            socket.Listen(ReservationBacklog);
+            Address = new UriBuilder(Uri.UriSchemeHttps, ipAddress ? IPAddress.Loopback.ToString() : HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
+            Policy = new(Address);
+        }
+        catch
+        {
+            socket.Dispose();
+            throw;
+        }
     }
 
     /// <summary>Transfers this exact managed socket to Kestrel once, retaining ordinary development-certificate TLS validation.</summary>

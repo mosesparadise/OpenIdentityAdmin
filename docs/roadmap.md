@@ -6,6 +6,11 @@ The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/0
 
 Managed web integration settings are available on main. The authorized application details view shows the client ID, exact callbacks and S256 configuration with a server-side secret placeholder. Both providers now store the public and key-backed profile forms and check the upgraded schema at startup. Public native registration is in PR143. Asymmetric authentication remains open. [PR142](https://github.com/mosesparadise/OpenIdentityAdmin/pull/142) [PR141](https://github.com/mosesparadise/OpenIdentityAdmin/pull/141) · [Verification](../specs/026-managed-client-profiles/verification.md)
 
+The native registration in PR143 uses an OS-associated HTTPS callback and S256.
+Browser, machine and device flows, asymmetric authentication and protected
+documentation remain open. Both documentation viewers stay disabled pending
+verified patched assets and the existing activation checks. [Advisory review](../eng/contracts/vendor/advisory-review-2026-11-21.json)
+
 ## Latest completed delivery — application cloning and permanent retirement, 15 November 2026
 
 Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed

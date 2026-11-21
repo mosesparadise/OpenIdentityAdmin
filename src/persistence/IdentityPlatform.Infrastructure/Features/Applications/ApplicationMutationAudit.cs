@@ -85,7 +85,7 @@ internal static class ApplicationMutationAudit
     /// <summary>Maps only the closed mutation action set to an audit name owned by this feature.</summary>
     private static string Event(ApplicationMutationKind kind) => kind switch
     {
-        ApplicationMutationKind.Create => Created,
+        ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative => Created,
         ApplicationMutationKind.Clone => Cloned,
         ApplicationMutationKind.Edit => Edited,
         ApplicationMutationKind.Replace => Replaced,

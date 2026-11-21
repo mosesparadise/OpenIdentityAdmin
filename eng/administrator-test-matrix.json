@@ -1106,6 +1106,7 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"PostgreSql\", exchange: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeClientJourneyTests.Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"PostgreSql\")",
@@ -2720,6 +2721,7 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"SqlServer\", exchange: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeClientJourneyTests.Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"SqlServer\")",
@@ -67144,6 +67146,44 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeClientJourneyTests.Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeClientJourneyTests",
+        "methodName": "Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeClientJourneyTests.Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeClientJourneyTests",
+        "methodName": "Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
           "System.String"
         ]
       },

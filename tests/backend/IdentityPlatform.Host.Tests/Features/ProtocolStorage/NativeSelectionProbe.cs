@@ -85,7 +85,7 @@ internal sealed class NativeSelectionProbe : IAsyncDisposable
         services.AddOpenIddict().AddCore(options => options.UseEntityFrameworkCore());
         var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow()
             .SetAuthorizationEndpointUris(AuthorizePath).SetTokenEndpointUris(TokenPath)
-            .AddEphemeralEncryptionKey().AddEphemeralSigningKey().AddTokenExtraction().AddServerStoreSelection();
+            .AddRegistrationTestKeys().AddTokenExtraction().AddServerStoreSelection();
         builder.UseAspNetCore();
         builder.AddEventHandler<OpenIddictServerEvents.ProcessRequestContext>(handler => handler
             .SetOrder(OpenIddictServerHandlers.Exchange.ExtractTokenRequest.Descriptor.Order + ServerStoreSelection.AfterExtraction + 1)

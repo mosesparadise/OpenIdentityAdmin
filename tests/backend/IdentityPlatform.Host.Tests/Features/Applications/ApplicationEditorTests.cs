@@ -66,6 +66,21 @@ public sealed class ApplicationEditorTests
         Assert.False(ApplicationEditorRules.IsText(ControlName, DisplayLimit));
     }
 
+    /// <summary>Only exact HTTPS callbacks on eligible DNS hosts can identify a claimed native application link.</summary>
+    [Theory]
+    [InlineData("https://mobile.example.test/callback", true)]
+    [InlineData("https://localhost/callback", false)]
+    [InlineData("https://mobile.localhost/callback", false)]
+    [InlineData("https://127.0.0.1/callback", false)]
+    [InlineData("https://[::1]/callback", false)]
+    [InlineData("https://192.0.2.12/callback", false)]
+    [InlineData("https://mobile/callback", false)]
+    [InlineData("https://mobile.example.test./callback", false)]
+    [InlineData("org.example.mobile:/callback", false)]
+    [InlineData("http://mobile.example.test/callback", false)]
+    public void Given_NativeCallback_When_ProfileIsValidated_Then_OnlyExactClaimedHttpsSyntaxIsEligible(string callback, bool accepted) =>
+        Assert.Equal(accepted, ApplicationEditorRules.IsNativeRedirect(callback));
+
     /// <summary>Callbacks must already have their exact canonical HTTPS representation without credentials or fragments.</summary>
     [Theory]
     [InlineData(null)]

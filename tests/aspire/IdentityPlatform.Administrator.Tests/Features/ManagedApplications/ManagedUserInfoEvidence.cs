@@ -33,6 +33,9 @@ internal sealed class ManagedUserInfoEvidence(JsonObject before, string browser,
         return new(await ReadAsync(test), interaction.BrowserBudgetId, interaction.UserId);
     }
 
+    /// <summary>Hashes the full authority snapshot when a denial must preserve all rows across every managed interaction.</summary>
+    internal static async Task<string> DigestAsync(ManagedCacheTestContext test) => FactorBinding.Digest(await ReadAsync(test));
+
     /// <summary>Checks exact commit effects without subtracting actual changes or ignoring revision/authority columns.</summary>
     internal async Task RequireAsync(ManagedCacheTestContext test, int commits)
     {

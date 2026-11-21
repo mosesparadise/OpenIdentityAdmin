@@ -52,7 +52,7 @@ public sealed class NativeStatePolicyTests
     {
         var services = new ServiceCollection().AddLogging();
         services.AddOpenIddict().AddClient().AllowAuthorizationCodeFlow().SetRedirectionEndpointUris(Callback)
-            .AddEphemeralEncryptionKey().AddEphemeralSigningKey().AddDurableClientState();
+            .AddRegistrationTestKeys().AddDurableClientState();
         using var provider = services.BuildServiceProvider();
         var options = provider.GetRequiredService<IOptions<OpenIddictClientOptions>>().Value;
         RequireSlot(options, OpenIddictClientHandlers.GenerateLoginStateToken.Descriptor, typeof(DurableClientState));

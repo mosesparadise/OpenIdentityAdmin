@@ -10,6 +10,13 @@ public sealed record ApplicationCreate(
     [property: Required, MinLength(1), MaxLength(ApplicationEditorRules.MaximumRedirects)] IReadOnlyList<string> RedirectUris,
     [property: Required] string CredentialExpiresAt);
 
+/// <summary>Registers a native public client with administrator-approved app-linked HTTPS redirects.</summary>
+/// <example><code>var input = new ApplicationNativeCreate("mobile", "Mobile", ["https://mobile.example/signin"]);</code></example>
+public sealed record ApplicationNativeCreate(
+    [property: Required, MinLength(1), MaxLength(ApplicationProjection.ClientIdentifierLength)] string ClientId,
+    [property: Required, MinLength(1), MaxLength(ApplicationProjection.DisplayNameLength)] string DisplayName,
+    [property: Required, MinLength(1), MaxLength(ApplicationEditorRules.MaximumRedirects)] IReadOnlyList<string> RedirectUris);
+
 /// <summary>Updates only presentation and exact callbacks; credential lifecycle and client identity are deliberately absent.</summary>
 /// <example><code>var edit = new ApplicationEdit("Updated example", ["https://client.example/new-callback"]);</code></example>
 public sealed record ApplicationEdit(

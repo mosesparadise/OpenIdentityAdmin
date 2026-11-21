@@ -22,7 +22,7 @@ public sealed class NativeIssuanceRegistrationTests
     {
         var services = new ServiceCollection().AddLogging();
         var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow().SetAuthorizationEndpointUris(Authorize)
-            .SetTokenEndpointUris(Token).SetPushedAuthorizationEndpointUris(Par).AddEphemeralSigningKey().AddEphemeralEncryptionKey();
+            .SetTokenEndpointUris(Token).SetPushedAuthorizationEndpointUris(Par).AddRegistrationTestKeys();
         if (hostFirst)
         {
             builder.UseAspNetCore();
@@ -54,7 +54,7 @@ public sealed class NativeIssuanceRegistrationTests
     {
         var services = new ServiceCollection().AddLogging();
         var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow().SetAuthorizationEndpointUris(Authorize)
-            .SetTokenEndpointUris(Token).SetPushedAuthorizationEndpointUris(Par).AddEphemeralSigningKey().AddEphemeralEncryptionKey();
+            .SetTokenEndpointUris(Token).SetPushedAuthorizationEndpointUris(Par).AddRegistrationTestKeys();
         if (hostFirst)
         {
             builder.UseAspNetCore();

@@ -43,7 +43,8 @@ SETUP_STAGES = frozenset(('HostBuilder', 'HostBuild', 'HostStart', 'AuthReadines
                          'JourneyLease', 'JourneyInitialize', 'JourneyServices', 'JourneyReady',
                          'EnrollmentStage', 'EnrollmentVerify', 'EnrollmentReady', 'WitnessCreate',
                          'WitnessSecurityPreparation', 'RequestPreparation', 'CodePreparation',
-                         'AuthHealthy', 'LifecycleCaptured', 'ConnectionReady'))
+                         'AuthHealthy', 'LifecycleCaptured', 'ConnectionReady',
+                         'ConsentAssignment', 'ConsentPresentation', 'ConsentPolicyReview', 'ConsentSubmit', 'ConsentObservation'))
 HARNESS_FAILURES = {'Bootstrap harness startup failed.': 'harness-startup-failed',
                     'Bootstrap database setup failed.': 'harness-database-failed',
                     'Bootstrap host cleanup failed.': 'harness-cleanup-failed'}

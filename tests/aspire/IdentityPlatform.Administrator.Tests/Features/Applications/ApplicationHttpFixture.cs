@@ -20,6 +20,7 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
 {
     internal const string Collection = "/bff/api/v1/applications";
     internal const string ApiCollection = "/api/v1/applications";
+    private const string NativeSuffix = "/native-registrations";
     private const string EnableSuffix = "/enable";
     private const string DisableSuffix = "/disable";
     private const string TokenPath = Collection + "/antiforgery";
@@ -118,9 +119,10 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     }
 
     /// <summary>Sends one explicit JSON mutation with genuine CSRF or actual server bearer; generated secrets never become request input.</summary>
-    internal async Task<HttpResponseMessage> CreateAsync(string body, bool direct = false, bool authenticated = true)
+    internal async Task<HttpResponseMessage> CreateAsync(string body, bool direct = false, bool authenticated = true, bool native = false)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, direct ? ApiCollection : Collection) { Content = new StringContent(body, Encoding.UTF8, Media) };
+        var path = (direct ? ApiCollection : Collection) + (native ? NativeSuffix : string.Empty);
+        using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = new StringContent(body, Encoding.UTF8, Media) };
         if (direct)
         {
             if (authenticated)

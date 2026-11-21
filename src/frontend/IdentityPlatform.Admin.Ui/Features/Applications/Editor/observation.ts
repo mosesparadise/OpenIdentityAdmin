@@ -1,5 +1,5 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { callback, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
+import { callback, nativeCallback, nativeProfile, type NativeInput, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 export type Details = components["schemas"]["ApplicationDetails"];
 export type Result = { status: number; value?: unknown; etag?: string | null; location?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
@@ -23,7 +23,7 @@ export async function version(value: string | null | undefined, id: string, crea
   return value === `"${hex}-${revision}"`;
 }
 /** Validates managed or explicitly read-only details and original server observation expiry; credentials never enter this projection. */
-export async function observe(result: Result, id: string | null, now: number, input?: CreateInput): Promise<Observed | null> {
+export async function observe(result: Result, id: string | null, now: number, input?: CreateInput | NativeInput): Promise<Observed | null> {
   const dto = result.value;
   if (!object(dto, fields) || !text(dto.id, 400) || id !== null && dto.id !== id || !text(dto.clientId, 100) ||
       !(dto.displayName === null || typeof dto.displayName === "string" && dto.displayName.length <= 200) ||
@@ -33,15 +33,22 @@ export async function observe(result: Result, id: string | null, now: number, in
   let credential: Details["credential"] = null;
   if (dto.editable || dto.retired) {
     if (dto.retired ? dto.editable || dto.enabled !== false || input || !retirementReference(dto.retirement, dto.credential, expires, now) : dto.retirement !== null) return null;
-    if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || dto.profile !== "managed-web-v1" || dto.redirectUris.length < 1 || dto.redirectUris.length > 10 ||
-        !dto.redirectUris.every(callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
-        !object(dto.credential, ["issuedAt", "expiresAt"]) || !(wholeUtc(dto.credential.issuedAt) < wholeUtc(dto.credential.expiresAt)) ||
+    const native = dto.profile === nativeProfile;
+    if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || (!native && dto.profile !== "managed-web-v1") ||
+        dto.redirectUris.length < 1 || dto.redirectUris.length > 10 || !dto.redirectUris.every(native ? nativeCallback : callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
         !await version(result.etag, dto.id, !!input) || dto.retired && BigInt(result.etag!.slice(66, -1)) < 2n) return null;
-    credential = { issuedAt: dto.credential.issuedAt as string, expiresAt: dto.credential.expiresAt as string };
+    if (native) {
+      if (dto.credential !== null) return null;
+    } else {
+      if (!object(dto.credential, ["issuedAt", "expiresAt"]) || !(wholeUtc(dto.credential.issuedAt) < wholeUtc(dto.credential.expiresAt))) return null;
+      credential = { issuedAt: dto.credential.issuedAt as string, expiresAt: dto.credential.expiresAt as string };
+    }
   } else if (dto.retirement !== null || dto.enabled !== null || input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
   if (input && (dto.enabled !== true || dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
-      JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...input.redirectUris].sort()) || utc(credential!.expiresAt) !== utc(input.credentialExpiresAt, true) ||
-      !(utc(credential!.expiresAt) > now))) return null;
+      JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...input.redirectUris].sort()))) return null;
+  if (input && ("credentialExpiresAt" in input
+      ? !credential || utc(credential.expiresAt) !== utc(input.credentialExpiresAt, true) || utc(credential.expiresAt) <= now
+      : dto.profile !== nativeProfile)) return null;
   return { details: { id: dto.id, clientId: dto.clientId, displayName: dto.displayName as string | null,
     redirectUris: [...dto.redirectUris] as string[], profile: dto.profile as string | null, editable: dto.editable,
     credential, retired: dto.retired, retirement: dto.retirement === null ? null : { ...(dto.retirement as NonNullable<Details["retirement"]>) }, enabled: dto.enabled as boolean | null, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
@@ -73,12 +80,16 @@ async function successor(result: Result, base: Observed, now: number): Promise<O
 export async function edited(result: Result, base: Observed, input: EditInput, now: number): Promise<Observed | null> {
   const next = await successor(result, base, now);
   return next && next.details.enabled === base.details.enabled && next.details.displayName === input.displayName && sameCallbacks(next.details.redirectUris, input.redirectUris) &&
-    utc(next.details.credential!.issuedAt) === utc(base.details.credential!.issuedAt) &&
-    utc(next.details.credential!.expiresAt) === utc(base.details.credential!.expiresAt) ? next : null;
+    sameCredential(next.details.credential, base.details.credential) ? next : null;
+}
+/** Requires either two absent public credentials or matching confidential issuance and expiry instants. */
+function sameCredential(left: Details["credential"], right: Details["credential"]): boolean {
+  if (!left || !right) return left === right;
+  return utc(left.issuedAt) === utc(right.issuedAt) && utc(left.expiresAt) === utc(right.expiresAt);
 }
 /** Replacement accepts one new native secret and exact expiry while keeping all noncredential configuration unchanged. */
 export async function replaced(result: Result, base: Observed, input: ReplacementInput, now: number): Promise<(Observed & { secret: string }) | null> {
-  if (!input.confirmed || !object(result.value, ["application", "clientSecret"]) || typeof result.value.clientSecret !== "string" ||
+  if (!base.details.credential || !input.confirmed || !object(result.value, ["application", "clientSecret"]) || typeof result.value.clientSecret !== "string" ||
       !/^[A-Za-z0-9+/]{43}=$/.test(result.value.clientSecret)) return null;
   const secret = result.value.clientSecret;
   if (btoa(atob(secret)) !== secret || atob(secret).length !== 32) return null;
@@ -96,19 +107,18 @@ export async function lifecycleChanged(result: Result, base: Observed, enabled: 
   const next = await successor(result, base, now);
   return next && base.details.enabled === !enabled && next.details.enabled === enabled &&
     next.details.displayName === base.details.displayName && sameCallbacks(next.details.redirectUris, base.details.redirectUris) &&
-    utc(next.details.credential!.issuedAt) === utc(base.details.credential!.issuedAt) &&
-    utc(next.details.credential!.expiresAt) === utc(base.details.credential!.expiresAt) ? next : null;
+    sameCredential(next.details.credential, base.details.credential) ? next : null;
 }
 
 /** Binds new disabled clone identity, reviewed callbacks and fresh credential expiry without accepting source identity or inherited lifecycle. */
 export async function cloned(result: Result, base: Observed, input: CloneInput, now: number): Promise<(Observed & { secret: string }) | null> {
-  if (result.status !== 201 || !input.confirmed || base.expires <= now || !base.details.editable ||
+  if (result.status !== 201 || !input.confirmed || base.expires <= now || !base.details.editable || !base.details.credential ||
       !object(result.value, ["application", "clientSecret"]) || typeof result.value.clientSecret !== "string" ||
       !/^[A-Za-z0-9+/]{43}=$/.test(result.value.clientSecret)) return null;
   const secret = result.value.clientSecret;
   if (btoa(atob(secret)) !== secret || atob(secret).length !== 32) return null;
   const next = await observe({ ...result, value: result.value.application }, null, now);
-  return next && next.details.editable && next.details.enabled === false && next.details.id !== base.details.id &&
+  return next && next.details.editable && next.details.enabled === false && next.details.credential && next.details.profile === base.details.profile && next.details.id !== base.details.id &&
     await version(next.etag, next.details.id, true) && next.details.clientId === input.clientId && next.details.displayName === input.displayName &&
     sameCallbacks(next.details.redirectUris, base.details.redirectUris) && utc(next.details.credential!.expiresAt) === utc(input.credentialExpiresAt, true) &&
     utc(input.credentialExpiresAt, true) > now ? { ...next, secret } : null;
@@ -118,7 +128,7 @@ export async function cloned(result: Result, base: Observed, input: CloneInput, 
 function retirementReference(value: unknown, credential: unknown, expires: number, now: number): boolean {
   if (!object(value, ["jobId", "retiredAt"]) || typeof value.jobId !== "string" ||
       !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value.jobId) ||
-      value.jobId === "00000000-0000-0000-0000-000000000000" || !object(credential, ["issuedAt", "expiresAt"])) return false;
+      value.jobId === "00000000-0000-0000-0000-000000000000" || (credential !== null && !object(credential, ["issuedAt", "expiresAt"]))) return false;
   const retired = wholeUtc(value.retiredAt);
-  return retired >= wholeUtc(credential.issuedAt) && retired <= now && retired < expires;
+  return (!credential || retired >= wholeUtc(credential.issuedAt)) && retired <= now && retired < expires;
 }
