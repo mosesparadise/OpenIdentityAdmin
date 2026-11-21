@@ -1,6 +1,6 @@
 # Implementation register
 
-- [ ] T001 Provide managed web integration settings from the authorized registration with a credential placeholder. Verify rendering, callback binding and read-only/terminal exclusions.
+- [x] T001 Provide managed web integration settings from the authorized registration with a credential placeholder. Verify rendering, callback binding and read-only/terminal exclusions.
 - [ ] T002 Add browser and native registration and authorization-code journeys, including exact redirect, separate browser origin policy, S256, and lifecycle regression tests.
 - [ ] T003 Deliver the client-credentials protocol and registration together, including a machine-only identity and bounded assigned API scopes.
 - [ ] T004 Deliver device registration with verification, approval, polling, throttling, expiry and single redemption on both providers.
@@ -10,7 +10,7 @@
 
 ### Verification for the managed web integration view
 
-T001 is implemented on the feature branch. The UI build, type check, asset
+T001 was squash-merged to main in PR141. The UI build, type check, asset
 reproducibility check and all 149 existing UI cases passed. The component test
 checks the complete settings, multiple callbacks, the secret placeholder and
 read-only/retired exclusions. A local Chromium 151.0.7922.173 run of the shipped
@@ -18,7 +18,7 @@ bundle used synthetic BFF responses and a 320-pixel viewport. Keyboard opening,
 focus, long callback reflow, page-hide clearing and observation expiry passed.
 The shared authenticated editor journey now checks the current saved callback,
 keyboard disclosure and page-hide removal after actual credential replacement.
-The pinned provider/browser matrix and original CI evidence review are pending.
+The hosted provider/browser matrix and original CI evidence review passed for PR141. See [verification](verification.md).
 
 ### Profile storage prerequisite for T002–T005
 
@@ -36,6 +36,10 @@ atomically. The provider-independent row and schema comparison covers both migra
 histories. Original TRX SHA-256 was
 `f1f89dc8b59237a5d2bf54d4aa90608cb10c101db876070ce003253f11b8d48c`.
 
+PR142 delivered the storage prerequisite at `7461cdd`. The final CI638 run
+passed all 149 jobs. Both persistence reports contained 42 passing cases,
+including seven affected cases per provider. [Storage verification](verification.md#client-profile-storage)
+
 ### Native application registration draft
 
 T002 and T006 now include a separate public native create operation on the versioned
@@ -50,12 +54,6 @@ Local verification covered 44 native contract cases, 47 contract tooling cases, 
 application input/editor cases, 150 UI cases and all 93 test selection cases. Both
 generated client checks and the six-asset UI reproducibility check passed. Lifecycle
 and uncertainty projections include public registrations with no credential metadata.
-
-The storage follow-up aligns both runtime readiness catalogs with the migrated schema.
-All eight focused database cases passed against PostgreSQL and SQL Server on the corrected
-storage head. Hosted approval and wider cross-profile, manual and browser acceptance
-remain open. PR141's original hosted run failed its contract advisory gate. Its passing
-native, browser and mutation evidence is specific to that earlier source.
 
 The protected BFF registration, real human consent, wrong Basic credential rejection,
 secretless S256 exchange and user-bound token verification passed once on each provider.
