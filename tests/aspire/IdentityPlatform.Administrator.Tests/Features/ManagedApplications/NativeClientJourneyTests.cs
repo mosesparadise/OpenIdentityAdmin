@@ -37,6 +37,8 @@ public sealed class NativeClientJourneyTests(BootstrapFixture fixture)
         var code = await flow.CodeAsync();
         using var wrong = await flow.ExchangeAsync(code, secret: IncorrectSecret);
         Assert.True(wrong.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized);
+        var before = await ManagedHumanEvidence.DigestAsync(registration);
+        await ManagedTokenFailureTests.RequireBoundExchangeAsync(registration, flow, code, before);
         await ManagedJourneyEvidence.ExchangeAsync(registration, flow, code, denyManagement: true);
         await VerifyScopeAssignmentAsync(registration);
     }
