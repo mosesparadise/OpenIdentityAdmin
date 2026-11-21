@@ -1,5 +1,9 @@
 # Delivery roadmap and task register
 
+## Active batch — managed client profiles, credentials and documentation, 21 November 2026
+
+The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/026-managed-client-profiles/spec.md) and [task register](../specs/026-managed-client-profiles/tasks.md) track protocol prerequisites, credential management, integration examples and protected documentation.
+
 ## Latest completed delivery — application cloning and permanent retirement, 15 November 2026
 
 Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed
@@ -17,7 +21,7 @@ record the actual reviewed source, original artifacts and qualifications. All 36
 are complete for internal development after this reviewed documentation follow-up. Existing
 offline JWTs can remain valid until expiry, and remote relying-party sessions are not erased.
 
-The current implementation batch is complete. The Windows Docker Desktop walkthrough remains
+The feature025 implementation batch is complete. The Windows Docker Desktop walkthrough remains
 a human activity; M05-A general user administration is a later engineering candidate. Broader
 M04-B/C profiles and credentials and protected documentation remain separate work. All existing
 manual, Firefox/A-009, historical, dormant-refresh, vendor and external release gates stay open.
