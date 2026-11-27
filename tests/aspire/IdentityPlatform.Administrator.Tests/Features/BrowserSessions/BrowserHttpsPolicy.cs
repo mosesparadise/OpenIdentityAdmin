@@ -7,16 +7,19 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 internal sealed class BrowserHttpsPolicy(Uri address)
 {
     private const int StatusScale = 1000;
-    private static readonly System.Text.CompositeFormat ReportFormat = System.Text.CompositeFormat.Parse("b3-https-policy issuer={0} posts={1} returns={2} forms={3} redirects={4} origin-failures={5} form-referrer-failures={6} return-referrer-failures={7} response-policy-failures={8} last-response={9} foreign-authentication-cookies={10} unexpected-foreign-origin={11}");
+    private static readonly System.Text.CompositeFormat ReportFormat = System.Text.CompositeFormat.Parse("b3-https-policy issuer={0} posts={1} returns={2} forms={3} redirects={4} origin-failures={5} form-referrer-failures={6} return-referrer-failures={7} response-policy-failures={8} last-response={9} foreign-authentication-cookies={10} unexpected-foreign-origin={11} first-login-get-received={12} first-login-response-starting-status={13}");
     private const string RootPath = "/";
     private const string ReferrerPolicy = "Referrer-Policy";
     private const string FormReferrer = "strict-origin";
     private const string NoReferrer = "no-referrer";
     private const string IssuerCookie = "__Host-identity-administrator";
     private const string ClientCookie = "__Host-identity-admin-session";
-    private static readonly string[] FormPaths = ["/bff/login", "/bff/logout", "/account/administrator/browser/login", "/account/administrator/browser/mfa", "/connect/end-session"];
+    private const string LoginPath = "/bff/login";
+    private static readonly string[] FormPaths = [LoginPath, "/bff/logout", "/account/administrator/browser/login", "/account/administrator/browser/mfa", "/connect/end-session"];
     private static readonly string[] ReturnPaths = ["/bff/login/resume", "/callback", "/bff/logout/return", "/connect/authorize"];
     private readonly string origin = address.GetLeftPart(UriPartial.Authority);
+    private int firstLoginReceived;
+    private int firstLoginResponseStatus;
     private int lastResponse;
     private int posts;
     private int returns;
@@ -36,6 +39,16 @@ internal sealed class BrowserHttpsPolicy(Uri address)
     /// <summary>Observes the original server request before any parser can normalize its native headers.</summary>
     internal void Request(HttpRequest request)
     {
+        if (HttpMethods.IsGet(request.Method) && string.Equals(request.Path.Value, LoginPath, StringComparison.Ordinal) &&
+            Interlocked.CompareExchange(ref firstLoginReceived, 1, 0) == 0)
+        {
+            var response = request.HttpContext.Response;
+            response.OnStarting(() =>
+            {
+                Volatile.Write(ref firstLoginResponseStatus, response.StatusCode);
+                return Task.CompletedTask;
+            });
+        }
         if (HttpMethods.IsPost(request.Method) && FormPaths.Contains(request.Path.Value, StringComparer.Ordinal))
         {
             Interlocked.Increment(ref posts);
@@ -118,7 +131,8 @@ internal sealed class BrowserHttpsPolicy(Uri address)
         {
             TestContext.Current.TestOutputHelper?.WriteLine(string.Format(CultureInfo.InvariantCulture, ReportFormat,
                 issuer, posts, returns, forms, redirects, originFailures, formReferrerFailures, returnReferrerFailures,
-                responsePolicyFailures, lastResponse, foreignAuthenticationCookies, unexpectedForeignOrigin));
+                responsePolicyFailures, lastResponse, foreignAuthenticationCookies, unexpectedForeignOrigin,
+                Volatile.Read(ref firstLoginReceived) != 0, Volatile.Read(ref firstLoginResponseStatus)));
         }
         catch (Exception) { /* A diagnostic sink cannot replace the actual journey or cleanup result. */ }
     }

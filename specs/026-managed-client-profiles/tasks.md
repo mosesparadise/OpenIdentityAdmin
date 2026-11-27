@@ -147,3 +147,15 @@ the change. TRX execution time fell from 21.4 seconds to 4.4 seconds.
 The hosted deadline, concurrency settings and assertions remain in force.
 The full local covered unit partition then passed all 2,352 required cases
 without skips. Host completed its 2,135 cases in 79 seconds of TRX time.
+
+CI648's PostgreSQL/WebKit browser-session job passed 12 of 13 cases. The
+local-logout case failed on its first navigation to the BFF sign-in page.
+Its protected report did not identify the cause. The same case passed on
+SQL Server/WebKit. The cancelled PostgreSQL application mutation job supplied
+no archive, and the aggregate coverage job was skipped. [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
+
+The HTTPS fixture now reports whether it received the first GET to
+`/bff/login` and the HTTP status observed in that request's response-starting
+callback. Zero means the callback was not observed. These fields are scoped
+to one fixture endpoint and survive later sign-ins. They do not establish
+that the browser received the response.
