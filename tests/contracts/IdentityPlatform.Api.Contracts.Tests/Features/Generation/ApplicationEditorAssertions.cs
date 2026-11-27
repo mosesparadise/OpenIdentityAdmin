@@ -7,6 +7,8 @@ internal static class ApplicationEditorAssertions
 {
     private const string ApiPath = "/api/v1/applications";
     private const string BrowserPath = "/bff/api/v1/applications";
+    private const string NativePath = "/native-registrations";
+    private const string NativeInput = "#/components/schemas/ApplicationNativeCreate";
     private const string Details = "/{id}";
     private const string Paths = "paths";
     private const string Get = "get";
@@ -45,11 +47,17 @@ internal static class ApplicationEditorAssertions
         ApplicationUpdateAssertions.Require(document, browser);
         ApplicationCloneAssertions.Require(document, browser);
         var path = browser ? BrowserPath : ApiPath;
+        var native = document[Paths]![path + NativePath]![Post]!;
         var create = document[Paths]![path]![Post]!;
         var details = document[Paths]![path + Details]![Get]!;
+        Assert.Equal(NativeInput, native[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(DetailsSchema, native[Responses]![Created]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(create[Parameters]?.ToJsonString(), native[Parameters]?.ToJsonString());
+        Assert.True(native[Responses]![Created]![Headers]![Version]![Required]!.GetValue<bool>());
+        Assert.Equal(Write, native[Permission]!.GetValue<string>());
         Assert.Equal(Write, create[Permission]!.GetValue<string>());
         Assert.Equal(Read, details[Permission]!.GetValue<string>());
-        foreach (var operation in new[] { create, details })
+        foreach (var operation in new[] { create, native, details })
         {
             Assert.Equal(browser ? BrowserSecurity : ApiSecurity, operation[Security]!.ToJsonString());
             if (browser)

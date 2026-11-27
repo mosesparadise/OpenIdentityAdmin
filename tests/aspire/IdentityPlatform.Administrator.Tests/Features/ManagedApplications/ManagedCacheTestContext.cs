@@ -10,7 +10,7 @@ using OpenIddict.EntityFrameworkCore.Models;
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
 /// <summary>Creates the managed registration through genuine protected HTTPS API/BFF and drives the real owned issuer pipeline.</summary>
-internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, ApplicationCredentialOutput created) : IAsyncDisposable
+internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, string id, string clientId, string callback, string? secret) : IAsyncDisposable
 {
     private const string SetCookie = "Set-Cookie";
     private const string RequestUri = "request_uri";
@@ -26,10 +26,15 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
     internal const string Client = "managed-native-client";
     internal const string Callback = "https://managed.example.test/callback";
     internal ApplicationHttpFixture Http => http;
-    internal string Id => created.Application.Id;
-    internal string Secret => created.ClientSecret;
-    internal string ClientIdentifier => created.Application.ClientId;
-    internal string CallbackUri => Assert.Single(created.Application.RedirectUris);
+    /// <summary>Borrows the actual managed web creation output for the existing confidential-client journeys.</summary>
+    internal ManagedCacheTestContext(ApplicationHttpFixture http, ApplicationCredentialOutput created)
+        : this(http, created.Application.Id, created.Application.ClientId, Assert.Single(created.Application.RedirectUris), created.ClientSecret) { }
+
+    internal bool Public => secret is null;
+    internal string Id => id;
+    internal string Secret => secret ?? throw new InvalidOperationException();
+    internal string ClientIdentifier => clientId;
+    internal string CallbackUri => callback;
 
     /// <summary>Enables the real managed profile while preserving genuine administrator password/MFA and native credential exchange.</summary>
     internal static async Task<ManagedCacheTestContext> CreateAsync(BootstrapFixture fixture, string provider,

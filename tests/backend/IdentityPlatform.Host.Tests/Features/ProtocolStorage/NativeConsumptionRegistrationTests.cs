@@ -23,7 +23,7 @@ public sealed class NativeConsumptionRegistrationTests
     {
         var services = new ServiceCollection().AddLogging();
         var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow()
-            .SetAuthorizationEndpointUris(AuthorizationPath).SetTokenEndpointUris(TokenPath).AddEphemeralEncryptionKey().AddEphemeralSigningKey();
+            .SetAuthorizationEndpointUris(AuthorizationPath).SetTokenEndpointUris(TokenPath).AddRegistrationTestKeys();
         if (enabled)
         {
             builder.AddDurableServerConsumption();
@@ -44,7 +44,7 @@ public sealed class NativeConsumptionRegistrationTests
     {
         var services = new ServiceCollection().AddLogging();
         var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow()
-            .SetAuthorizationEndpointUris(AuthorizationPath).SetTokenEndpointUris(TokenPath).AddEphemeralEncryptionKey().AddEphemeralSigningKey();
+            .SetAuthorizationEndpointUris(AuthorizationPath).SetTokenEndpointUris(TokenPath).AddRegistrationTestKeys();
         builder.AddPilotReplayCleanup(standalone);
         if (!standalone)
         {
@@ -69,7 +69,7 @@ public sealed class NativeConsumptionRegistrationTests
     {
         var services = new ServiceCollection().AddLogging();
         var builder = services.AddOpenIddict().AddClient().AllowAuthorizationCodeFlow().SetRedirectionEndpointUris(CallbackPath)
-            .AddEphemeralEncryptionKey().AddEphemeralSigningKey();
+            .AddRegistrationTestKeys();
         if (enabled)
         {
             builder.AddDurableClientConsumption();

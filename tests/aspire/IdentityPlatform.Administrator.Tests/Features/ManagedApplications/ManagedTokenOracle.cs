@@ -35,6 +35,8 @@ internal static class ManagedTokenOracle
     private static readonly string[] AccessClaims = ["iss", Subject, "iat", "exp", "nbf", "jti", ClientId, Scope, AuthorizationId, TokenId, Presenter];
 
 
+    private const string NativeProfile = "managed-native-v1";
+
     /// <summary>Retains the original native caller contract while borrowing its already-created registration and flow bindings.</summary>
     internal static Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false, ManagedTokenProjection? projection = null) =>
         ValidateAsync(ManagedTokenEvidenceContext.Borrow(test), flow.Nonce, flow.RequestId, body, subject, applicationOnly, multipleFlows, projection);
@@ -86,7 +88,16 @@ internal static class ManagedTokenOracle
         await using var scope = test.Scope();
         var policy = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationPolicy>()
             .AsNoTracking().SingleAsync(value => value.ApplicationId == test.Id, TestContext.Current.CancellationToken);
-        Assert.True(expires <= policy.CredentialExpiresAt);
+        if (policy.Profile == NativeProfile)
+        {
+            Assert.Null(policy.CredentialExpiresAt);
+            Assert.Null(policy.CredentialIssuedAt);
+            Assert.Equal(0, policy.CredentialRevision);
+        }
+        else
+        {
+            Assert.True(expires <= policy.CredentialExpiresAt);
+        }
     }
 
 }

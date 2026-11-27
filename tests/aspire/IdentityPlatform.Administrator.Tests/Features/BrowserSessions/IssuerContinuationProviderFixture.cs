@@ -84,6 +84,23 @@ internal static class IssuerContinuationProviderFixture
     internal static async Task<string> UnusedCodeAsync(JourneyScenario scenario) => FactorOracle.UnusedCode(scenario.Seed,
         (await AcceptedCodesAsync(scenario)).ToHashSet(StringComparer.Ordinal));
 
+    /// <summary>Prepares one unused synthetic proof before a fresh ceremony, with validity through the next real counter transition.</summary>
+    internal static async Task<string> PrepareStableCodeAsync(JourneyScenario scenario)
+    {
+        const int BoundaryMarginSeconds = 1;
+        var accepted = (await AcceptedCodesAsync(scenario)).ToHashSet(StringComparer.Ordinal);
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var code = FactorOracle.AvailableCode(scenario.Seed, accepted, now, validAfterRollover: true);
+        if (code is null)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(FactorOracle.StepSeconds - now % FactorOracle.StepSeconds + BoundaryMarginSeconds), TestContext.Current.CancellationToken);
+            accepted = (await AcceptedCodesAsync(scenario)).ToHashSet(StringComparer.Ordinal);
+            code = FactorOracle.AvailableCode(scenario.Seed, accepted, DateTimeOffset.UtcNow.ToUnixTimeSeconds(), validAfterRollover: true);
+        }
+        Assert.NotNull(code);
+        return code;
+    }
+
     /// <summary>Reads only a detached committed continuation after the operation has fully disposed its transaction.</summary>
     internal static async Task<IssuerContinuation> RowAsync(JourneyScenario scenario, Attempt attempt)
     {

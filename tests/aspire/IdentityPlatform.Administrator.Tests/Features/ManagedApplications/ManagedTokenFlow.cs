@@ -9,7 +9,7 @@ using OpenIddict.Abstractions;
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
 /// <summary>Retains the real independent verifier/state/nonce and drives genuine protected managed human forms before native issuance.</summary>
-internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requestedScopes = "openid")
+internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requestedScopes = "openid", string? preparedFactor = null)
 {
     private const string Grant = "grant_type";
     private const string CodeGrant = "authorization_code";
@@ -79,7 +79,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requ
         using var password = await ManagedHumanHttp.PasswordAsync(test, form);
         await ManagedHumanHttp.EntryAsync(password);
         var mfa = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, password.Headers.Location!);
-        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
+        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa, preparedFactor);
         await ManagedHumanHttp.EntryAsync(factor);
         return await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri, inspectConsent);
     }
@@ -127,18 +127,24 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requ
     /// <summary>Uses actual Basic credentials and the independently retained original S256 verifier over real HTTPS.</summary>
     internal async Task<HttpResponseMessage> ExchangeAsync(string code, string? secret = null, string? proof = null, string? callback = null, HttpClient? client = null, string? clientId = null)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, NativeCacheProfile.Token)
+        var parameters = new Dictionary<string, string>
         {
-            Content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                [Grant] = CodeGrant,
-                [Redirect] = callback ?? test.CallbackUri,
-                [Code] = code,
-                [Verifier] = proof ?? verifier
-            })
+            [Grant] = CodeGrant,
+            [Redirect] = callback ?? test.CallbackUri,
+            [Code] = code,
+            [Verifier] = proof ?? verifier
         };
-        request.Headers.Authorization = new AuthenticationHeaderValue(Basic, Convert.ToBase64String(Encoding.UTF8.GetBytes(
-            Uri.EscapeDataString(clientId ?? test.ClientIdentifier) + CredentialSeparator + Uri.EscapeDataString(secret ?? test.Secret))));
+        using var request = new HttpRequestMessage(HttpMethod.Post, NativeCacheProfile.Token);
+        if (test.Public && secret is null)
+        {
+            parameters.Add(OpenIddictConstants.Parameters.ClientId, clientId ?? test.ClientIdentifier);
+        }
+        else
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue(Basic, Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                Uri.EscapeDataString(clientId ?? test.ClientIdentifier) + CredentialSeparator + Uri.EscapeDataString(secret ?? test.Secret))));
+        }
+        request.Content = new FormUrlEncodedContent(parameters);
         return await (client ?? test.Http.IssuerClient).SendAsync(request, TestContext.Current.CancellationToken);
     }
 }

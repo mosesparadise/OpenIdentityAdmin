@@ -60,8 +60,8 @@ internal static class ManagedConsentTest
         Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
     }
 
-    /// <summary>Changes synthetic Identity email independently of consent storage, preserving the same account generation for current-data projection checks.</summary>
-    internal static async Task EmailAsync(ManagedCacheTestContext test, string? email, bool verified)
+    /// <summary>Sets the login account’s synthetic email independently of consent and returns its persisted subject.</summary>
+    internal static async Task<string> EmailAsync(ManagedCacheTestContext test, string? email, bool verified)
     {
         await using var scope = test.Http.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -70,6 +70,7 @@ internal static class ManagedConsentTest
         user.Email = email;
         user.EmailConfirmed = verified;
         await database.SaveChangesAsync(TestContext.Current.CancellationToken);
+        return user.Id;
     }
 
     /// <summary>Uses the real HTTPS UserInfo endpoint with exactly one explicit bearer transport.</summary>

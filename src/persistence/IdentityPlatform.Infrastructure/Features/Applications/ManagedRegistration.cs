@@ -1,3 +1,4 @@
+using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -5,9 +6,12 @@ using IdentityPlatform.Infrastructure.Persistence;
 namespace IdentityPlatform.Infrastructure.Features.Applications;
 
 /// <summary>Reads an exact current managed native registration under the same governance serialization used by editor writes.</summary>
-internal sealed record ManagedRegistration(string ApplicationId, string ClientId, long Revision, long CredentialRevision, long ExpiresAt,
-    long ObservedAt, string[] Redirects)
+internal sealed record ManagedRegistration(string ApplicationId, string ClientId, long Revision, long CredentialRevision, long? CredentialExpiresAt,
+    long ObservedAt, string[] Redirects, string Profile = ApplicationEditorRules.Profile)
 {
+    /// <summary>Upper bound for existing interaction and native token deadlines when a registration has an expiring credential.</summary>
+    internal long ExpiresAt => CredentialExpiresAt ?? DateTimeOffset.MaxValue.ToUnixTimeSeconds();
+
     /// <summary>Acquires governance before any managed policy or native registration read; no account or administrator capability is granted.</summary>
     internal static ValueTask LockAsync(ProtocolStorageScope scope, CancellationToken token) => scope.Owner.RunAsync(current =>
         new ValueTask(new CeremonyLocks((PlatformDbContext)scope.Owner.Database).AcquireAsync(new CeremonyLockPlan(true, false, [], []), current)), token, write: true);
@@ -26,5 +30,5 @@ internal sealed record ManagedRegistration(string ApplicationId, string ClientId
     /// <summary>Checks immutable registration authority without record-array reference equality or logging native credentials.</summary>
     internal bool Matches(ManagedRegistration? current) => current is not null && ApplicationId == current.ApplicationId &&
         ClientId == current.ClientId && Revision == current.Revision && CredentialRevision == current.CredentialRevision &&
-        ExpiresAt == current.ExpiresAt && current.ObservedAt >= ObservedAt && Redirects.SequenceEqual(current.Redirects, StringComparer.Ordinal);
+        Profile == current.Profile && CredentialExpiresAt == current.CredentialExpiresAt && current.ObservedAt >= ObservedAt && Redirects.SequenceEqual(current.Redirects, StringComparer.Ordinal);
 }

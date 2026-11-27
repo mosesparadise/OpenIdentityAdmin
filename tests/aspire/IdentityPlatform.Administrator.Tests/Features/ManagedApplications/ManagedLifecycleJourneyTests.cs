@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
+using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.Applications;
@@ -13,7 +14,6 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
 {
     private const string Bypass = "application-lifecycle-enforcement-bypass";
     private const long DisabledRevision = 2;
-    private const int NativeFactorStepSeconds = 30;
     private const string LifecycleInput = "{\"reason\":\"maintenance\",\"confirm\":true}";
     private const string OtherClient = "independent-managed-client";
     private const string InvalidToken = "invalid_token";
@@ -44,9 +44,6 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
         await TransitionAsync(test, true, DisabledRevision);
         Assert.Equal(unchanged, await ManagedJourneyEvidence.RegistrationAsync(other));
         await RejectOldAsync(test, cached, old, code);
-        // Enrollment, administrator sign-in and three managed ceremonies exhausted the five native counters.
-        // Wait for one real counter rollover before starting new proof; do not reuse a code or widen the native window.
-        await Task.Delay(TimeSpan.FromSeconds(NativeFactorStepSeconds - DateTimeOffset.UtcNow.ToUnixTimeSeconds() % NativeFactorStepSeconds + 1), TestContext.Current.CancellationToken);
         await CompleteAsync(test);
     }
 
@@ -77,7 +74,8 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
     private static async Task CompleteAsync(ManagedCacheTestContext test)
     {
         var authority = await ManagedHumanEvidence.AuthorityAsync(test);
-        var flow = new ManagedTokenFlow(test);
+        var proof = await IssuerContinuationProviderFixture.PrepareStableCodeAsync(test.Http.Environment.Issuer.Account.Journey);
+        var flow = new ManagedTokenFlow(test, preparedFactor: proof);
         await flow.ApproveAsync();
         await ManagedJourneyEvidence.ExchangeAsync(test, flow, await flow.CodeAsync(), denyManagement: true);
         Assert.Equal(authority, await ManagedHumanEvidence.AuthorityAsync(test));

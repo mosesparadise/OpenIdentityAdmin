@@ -34,6 +34,11 @@ internal static class Setup
         app.MapManagementGroup().MapGet(CollectionPath, (Func<HttpContext, Task>)ApplicationListEndpoint.HandleAsync)
             .WithName(Operation).WithSummary(Summary)
             .Produces<ApplicationPage>().ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        app.MapManagementGroup().MapPost(CollectionPath + ApplicationEditorRules.NativeRegistrationSuffix, (Func<HttpContext, Task>)ApplicationNativeCreateEndpoint.HandleAsync)
+            .WithName(ApplicationNativeCreateEndpoint.Operation).WithSummary(ApplicationNativeCreateEndpoint.Summary)
+            .Accepts<ApplicationNativeCreate>(JsonType).Produces<ApplicationDetails>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
         app.MapManagementGroup().MapPost(CollectionPath, (Func<HttpContext, Task>)ApplicationCreateEndpoint.HandleAsync)
             .WithName(CreateOperation).WithSummary(CreateSummary).Accepts<ApplicationCreate>(JsonType)
             .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)

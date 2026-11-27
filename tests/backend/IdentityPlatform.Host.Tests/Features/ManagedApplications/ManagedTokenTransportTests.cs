@@ -16,6 +16,10 @@ public sealed class ManagedTokenTransportTests
     private const string Extra = "&client_secret=synthetic";
     private const string Duplicate = "&code=second";
     private const string Basic = "Basic c3ludGhldGljOnN5bnRoZXRpYw==";
+    private const string PublicClient = "native-editor-client";
+    private const string OtherClient = "other-native-client";
+    private const string PublicFields = "grant_type=authorization_code&code=synthetic&redirect_uri=https%3A%2F%2Fmobile.example.test%2Fcallback&client_id=" + PublicClient;
+    private const string VerifierField = "&code_verifier=synthetic";
     private const string Https = "https";
     private const string Http = "http";
     private const string AliasPath = "/connect/%74oken";
@@ -46,6 +50,31 @@ public sealed class ManagedTokenTransportTests
         Assert.True(ManagedTokenTransport.Candidate(context));
         await ManagedTokenTransport.ValidateAsync(context);
         Assert.Equal(defect != ManagedTokenFraming.Valid, context.IsRejected);
+    }
+
+    /// <summary>A complete public-client form binds only its submitted client ID; a missing verifier rejects the request without issuing a transport receipt.</summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Given_PublicClientForm_When_VerifierIsPresentOrMissing_Then_OnlyCompleteFormBindsTheSubmittedClient(bool hasVerifier)
+    {
+        var http = new DefaultHttpContext();
+        http.Request.Scheme = Https;
+        http.Request.Method = HttpMethods.Post;
+        http.Request.Path = TokenPath;
+        http.Features.Get<IHttpRequestFeature>()!.RawTarget = TokenPath;
+        http.Request.ContentType = Form;
+        var body = PublicFields + (hasVerifier ? VerifierField : string.Empty);
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(body));
+        http.Request.Body = stream;
+        http.Request.ContentLength = stream.Length;
+        var transaction = new OpenIddictServerTransaction { EndpointType = OpenIddictServerEndpointType.Token };
+        transaction.Properties[typeof(HttpRequest).FullName!] = new WeakReference<HttpRequest>(http.Request);
+        var context = new OpenIddictServerEvents.ProcessRequestContext(transaction);
+        Assert.True(await NativeTokenTransport.TryHandleAsync(context));
+        Assert.Equal(!hasVerifier, context.IsRejected);
+        Assert.Equal(hasVerifier, NativeTokenTransport.Matches(transaction, PublicClient));
+        Assert.False(NativeTokenTransport.Matches(transaction, OtherClient));
     }
 }
 

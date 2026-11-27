@@ -39,6 +39,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string PreconditionDescription = "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.";
     private const int VersionMinimum = 68;
     private const int VersionMaximum = 86;
+    internal const string NativeOperation = "CreateBrowserNativeApplication";
+    internal const string NativeSummary = "Register a public native application with exact claimed HTTPS callbacks and S256";
     private const string CreateOperation = "CreateBrowserApplication";
     private const string DetailsOperation = "GetBrowserApplication";
     private const string Scheme = "BrowserSession";
@@ -63,6 +65,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
+        Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, NativeOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -112,7 +115,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

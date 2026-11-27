@@ -8,10 +8,13 @@ namespace IdentityPlatform.Core.Features.Applications;
 public static class ApplicationEditorRules
 {
     public const string Profile = "managed-web-v1";
+    public const string NativeRegistrationSuffix = "/native-registrations";
+    public const string NativeProfile = "managed-native-v1";
     public const int MaximumRedirects = 10;
     public const int MaximumRedirectLength = 2048;
     public const int MaximumRequestBytes = 32_768;
     public const string ExpiryFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private const string LocalhostSuffix = ".localhost";
     private const string ClientIdField = "clientId";
     private const string DisplayNameField = "displayName";
     private const string RedirectsField = "redirectUris";
@@ -31,6 +34,22 @@ public static class ApplicationEditorRules
         if (!TryReadExpiry(input.CredentialExpiresAt, now, out _))
         {
             errors.Add(ExpiryField, [InvalidValue]);
+        }
+        return errors;
+    }
+
+    /// <summary>Requires a bounded public client identity and only exact app-linked HTTPS callbacks.</summary>
+    /// <example><code>var errors = ApplicationEditorRules.Validate(new ApplicationNativeCreate("mobile", "Mobile", ["https://mobile.example/signin"]));</code></example>
+    public static IReadOnlyDictionary<string, string[]> Validate(ApplicationNativeCreate input)
+    {
+        var errors = ValidateFields(input.DisplayName, input.RedirectUris);
+        if (!IsClientId(input.ClientId))
+        {
+            errors.Add(ClientIdField, [InvalidValue]);
+        }
+        if (input.RedirectUris is not null && !input.RedirectUris.All(IsNativeRedirect))
+        {
+            errors[RedirectsField] = [InvalidValue];
         }
         return errors;
     }
@@ -91,6 +110,12 @@ public static class ApplicationEditorRules
     public static bool IsRedirect(string? value) => IsText(value, MaximumRedirectLength) && !value!.Any(char.IsWhiteSpace) &&
         Uri.TryCreate(value, UriKind.Absolute, out var uri) && uri.IsWellFormedOriginalString() && uri.Scheme == Uri.UriSchemeHttps &&
         string.IsNullOrEmpty(uri.UserInfo) && string.IsNullOrEmpty(uri.Fragment) && uri.AbsoluteUri == value;
+
+    /// <summary>Requires an exact HTTPS redirect with a DNS host for an OS-associated native application link.</summary>
+    /// <example><code>var valid = ApplicationEditorRules.IsNativeRedirect("https://mobile.example.test/signin");</code></example>
+    public static bool IsNativeRedirect(string? value) => IsRedirect(value) && Uri.TryCreate(value, UriKind.Absolute, out var uri) &&
+        uri.HostNameType == UriHostNameType.Dns && !uri.IsLoopback && uri.Host.Contains('.', StringComparison.Ordinal) &&
+        !uri.Host.EndsWith('.') && !uri.Host.EndsWith(LocalhostSuffix, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>Returns only fixed field identifiers and value-free messages, preserving exact callback multiplicity.</summary>
     private static Dictionary<string, string[]> ValidateFields(string? displayName, IReadOnlyList<string>? redirects)

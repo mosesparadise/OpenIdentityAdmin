@@ -51,7 +51,7 @@ public sealed class AdministratorAssertionIntegrationTests(AdministratorRegistra
         services.AddSingleton(AdministratorRegistrationPolicy.Create(Callback, fixture.Key)!);
         services.AddOpenIddict().AddCore(core => core.UseEntityFrameworkCore());
         var builder = services.AddOpenIddict().AddServer().SetIssuer(new Uri(Issuer)).SetAuthorizationEndpointUris(AuthorizePath)
-            .SetTokenEndpointUris(TokenPath).AllowAuthorizationCodeFlow().AddEphemeralSigningKey().AddEphemeralEncryptionKey().AddAdministratorAssertions();
+            .SetTokenEndpointUris(TokenPath).AllowAuthorizationCodeFlow().AddRegistrationTestKeys().AddAdministratorAssertions();
         builder.UseAspNetCore();
         builder.AddEventHandler<OpenIddictServerEvents.ValidateTokenContext>(handler => handler.SetOrder(int.MinValue).UseInlineHandler(context =>
         {

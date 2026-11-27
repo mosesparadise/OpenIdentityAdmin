@@ -10,7 +10,7 @@ internal static class FactorOracle
 {
     private const string InvalidSeed = "The setup key is not canonical Base32.";
 
-    private const int StepSeconds = 30;
+    internal const int StepSeconds = 30;
     private const int CounterBytes = 8;
     private const int OffsetMask = 15;
     private const uint SignMask = 0x7fffffff;
@@ -111,10 +111,12 @@ internal static class FactorOracle
     }
 
     /// <summary>Reports exhausted native proof material without submitting authentication or reusing a previously accepted numeric value.</summary>
-    internal static string? AvailableCode(string seed, IReadOnlySet<string> accepted, long now)
+    internal static string? AvailableCode(string seed, IReadOnlySet<string> accepted, long now, bool validAfterRollover = false)
     {
         const int NativeWindowSteps = 2;
-        int[] offsets = [StepSeconds, -StepSeconds, StepSeconds * NativeWindowSteps, -StepSeconds * NativeWindowSteps, 0];
+        int[] offsets = validAfterRollover
+            ? [0, StepSeconds, -StepSeconds, StepSeconds * NativeWindowSteps]
+            : [StepSeconds, -StepSeconds, StepSeconds * NativeWindowSteps, -StepSeconds * NativeWindowSteps, 0];
         var codes = offsets.Select(offset => Code(seed, now + offset));
         return codes.FirstOrDefault(code => !accepted.Contains(code));
     }

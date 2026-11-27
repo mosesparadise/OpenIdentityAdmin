@@ -26,13 +26,18 @@ public sealed class ManagedConsentBindingTests(BootstrapFixture fixture)
     public async Task Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(string provider)
     {
         await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
+        SetupDiagnostics.Write(SetupStage.ConsentAssignment);
         await ManagedConsentTest.SeedAsync(test);
         var flow = new ManagedTokenFlow(test, Requested);
+        SetupDiagnostics.Write(SetupStage.ConsentPresentation);
         await flow.CacheAsync();
         var form = await flow.ConsentAsync();
+        SetupDiagnostics.Write(SetupStage.ConsentPolicyReview);
         await RebindAsync(test);
         var before = await ManagedHumanEvidence.DigestAsync(test);
+        SetupDiagnostics.Write(SetupStage.ConsentSubmit);
         using var response = await ManagedHumanHttp.DecideAsync(test, form);
+        SetupDiagnostics.Write(SetupStage.ConsentObservation);
         var actual = Assert.Single((await test.SnapshotAsync()).Interactions);
         Assert.True(actual.State == ManagedLoginState.PendingConsent && actual.ConsentVerifiedAt is null, Bypass);
         await ManagedCacheTestContext.UnavailableAsync(response);

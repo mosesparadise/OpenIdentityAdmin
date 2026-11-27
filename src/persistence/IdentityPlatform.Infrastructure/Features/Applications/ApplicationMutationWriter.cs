@@ -21,7 +21,7 @@ internal static class ApplicationMutationWriter
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind == ApplicationMutationKind.Create)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
@@ -36,7 +36,12 @@ internal static class ApplicationMutationWriter
         await RequireMutableAsync(scope, command.ApplicationId!, descriptor.ClientId!, token);
         var policy = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .SingleOrDefaultAsync(row => row.ApplicationId == command.ApplicationId, current), token);
-        if (policy is null || policy.ApplicationId != command.ApplicationId || policy.Profile != ApplicationEditorRules.Profile || !ManagedApplicationProfile.MatchesManagement(descriptor))
+        if (policy is null || policy.ApplicationId != command.ApplicationId || !ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
+        }
+        if (policy.Profile == ApplicationEditorRules.NativeProfile && (command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Clone ||
+            command.Kind == ApplicationMutationKind.Edit && !command.Redirects.All(ApplicationEditorRules.IsNativeRedirect)))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
