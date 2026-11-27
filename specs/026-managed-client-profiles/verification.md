@@ -36,3 +36,32 @@ all 17 module coverage floors and 161 causal mutation kills with passing baselin
 and restoration controls. The rollback evidence includes a populated public native
 row. The retirement history in the migration fixture is synthetic. The storage
 increment does not activate additional client types in the issuer.
+
+## Public native registration
+
+PR143 squash-merged as `3453e98d03168acf672be71f4e10907a4fdba77a`. CI656
+tested source `175ab8cc5fd361e97c4fe83b37ff5086eb1d51c8` and merge
+`0790457a3456ff6acc254e9991d0ff8015009acf`. Both have the squash tree
+`25fda44e845086f9a395e462cf8e3cac886a1bf4`. All 149 jobs passed on the
+first attempt. [PR143](https://github.com/mosesparadise/OpenIdentityAdmin/pull/143) · [CI656](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46079293810)
+
+On PostgreSQL and SQL Server, the native journey registered the application
+through the BFF, exercised consent and exact callback and verifier checks,
+completed the secretless exchange and verified scoped tokens and UserInfo.
+It also exercised disablement, re-enablement and permanent retirement with
+retained audit history. Device-level callback association is the installed
+app owner's responsibility. [Integration guide](quickstart.md)
+
+Review matched all 143 original archives to their hosted sizes and
+SHA-256 digests. The reports contained 6,613 passing .NET cases across
+123 reports, 150 UI cases and 47 Node tooling cases. All 120 original
+coverage inputs reconciled to the merged lines and all 17 module floors
+passed. The 25 mutation receipts recorded 161 expected outcomes with
+passing baseline and restoration controls.
+
+All 32 Accounts browser cases passed, including all 16 keyboard-enrollment
+cases across both databases, both browser engines, light and dark themes,
+and compact and desktop widths. The password and MFA error checks observed
+actual focus after the deferred page scripts ran. CI655 did not record its
+script timing. Its package-feed HTTP 403 and CI648's unclassified navigation
+error remain in the run history. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867) · [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
