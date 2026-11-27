@@ -25,8 +25,8 @@ The hosted provider/browser matrix and original CI evidence review passed for PR
 Both Platform provider migrations can now represent public native, browser and device
 registrations without credential timestamps or a credential revision. Confidential web
 and machine profiles with a shared secret or a public authentication key require a
-positive credential revision and an ordered lifetime. Application and issuer eligibility
-still require the exact delivered web profile. This increment supplies storage only.
+positive credential revision and an ordered lifetime. At the time of this storage increment, application and issuer eligibility
+required the exact delivered web profile.
 
 Local Release persistence tests ran 14 cases, seven on each provider. They checked
 the profile combinations, partial metadata, alias rejection, populated predecessor
@@ -40,7 +40,12 @@ PR142 delivered the storage prerequisite at `7461cdd`. The final CI638 run
 passed all 149 jobs. Both persistence reports contained 42 passing cases,
 including seven affected cases per provider. [Storage verification](verification.md#client-profile-storage)
 
-### Native application registration draft
+### Public native registration delivered
+
+PR143 reached main at `3453e98` with reviewed CI656 evidence. This delivers
+the native portion of T002 and the installed app guide in T006. The browser
+portion of T002 and the remaining documentation in T006 are still open.
+[Acceptance](verification.md#public-native-registration) · [Installed app guide](quickstart.md)
 
 T002 and T006 now include a separate public native create operation on the versioned
 API and BFF. The editor submits the client ID, display name and exact HTTPS callbacks.

@@ -1,6 +1,6 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current delivery — managed client profiles, 21 November 2026
+## Current delivery — managed client profiles, 27 November 2026
 
 Feature026 covers the selected M04-B client profiles, M04-C credentials and M04-D
 integration documentation. The managed web editor now exposes the registered client
@@ -9,14 +9,17 @@ PR141 reached main at `d69b874` after all 149 CI632 jobs and the original eviden
 review passed. [Feature026 verification](../../specs/026-managed-client-profiles/verification.md)
 
 PR142 delivered the PostgreSQL and SQL Server storage prerequisite at `7461cdd`.
-All 149 CI638 jobs passed. PR143 builds on it
-with public native registration and a secretless authorization-code exchange.
-CI636 recorded a Host unit timeout and a SQL Server/WebKit retirement test-host
-crash. CI642 recorded a PostgreSQL consent-policy mutation failure outside its
-required assertion and a separate MFA failure in the confidential lifecycle journey.
-PR143 requires current hosted evidence before delivery.
-The remaining browser, machine, device, asymmetric-key and protected-documentation
-work is tracked in the [feature026 register](../../specs/026-managed-client-profiles/tasks.md).
+All 149 CI638 jobs passed. PR143 delivered public native registration and the
+secretless authorization-code exchange at `3453e98`. All 149 CI656 jobs
+passed, including the PostgreSQL/Chromium keyboard focus and SQL Server/WebKit
+application-authority cases that failed in CI655. The installed app owner
+configures the operating system's association with the registered HTTPS callback.
+[Installed app guide](../../specs/026-managed-client-profiles/quickstart.md)
+
+Browser, machine, device, asymmetric-key and protected-documentation work
+remains open. The task register retains the earlier failed runs, including
+CI648's unclassified first navigation and CI655's unknown focus timing.
+[Feature026 register](../../specs/026-managed-client-profiles/tasks.md)
 
 ## Previous delivery — application cloning and permanent retirement, 15 November 2026
 
