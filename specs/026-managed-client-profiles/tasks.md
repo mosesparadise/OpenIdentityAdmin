@@ -159,3 +159,19 @@ The HTTPS fixture now reports whether it received the first GET to
 callback. Zero means the callback was not observed. These fields are scoped
 to one fixture endpoint and survive later sign-ins. They do not establish
 that the browser received the response.
+
+CI655 passed all 26 PostgreSQL and SQL Server WebKit browser-session cases.
+On each provider the BFF recorded the initial sign-in GET and HTTP 200 at
+response startup. The earlier CI648 navigation failure remains unexplained.
+CI655 separately failed the PostgreSQL/Chromium dark desktop keyboard case
+when it checked focus after an invalid MFA code. The SQL Server/WebKit
+application-authority job stopped before testing when the Microsoft Ubuntu
+package feed returned HTTP 403. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867)
+
+The keyboard case now observes focus after the error summary is visible and
+DOMContentLoaded has fired for the error document. The shared layout defers
+login.js, which focuses the summary. In a controlled Chromium 151 page using
+the shipped script and the MFA summary markup, the summary was visible before
+the script ran and focused at DOMContentLoaded. A non-focusable control stayed
+unfocused at that same point. This establishes a possible ordering in the
+browser. CI655 did not record when its deferred script ran.

@@ -129,6 +129,7 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
         await page.Locator(Password).FillAsync(InvalidPassword);
         await page.Locator(Submit).PressAsync(EnterKey);
         await page.Locator(ErrorSummary).WaitForAsync();
+        await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         Assert.True(await page.EvaluateAsync<bool>(FocusedError), FocusFailure);
         await RequirePageAsync(page);
         await page.Locator(Username).FillAsync(environment.Database.Username);
@@ -142,6 +143,7 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
         await page.Locator(Submit).PressAsync(EnterKey);
         await page.Locator(ErrorSummary).WaitForAsync();
         FactorOracle.RequireWindow(seed, invalidCode, started, valid: false);
+        await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         Assert.True(await page.EvaluateAsync<bool>(FocusedError), FocusFailure);
         await RequirePageAsync(page);
         await page.GetByRole(AriaRole.Link, new()
