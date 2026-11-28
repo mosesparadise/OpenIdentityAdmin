@@ -22,7 +22,7 @@ internal static class ApplicationMutationWriter
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
@@ -44,6 +44,11 @@ internal static class ApplicationMutationWriter
         if ((policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile &&
             command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Clone) ||
             (policy.Profile == ApplicationEditorRules.NativeProfile && command.Kind == ApplicationMutationKind.Edit && !command.Redirects.All(ApplicationEditorRules.IsNativeRedirect)))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
+        }
+        if (policy.Profile == MachineClientRules.Profile && command.Kind == ApplicationMutationKind.Clone ||
+            command.Kind == ApplicationMutationKind.Edit && (policy.Profile == MachineClientRules.Profile) != command.Redirects.IsEmpty)
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
@@ -118,6 +123,10 @@ internal static class ApplicationMutationWriter
         OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, ImmutableArray<string> origins, CancellationToken token)
     {
         var selection = await ApplicationScopeSelection.ReadAsync(scope, command.Scopes, token);
+        if (policy.Profile == MachineClientRules.Profile)
+        {
+            _ = selection.MachineResources();
+        }
         var prefix = OpenIddictConstants.Permissions.Prefixes.Scope;
         descriptor.Permissions.RemoveWhere(value => value.StartsWith(prefix, StringComparison.Ordinal));
         descriptor.Permissions.UnionWith(command.Scopes.Select(name => prefix + name));

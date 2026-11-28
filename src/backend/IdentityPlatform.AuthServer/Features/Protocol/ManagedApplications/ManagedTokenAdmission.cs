@@ -1,4 +1,5 @@
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using Microsoft.AspNetCore;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -12,6 +13,10 @@ internal sealed class ManagedTokenAdmission
     private readonly string binding;
     private OpenIddictServerEvents.HandleTokenRequestContext? handoff;
 
+    internal MachineGrant? Machine
+    {
+        get; private set;
+    }
     internal ManagedEndpointParent? Parent
     {
         get; private set;
@@ -35,12 +40,30 @@ internal sealed class ManagedTokenAdmission
         {
             return;
         }
-        if (!context.Request.IsAuthorizationCodeGrantType() || !ManagedDemand.Candidate(context.ClientId) || Find(context.Transaction) is not null)
+        if (!(context.Request.IsAuthorizationCodeGrantType() || context.Request.IsClientCredentialsGrantType()) || !ManagedDemand.Candidate(context.ClientId) || Find(context.Transaction) is not null)
         {
             context.Reject(OpenIddictConstants.Errors.InvalidRequest);
             return;
         }
-        context.Transaction.SetProperty(typeof(ManagedTokenAdmission).FullName!, new ManagedTokenAdmission(context));
+        var admission = new ManagedTokenAdmission(context);
+        if (context.Request.IsClientCredentialsGrantType())
+        {
+            var factory = context.Transaction.GetHttpRequest()!.HttpContext.RequestServices.GetRequiredService<IServiceScopeFactory>();
+            admission.Machine = await ProtocolStorageChild.RunAsync(factory, async (scope, token) =>
+            {
+                await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+                await ManagedRegistration.LockAsync(scope, token);
+                var grant = await MachineGrant.ReadAsync(scope, context.Request, token);
+                await transaction.CommitAsync(token);
+                return grant;
+            });
+            if (admission.Machine is null)
+            {
+                context.Reject(OpenIddictConstants.Errors.InvalidScope);
+                return;
+            }
+        }
+        context.Transaction.SetProperty(typeof(ManagedTokenAdmission).FullName!, admission);
     }
 
     /// <summary>Requires normal return from the installed native passthrough; manually setting skipped never satisfies this receipt.</summary>

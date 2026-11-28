@@ -12,7 +12,8 @@ internal static class NativeTokenObservations
     internal static ValueTask GenerateAsync(OpenIddictServerEvents.GenerateTokenContext context, Func<ValueTask> native)
     {
         Exclusive(context);
-        return NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.GenerateAsync(context, native) :
+        return MachineIssuance.Find(context.Transaction) is { } machine ? machine.GenerateAsync(context, native) :
+            NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.GenerateAsync(context, native) :
             ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.GenerateAsync(context, native) :
             ManagedIssuanceProof.Find(context.Transaction) is { } issuance ? issuance.GenerateAsync(context, native) : native();
     }
@@ -22,7 +23,8 @@ internal static class NativeTokenObservations
         Func<ValueTask> native)
     {
         Exclusive(context);
-        return NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.ObserveAsync(context, operation) :
+        return MachineIssuance.Find(context.Transaction) is { } machine ? machine.ObserveAsync(context, operation) :
+            NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.ObserveAsync(context, operation) :
             ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.ObserveAsync(context, operation) :
             ManagedIssuanceProof.Find(context.Transaction) is { } issuance ? issuance.ObserveAsync(context, operation) : native();
     }
@@ -31,7 +33,7 @@ internal static class NativeTokenObservations
     private static void Exclusive(OpenIddictServerEvents.GenerateTokenContext context)
     {
         if ((NativeIssuanceProof.Find(context.Transaction) is null ? 0 : 1) + (ManagedCacheProof.Find(context.Transaction) is null ? 0 : 1) +
-            (ManagedIssuanceProof.Find(context.Transaction) is null ? 0 : 1) > 1)
+            (ManagedIssuanceProof.Find(context.Transaction) is null ? 0 : 1) + (MachineIssuance.Find(context.Transaction) is null ? 0 : 1) > 1)
         {
             throw ProtocolStorageOwner.Unavailable();
         }

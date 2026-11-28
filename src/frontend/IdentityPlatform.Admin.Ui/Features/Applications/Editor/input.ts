@@ -2,7 +2,9 @@ import type { components } from "../../../../IdentityPlatform.Admin.Contracts/ge
 export type CloneInput = components["schemas"]["ApplicationClone"];
 export type CloneDraft = { confirmed: boolean; clientId: string; displayName: string; credentialExpiresAt: string };
 export type CreateInput = components["schemas"]["ApplicationCreate"];
-export type RegistrationType = "web" | "native" | "browser";
+export type RegistrationType = "web" | "native" | "browser" | "machine";
+export type MachineInput = components["schemas"]["ApplicationMachineCreate"];
+export const machineProfile = "managed-machine-v1";
 export type BrowserInput = components["schemas"]["ApplicationBrowserCreate"];
 export const browserProfile = "managed-browser-v1";
 export const nativeProfile = "managed-native-v1";
@@ -66,12 +68,13 @@ export function validate(draft: Draft, now: number): { input?: CreateInput; erro
 export function addressable(id: string): boolean { return text(id, 400) && id !== "." && id !== ".." && id.toLowerCase() !== "antiforgery"; }
 
 /** Validates only mutable presentation fields; neither identity nor credential lifecycle can enter PUT input. */
-export function validateEdit(draft: EditDraft, native = false): { input?: EditInput; errors: Errors } {
+export function validateEdit(draft: EditDraft, native = false, machine = false): { input?: EditInput; errors: Errors } {
   const errors: Errors = {};
   if (!text(draft.displayName, 200)) errors.displayName = "Enter a name of 1–200 characters without control characters.";
-  const redirectUris = draft.redirectUris.split(/\r?\n/);
+  const redirectUris = machine && !draft.redirectUris ? [] : draft.redirectUris.split(/\r?\n/);
   if (redirectUris.length > 10 || redirectUris.some(value => !callback(value)) || new Set(redirectUris).size !== redirectUris.length)
     errors.redirectUris = "Enter 1–10 different, exact HTTPS callbacks, one per line, without spaces, credentials or fragments.";
+  if (machine && redirectUris.length) errors.redirectUris = "Machine clients cannot register callback URLs.";
   if (native && !redirectUris.every(nativeCallback)) errors.redirectUris = "Use an exact HTTPS callback on a DNS name associated with your native application.";
   const input = { displayName: draft.displayName, redirectUris };
   if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) errors.redirectUris = "The change exceeds the 32 KiB request limit.";
@@ -85,6 +88,15 @@ export function validateNative(draft: Draft): { input?: NativeInput; errors: Err
   const input = { clientId: draft.clientId, ...edit };
   if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) return { errors: { redirectUris: "The registration exceeds the 32 KiB request limit." } };
   return { input, errors };
+}
+/** Builds service credentials without callbacks, user login or browser origin policy. */
+export function validateMachine(draft: Draft, now: number): { input?: MachineInput; errors: Errors } {
+  const errors: Errors = {};
+  if (!text(draft.clientId, 100) || whitespace.test(draft.clientId)) errors.clientId = "Enter 1–100 characters without whitespace or control characters.";
+  if (!text(draft.displayName, 200)) errors.displayName = "Enter a name of 1–200 characters without control characters.";
+  if (!(utc(draft.credentialExpiresAt, true) > now)) errors.credentialExpiresAt = "Enter a future UTC date and time as YYYY-MM-DDTHH:mm:ssZ.";
+  const input = { clientId: draft.clientId, displayName: draft.displayName, credentialExpiresAt: draft.credentialExpiresAt };
+  return Object.keys(errors).length ? { errors } : { input, errors };
 }
 /** Matches the canonical Origin header sent by the browser for a credential-free HTTPS fetch. */
 export function browserOrigin(value: unknown): value is string {

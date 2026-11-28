@@ -36,7 +36,8 @@ internal static class ProtocolDecisions
         if (http.RequestServices.GetRequiredService<ProtocolProfiles>().Managed && ManagedTokenAdmission.Find(
             http.Features.Get<OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreFeature>()!.Transaction!) is { } managed && managed.Current())
         {
-            return ManagedEndpointDecision.ExchangeAsync(http);
+            return managed.Machine is { } machine ? Task.FromResult(ManagedEndpointDecision.Attach(http, MachinePrincipal.Create(machine))) :
+                ManagedEndpointDecision.ExchangeAsync(http);
         }
         var pilot = IsPilot(http, OpenIddictServerEndpointType.Token);
         return pilot ? TokenEndpoint.HandleAsync(http, http.RequestServices.GetRequiredService<PilotEligibility>(),

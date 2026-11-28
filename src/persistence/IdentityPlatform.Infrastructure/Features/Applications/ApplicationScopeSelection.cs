@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
+using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -35,6 +36,17 @@ internal sealed class ApplicationScopeSelection(ImmutableArray<ApplicationScopeS
         }
         catch (CatalogueRejected) { throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported); }
         return new(entries.ToImmutable());
+    }
+
+    /// <summary>Resolves machine resources only from enabled API scopes without identity disclosures or an administrator audience.</summary>
+    internal string[] MachineResources()
+    {
+        if (entries.Any(entry => entry.Scope.Kind != CatalogueRules.Api || entry.Scope.Disclosure != CatalogueRules.None ||
+            entry.Audience is not { Enabled: true } || entry.Scope.Resource != entry.Audience.Resource || !CatalogueRules.IsResource(entry.Audience.Resource)))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
+        }
+        return entries.Select(entry => entry.Audience!.Resource).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
     }
 
     /// <summary>Rejects scope or audience substitution, disablement and revision changes after saves before the owning transaction may commit.</summary>

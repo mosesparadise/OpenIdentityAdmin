@@ -68,6 +68,11 @@ internal sealed class ApplicationMutationCommand
             ? new(ApplicationMutationKind.Create, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, expiry) : null;
     }
 
+    /// <summary>Freezes an approved service identity and credential deadline without creating interactive grant capabilities.</summary>
+    internal static ApplicationMutationCommand? CreateMachine(ApplicationMachineCreate input, DateTimeOffset now) =>
+        MachineClientRules.IsValid(input, now) && ApplicationEditorRules.TryReadExpiry(input.CredentialExpiresAt, now, out var expiry)
+            ? new(ApplicationMutationKind.CreateMachine, null, null, input.ClientId, input.DisplayName, [], expiry) : null;
+
     /// <summary>Snapshots a public client without accepting a credential or arbitrary protocol settings.</summary>
     internal static ApplicationMutationCommand? CreateNative(ApplicationNativeCreate input)
     {
@@ -107,7 +112,7 @@ internal sealed class ApplicationMutationCommand
         {
             RedirectUris = input.RedirectUris?.ToArray()!
         };
-        return Target(id, version) && ApplicationEditorRules.Validate(frozen).Count == 0
+        return Target(id, version) && (MachineClientRules.IsEdit(frozen) || ApplicationEditorRules.Validate(frozen).Count == 0)
             ? new(ApplicationMutationKind.Edit, id, version, null, frozen.DisplayName, frozen.RedirectUris, null) : null;
     }
 
@@ -138,7 +143,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser, CreateMachine
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

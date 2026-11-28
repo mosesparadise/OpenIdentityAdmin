@@ -1,5 +1,5 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { callback, nativeCallback, nativeProfile, browserProfile, browserOrigin, type NativeInput, type BrowserInput, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
+import { callback, nativeCallback, nativeProfile, browserProfile, browserOrigin, type NativeInput, type BrowserInput, type MachineInput, machineProfile, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 export type Details = components["schemas"]["ApplicationDetails"];
 export type Result = { status: number; value?: unknown; etag?: string | null; location?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
@@ -23,7 +23,7 @@ export async function version(value: string | null | undefined, id: string, crea
   return value === `"${hex}-${revision}"`;
 }
 /** Validates managed or explicitly read-only details and original server observation expiry; credentials never enter this projection. */
-export async function observe(result: Result, id: string | null, now: number, input?: CreateInput | NativeInput | BrowserInput): Promise<Observed | null> {
+export async function observe(result: Result, id: string | null, now: number, input?: CreateInput | NativeInput | BrowserInput | MachineInput): Promise<Observed | null> {
   const dto = result.value;
   const browser = !!dto && typeof dto === "object" && "profile" in dto && dto.profile === browserProfile;
   if (!object(dto, browser ? [...fields, "origins"] : fields) || !text(dto.id, 400) || id !== null && dto.id !== id || !text(dto.clientId, 100) ||
@@ -36,9 +36,10 @@ export async function observe(result: Result, id: string | null, now: number, in
   let credential: Details["credential"] = null;
   if (dto.editable || dto.retired) {
     if (dto.retired ? dto.editable || dto.enabled !== false || input || !retirementReference(dto.retirement, dto.credential, expires, now) : dto.retirement !== null) return null;
+    const machine = dto.profile === machineProfile;
     const native = dto.profile === nativeProfile;
-    if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || (!native && !browser && dto.profile !== "managed-web-v1") ||
-        dto.redirectUris.length < 1 || dto.redirectUris.length > 10 || !dto.redirectUris.every(native ? nativeCallback : callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
+    if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || (!native && !browser && !machine && dto.profile !== "managed-web-v1") ||
+        (machine ? dto.redirectUris.length !== 0 : dto.redirectUris.length < 1) || dto.redirectUris.length > 10 || !dto.redirectUris.every(native ? nativeCallback : callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
         !await version(result.etag, dto.id, !!input) || dto.retired && BigInt(result.etag!.slice(66, -1)) < 2n) return null;
     if (native || browser) {
       if (dto.credential !== null) return null;
@@ -48,16 +49,16 @@ export async function observe(result: Result, id: string | null, now: number, in
     }
   } else if (dto.retirement !== null || dto.enabled !== null || input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
   if (input && (dto.enabled !== true || dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
-      JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...input.redirectUris].sort()))) return null;
+      JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...("redirectUris" in input ? input.redirectUris : [])].sort()))) return null;
   if (input && ("credentialExpiresAt" in input
-      ? !credential || utc(credential.expiresAt) !== utc(input.credentialExpiresAt, true) || utc(credential.expiresAt) <= now
+      ? !credential || dto.profile !== ("redirectUris" in input ? "managed-web-v1" : machineProfile) || utc(credential.expiresAt) !== utc(input.credentialExpiresAt, true) || utc(credential.expiresAt) <= now
       : "origins" in input ? !browser || JSON.stringify(origins) !== JSON.stringify([...input.origins].sort()) : dto.profile !== nativeProfile)) return null;
   return { details: { id: dto.id, clientId: dto.clientId, displayName: dto.displayName as string | null,
     redirectUris: [...dto.redirectUris] as string[], profile: dto.profile as string | null, editable: dto.editable,
     ...(browser ? { origins: [...origins as string[]] } : {}), credential, retired: dto.retired, retirement: dto.retirement === null ? null : { ...(dto.retirement as NonNullable<Details["retirement"]>) }, enabled: dto.enabled as boolean | null, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
 }
 /** Accepts only the native one-time secret shape and exact creation response, independently of generated static types. */
-export async function created(result: Result, input: CreateInput, now: number): Promise<(Observed & { secret: string }) | null> {
+export async function created(result: Result, input: CreateInput | MachineInput, now: number): Promise<(Observed & { secret: string }) | null> {
   if (result.status !== 201 || !object(result.value, ["application", "clientSecret"]) ||
       typeof result.value.clientSecret !== "string" || !/^[A-Za-z0-9+/]{43}=$/.test(result.value.clientSecret)) return null;
   const secret = result.value.clientSecret;

@@ -48,8 +48,8 @@ internal static class ApplicationDetailsReader
         {
             return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
-        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects is null || row.Redirects.Length > NativeJsonBytes ||
-            row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements is null || row.Requirements.Length > NativeNamesLength)
+        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects?.Length > NativeJsonBytes || row.Redirects is null && policy.Profile != MachineClientRules.Profile ||
+            row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements?.Length > NativeNamesLength || row.Requirements is null && policy.Profile != MachineClientRules.Profile)
         {
             throw new InvalidDataException();
         }
@@ -82,7 +82,8 @@ internal static class ApplicationDetailsReader
         {
             return null;
         }
-        if (policy.Profile == ApplicationEditorRules.Profile && row.HasSecret && ManagedApplicationProfile.MatchesManagement(descriptor) &&
+        if (row.HasSecret && (policy.Profile == ApplicationEditorRules.Profile && ManagedApplicationProfile.MatchesManagement(descriptor) ||
+            policy.Profile == MachineClientRules.Profile && ManagedApplicationProfile.MatchesMachine(descriptor)) &&
             policy.CredentialRevision >= 1 && policy.CredentialIssuedAt is { } issued && policy.CredentialExpiresAt is { } expires &&
             issued >= 0 && expires > issued && policy.ObservedAt >= issued)
         {
@@ -110,10 +111,10 @@ internal static class ApplicationDetailsReader
     /// <summary>Reconstructs only finite public profile fields and rejects duplicate native array entries or invalid callback text.</summary>
     private static OpenIddictApplicationDescriptor Descriptor(Row row)
     {
-        var redirects = JsonSerializer.Deserialize<string[]>(row.Redirects!, ApplicationJson.Options) ?? throw new InvalidDataException();
+        var redirects = JsonSerializer.Deserialize<string[]>(row.Redirects ?? EmptyArray, ApplicationJson.Options) ?? throw new InvalidDataException();
         var permissions = JsonSerializer.Deserialize<string[]>(row.Permissions!, ApplicationJson.Options) ?? throw new InvalidDataException();
-        var requirements = JsonSerializer.Deserialize<string[]>(row.Requirements!, ApplicationJson.Options) ?? throw new InvalidDataException();
-        if (redirects.Length is < 1 or > ApplicationEditorRules.MaximumRedirects || redirects.Any(value => !ApplicationEditorRules.IsRedirect(value)) ||
+        var requirements = JsonSerializer.Deserialize<string[]>(row.Requirements ?? EmptyArray, ApplicationJson.Options) ?? throw new InvalidDataException();
+        if (redirects.Length > ApplicationEditorRules.MaximumRedirects || redirects.Any(value => !ApplicationEditorRules.IsRedirect(value)) ||
             redirects.Distinct(StringComparer.Ordinal).Count() != redirects.Length || permissions.Distinct(StringComparer.Ordinal).Count() != permissions.Length ||
             requirements.Distinct(StringComparer.Ordinal).Count() != requirements.Length)
         {

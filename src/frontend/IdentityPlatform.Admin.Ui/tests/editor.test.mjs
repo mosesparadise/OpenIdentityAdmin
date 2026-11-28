@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { validate, validateMachine, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
 import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
@@ -160,8 +160,13 @@ test('Given_generated_transport_When_operations_run_Then_paths_proofs_and_creden
   await client.createBrowser(browser, proof.value.requestToken, signal);
   assert.equal(requests[4].url, 'https://bff.example.test/bff/api/v1/applications/browser-registrations');
   assert.deepEqual(await requests[4].json(), browser);
+  const machine = validateMachine(draft, now).input;
+  await client.createMachine(machine, proof.value.requestToken, signal);
+  assert.equal(requests[5].url, 'https://bff.example.test/bff/api/v1/applications/machine-registrations');
+  assert.equal(requests[5].headers.get('X-CSRF-TOKEN'), proof.value.requestToken);
+  assert.deepEqual(await requests[5].json(), machine);
   for(const request of requests){assert.equal(request.credentials,'same-origin');assert.equal(request.cache,'no-store');assert.equal(request.redirect,'error');assert.equal(request.headers.has('authorization'),false)}
-  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,5);
+  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,6);
  }finally{globalThis.fetch=original;delete globalThis.window;}
 });
 
@@ -705,4 +710,26 @@ test('Given_a_browser_registration_When_created_Then_separate_origins_and_callba
  const different={status:200,value:{...application,displayName:'New',origins:['https://different.example']},etag:read.etag.replace('-1"','-2"')};
  assert.equal(await edited(different,base,{displayName:'New',redirectUris:application.redirectUris},now),null);
  owner.suspend();assert.equal(states.at(-1).outcome,'browser-created');
+});
+
+
+test('Given_a_machine_registration_When_created_Then_the_service_receives_one_secret_and_no_callbacks', async t => {
+ const service = { ...draft, redirectUris: '', clientId: 'indexer' };
+ const body = validateMachine(service, now).input;
+ assert.deepEqual(body, {clientId:service.clientId, displayName:draft.displayName, credentialExpiresAt:draft.credentialExpiresAt});
+ for (const [key,value] of Object.entries({clientId:'bad id',displayName:'',credentialExpiresAt:'2000-01-01T00:00:00Z'}))
+   assert.ok(validateMachine({...service,[key]:value}, now).errors[key]);
+ assert.deepEqual(validateEdit(service,false,true).input.redirectUris, []);
+ assert.ok(validateEdit(draft,false,true).errors.redirectUris);
+ const application = {...details,clientId:service.clientId,profile:'managed-machine-v1',redirectUris:[]};
+ const response = {...success,value:{application,clientSecret:secret}};
+ const {owner,states} = setup(t,{createMachine:async input => {assert.deepEqual(input,body);return response;}});
+ owner.newForm(); await owner.create(service,'machine');
+ const base=states.at(-1); assert.equal(base.kind,'created'); assert.equal(base.secret,secret);
+ const html=renderToStaticMarkup(createElement(DetailsView,{details:base.details,dismiss(){}}));
+ assert.match(html,/client_credentials/); assert.match(html,/client_secret_basic/);
+ assert.doesNotMatch(html,/HTTPS callbacks|Clone application|S256/);
+ for (const changed of [{profile:'managed-web-v1'},{redirectUris:[draft.redirectUris]},{credential:null}])
+   assert.equal(await created({...response,value:{application:{...application,...changed},clientSecret:secret}},body,now),null);
+ owner.suspend(); assert.equal(JSON.stringify(states.at(-1)).includes(secret),false);
 });

@@ -2,7 +2,7 @@ import { retired } from "./retirement";
 import { assignment } from "./Scopes/observation";
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
-import { validate, validateNative, validateBrowser, type BrowserInput, type RegistrationType, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
+import { validate, validateNative, validateBrowser, validateMachine, machineProfile, type MachineInput, type BrowserInput, type RegistrationType, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
 import { created, cloned, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
 export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone" | "retire";
 export type Outcome = "browser-created" | "browser-unknown" | "native-created" | "native-unknown" | "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
@@ -71,11 +71,11 @@ export class EditorController {
   /** Sets the single-send fence before token acquisition; any post-dispatch non-success remains potentially committed. */
   async create(draft: Draft, profile: RegistrationType = "web"): Promise<Errors> {
     if (this.stopped || this.state.kind !== "form") return {};
-    const checked = profile === "browser" ? validateBrowser(draft) : profile === "native" ? validateNative(draft) : validate(draft, this.now());
+    const checked = profile === "machine" ? validateMachine(draft, this.now()) : profile === "browser" ? validateBrowser(draft) : profile === "native" ? validateNative(draft) : validate(draft, this.now());
     if (!checked.input) return checked.errors;
     if (!this.currentSession()) { this.fail("expired", "not-sent"); return {}; }
     const input = checked.input;
-    const confidential = (value: typeof input): value is CreateInput => "credentialExpiresAt" in value;
+    const confidential = (value: typeof input): value is CreateInput | MachineInput => "credentialExpiresAt" in value;
     const operation = this.begin(profile === "browser" ? "create-browser" : profile === "native" ? "create-native" : "create");
     try {
       const proof = await this.client.token(operation.signal);
@@ -85,7 +85,8 @@ export class EditorController {
           !/^[A-Za-z0-9_-]{1,4096}$/.test(proof.value.requestToken)) { this.fail("unavailable", "not-sent"); return {}; }
       if (confidential(input) && !(utc(input.credentialExpiresAt, true) > this.now())) { this.fail("invalid", "not-sent"); return {}; }
       this.dispatched = true;
-      const result = confidential(input) ? await this.client.create(input, proof.value.requestToken, operation.signal) :
+      const result = confidential(input) ? ("redirectUris" in input ? await this.client.create(input, proof.value.requestToken, operation.signal) :
+        await this.client.createMachine(input, proof.value.requestToken, operation.signal)) :
         "origins" in input ? await this.client.createBrowser(input as BrowserInput, proof.value.requestToken, operation.signal) :
         await this.client.createNative(input, proof.value.requestToken, operation.signal);
       if (!this.live(operation.version)) return {};
@@ -113,7 +114,7 @@ export class EditorController {
   async openClone(): Promise<void> {
     this.checkDeadline();
     if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
-    if (!this.state.details.credential) return;
+    if (!this.state.details.credential || this.state.details.profile === machineProfile) return;
     const base: Observed = { details: structuredClone(this.state.details), expires: this.state.expires, etag: this.state.etag };
     this.completed = undefined; this.target = { id: base.details.id, action: "clone" };
     const operation = this.begin("read", base.expires);
@@ -150,7 +151,7 @@ export class EditorController {
   /** Submits only presentation changes against the original strong version. */
   async edit(draft: EditDraft): Promise<Errors> {
     if (this.stopped || this.state.kind !== "edit-form") return {};
-    const checked = validateEdit(draft, this.state.details.profile === nativeProfile);
+    const checked = validateEdit(draft, this.state.details.profile === nativeProfile, this.state.details.profile === machineProfile);
     if (!checked.input) return checked.errors;
     const input = checked.input, base = this.state;
     return this.mutate(base, "edit", (token, signal) => this.client.edit(base.details.id, base.etag!, input, token, signal),
