@@ -65,3 +65,24 @@ and compact and desktop widths. The password and MFA error checks observed
 actual focus after the deferred page scripts ran. CI655 did not record its
 script timing. Its package-feed HTTP 403 and CI648's unclassified navigation
 error remain in the run history. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867) · [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
+
+
+## Permission-filtered contract generation
+
+The projection uses the current source session, credential deadline and persisted
+permissions under the management reader transaction. It extracts operations carrying
+the caller's required grants and follows the local schemas and security schemes that
+the result references. The browser session and antiforgery helper operations have
+no permission declaration and are omitted. The full source document is preserved
+for subsequent readers. The protected documentation routes remain dormant.
+
+The vendor review matched the Swagger UI 11.0.1 embedded bundle to swagger-ui-dist
+5.34.1, including its DOMPurify 3.4.17 runtime. The published source map still
+mismatches the running bundle. Scalar.AspNetCore 3.3.0 matched the standalone
+asset in @scalar/api-reference 1.85.0. Complete bundled component provenance
+and license decisions remain outstanding for viewer activation.
+
+Local Release verification passed all 44 non-browser contract cases. Two
+provider cases used actual PostgreSQL and SQL Server source sessions, current
+grants and native token records. They checked loss of a grant, shortening the
+persisted token expiry, and refusal after the reader transaction had disposed.
