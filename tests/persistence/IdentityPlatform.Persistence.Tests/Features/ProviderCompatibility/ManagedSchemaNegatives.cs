@@ -57,6 +57,7 @@ internal static class ManagedSchemaNegatives
         }
         var unbound = ManagedSchemaRows.Interaction(ManagedLoginState.DeviceApproved);
         unbound.DeviceEntryId = null;
+        unbound.AuthorizationId = null;
         await RejectAsync(fixture, unbound);
         var unapproved = ManagedSchemaRows.Interaction(ManagedLoginState.DeviceApproved);
         unapproved.ConsentVerifiedAt = null;
