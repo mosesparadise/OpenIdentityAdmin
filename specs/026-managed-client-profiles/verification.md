@@ -65,3 +65,14 @@ and compact and desktop widths. The password and MFA error checks observed
 actual focus after the deferred page scripts ran. CI655 did not record its
 script timing. Its package-feed HTTP 403 and CI648's unclassified navigation
 error remain in the run history. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867) · [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
+
+
+## Public browser registration
+
+Two real provider upgrade and rollback cases passed. Original TRX SHA-256 was `490e11c67dfb3611c80e259d8ee983bcf6888daf933bc54a59d6db4e72c35105`.
+
+Two provider HTTPS journeys passed. Each registered two public clients through the protected BFF, exercised preflight and discovery, completed human consent and a credential-free S256 exchange, verified user-bound UserInfo, refused a different registered origin, and disabled the client. Original TRX SHA-256 was `95f1f4c8aae712d6fa3cf8ee7dabeea339b7ad8d1d11a0cf420c6696e9585c44`.
+
+All 44 non-browser API contract cases passed. Original TRX SHA-256 was `6d3755245f3b06869815285583983d67b721510c915d072b96e0c7881798cb0e`.
+
+The HTTP journey sends browser Origin headers with cookies disabled. Both cases in the first run ended on the first HTTP 204 when the buffered transport attempted an empty body write. The passing run omits the write for an empty capture. Interactive browser, CI and independent acceptance evidence are recorded separately when available.

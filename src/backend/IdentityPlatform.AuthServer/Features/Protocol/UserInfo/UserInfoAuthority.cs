@@ -14,6 +14,7 @@ namespace IdentityPlatform.AuthServer.Features.Protocol.UserInfo;
 internal sealed class UserInfoAuthority(ManagedRegistration registration, ManagedLoginInteraction row, ManagedHumanSnapshot source,
     ManagedEmailProjection? email, DateTimeOffset expires)
 {
+    internal ManagedRegistration Registration => registration;
     internal string Subject => row.UserId!;
     internal ManagedEmailProjection? Email => email;
     internal DateTimeOffset Expires => expires;

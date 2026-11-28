@@ -39,6 +39,11 @@ internal static class Setup
             .Accepts<ApplicationNativeCreate>(JsonType).Produces<ApplicationDetails>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden)
             .ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        app.MapManagementGroup().MapPost(CollectionPath + ApplicationEditorRules.BrowserRegistrationSuffix, (Func<HttpContext, Task>)ApplicationNativeCreateEndpoint.HandleBrowserAsync)
+            .WithName(ApplicationNativeCreateEndpoint.BrowserOperation).WithSummary(ApplicationNativeCreateEndpoint.BrowserSummary)
+            .Accepts<ApplicationBrowserCreate>(JsonType).Produces<ApplicationDetails>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
         app.MapManagementGroup().MapPost(CollectionPath, (Func<HttpContext, Task>)ApplicationCreateEndpoint.HandleAsync)
             .WithName(CreateOperation).WithSummary(CreateSummary).Accepts<ApplicationCreate>(JsonType)
             .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)

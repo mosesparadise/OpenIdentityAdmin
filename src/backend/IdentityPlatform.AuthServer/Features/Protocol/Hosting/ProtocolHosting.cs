@@ -69,11 +69,21 @@ internal static class ProtocolHosting
     /// <summary>Installs the marker in the actual fresh scope used by authentication, native stores and endpoint decisions.</summary>
     private static Task RunOwnedAsync(HttpContext http, RequestDelegate next, OpenIddictServerEndpointType endpoint, ProtocolStorageRequest original) =>
         ProtocolHttpBoundary.RunAsync(http, http.RequestServices.GetRequiredService<IServiceScopeFactory>(),
-            original, async (_, scope, _) =>
+            original, async (_, scope, token) =>
             {
                 var request = scope.Services.GetRequiredService<ProtocolHostRequest>();
                 request.Bind(http, endpoint, ProtocolHostMode.Owned);
+                var cors = scope.Services.GetRequiredService<ProtocolProfiles>().Managed;
+                if (cors && await ManagedBrowserCors.PreflightAsync(http, scope, token))
+                {
+                    return ProtocolResponseOutcome.ReadOnly;
+                }
+                var origin = cors ? await ManagedBrowserCors.MetadataAsync(http, endpoint, scope, token) : null;
                 await next(http);
+                if (origin is not null)
+                {
+                    ManagedBrowserCors.RequireHeaders(http, origin);
+                }
                 return Claim(http, request, endpoint);
             });
 

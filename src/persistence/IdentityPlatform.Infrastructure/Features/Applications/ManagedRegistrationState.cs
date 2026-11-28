@@ -33,9 +33,9 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
         catch (ApplicationMutationRejected) { return null; }
         var policy = await scope.Owner.RunAsync(current => new ValueTask<ApplicationPolicy?>(scope.Owner.Database.Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == id, current)), token);
-        if (policy?.Profile == ApplicationEditorRules.NativeProfile)
+        if (policy?.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile)
         {
-            return await ReadNativeAsync(manager, application, policy, id!, clientId, token);
+            return await ReadPublicAsync(scope, manager, application, policy, id!, clientId, token);
         }
         if (policy is null || policy.Retired || !policy.Enabled || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||
             policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt is not { } issuedAt || issuedAt > policy.ObservedAt ||
@@ -52,7 +52,7 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
     }
 
     /// <summary>Reads a public registration only when both the current policy and the native descriptor identify the same secretless profile.</summary>
-    private static async ValueTask<ManagedRegistrationState?> ReadNativeAsync(IOpenIddictApplicationManager manager, object application,
+    private static async ValueTask<ManagedRegistrationState?> ReadPublicAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager, object application,
         ApplicationPolicy policy, string id, string clientId, CancellationToken token)
     {
         if (policy.ApplicationId != id || policy.Retired || !policy.Enabled || policy.Revision <= 0 || policy.ObservedAt < 0 ||
@@ -62,13 +62,25 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
         }
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
-        if (descriptor.ClientId != clientId || !ManagedApplicationProfile.MatchesNative(descriptor))
+        if (descriptor.ClientId != clientId || !ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor))
         {
             return null;
         }
         var redirects = descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray();
         var permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
-        return new(new(id, clientId, policy.Revision, 0, null, policy.ObservedAt, redirects, policy.Profile), permissions,
+        ImmutableArray<string> origins = [];
+        if (policy.Profile == ApplicationEditorRules.BrowserProfile)
+        {
+            origins = (await ApplicationBrowserOrigin.ReadAsync(scope, id, token)).ToImmutableArray();
+            if (!BrowserOriginPolicy.IsValid(origins))
+            {
+                return null;
+            }
+        }
+        return new(new(id, clientId, policy.Revision, 0, null, policy.ObservedAt, redirects, policy.Profile)
+        {
+            Origins = origins
+        }, permissions,
             !permissions.Any(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal)));
     }
 

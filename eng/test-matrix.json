@@ -377,7 +377,8 @@
         "ManagedScopeAssignmentTests",
         "ManagedScopeLegacyTests",
         "ManagedRetirementRaceTests",
-        "NativeClientJourneyTests"
+        "NativeClientJourneyTests",
+        "BrowserClientJourneyTests"
       ],
       "counts": {
         "PostgreSql": 72,

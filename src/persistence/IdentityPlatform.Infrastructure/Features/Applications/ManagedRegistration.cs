@@ -9,6 +9,8 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 internal sealed record ManagedRegistration(string ApplicationId, string ClientId, long Revision, long CredentialRevision, long? CredentialExpiresAt,
     long ObservedAt, string[] Redirects, string Profile = ApplicationEditorRules.Profile)
 {
+    internal System.Collections.Immutable.ImmutableArray<string> Origins { get; init; } = [];
+
     /// <summary>Upper bound for existing interaction and native token deadlines when a registration has an expiring credential.</summary>
     internal long ExpiresAt => CredentialExpiresAt ?? DateTimeOffset.MaxValue.ToUnixTimeSeconds();
 
@@ -30,5 +32,6 @@ internal sealed record ManagedRegistration(string ApplicationId, string ClientId
     /// <summary>Checks immutable registration authority without record-array reference equality or logging native credentials.</summary>
     internal bool Matches(ManagedRegistration? current) => current is not null && ApplicationId == current.ApplicationId &&
         ClientId == current.ClientId && Revision == current.Revision && CredentialRevision == current.CredentialRevision &&
-        Profile == current.Profile && CredentialExpiresAt == current.CredentialExpiresAt && current.ObservedAt >= ObservedAt && Redirects.SequenceEqual(current.Redirects, StringComparer.Ordinal);
+        Profile == current.Profile && CredentialExpiresAt == current.CredentialExpiresAt && current.ObservedAt >= ObservedAt && Redirects.SequenceEqual(current.Redirects, StringComparer.Ordinal) &&
+        Origins.SequenceEqual(current.Origins, StringComparer.Ordinal);
 }

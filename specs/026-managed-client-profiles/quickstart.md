@@ -49,3 +49,20 @@ consented to before UserInfo can return the available email.
 
 The [two-provider journey](../../tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/NativeClientJourneyTests.cs)
 exercises registration, consent, exchange and UserInfo with synthetic accounts.
+
+## Public browser client
+
+In **Applications**, choose **Create application** and **Public browser application**.
+Supply the exact HTTPS redirect URI used by the OIDC library. Enter each HTTPS origin
+from which the application will fetch discovery, signing keys, tokens or UserInfo.
+Origins contain the scheme, host and any non-default port. A callback such as
+`https://signin.example/callback` and an origin such as `https://portal.example`
+are separate inputs. Registering a callback grants no cross-origin access.
+
+Configure the OIDC library with the deployment issuer, saved client ID and redirect
+URI, response type `code`, scope `openid`, PKCE `S256` and token endpoint
+authentication method `none`. The library should generate fresh state, nonce and
+verifier values for each sign-in and verify them on return. Open the authorization
+endpoint through top-level navigation. For cross-origin fetches, omit cookies.
+Send the access token to the discovered UserInfo endpoint in the Authorization
+bearer header. Disabling or retiring the registration withdraws its access.

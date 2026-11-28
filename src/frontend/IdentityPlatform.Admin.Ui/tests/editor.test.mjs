@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { validate, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
 import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
@@ -156,8 +156,12 @@ test('Given_generated_transport_When_operations_run_Then_paths_proofs_and_creden
   assert.equal(requests[3].url, 'https://bff.example.test/bff/api/v1/applications/native-registrations');
   assert.equal(requests[3].headers.get('X-CSRF-TOKEN'), proof.value.requestToken);
   assert.deepEqual(await requests[3].json(), native);
+  const browser = validateBrowser({ ...draft, origins: 'https://portal.example' }).input;
+  await client.createBrowser(browser, proof.value.requestToken, signal);
+  assert.equal(requests[4].url, 'https://bff.example.test/bff/api/v1/applications/browser-registrations');
+  assert.deepEqual(await requests[4].json(), browser);
   for(const request of requests){assert.equal(request.credentials,'same-origin');assert.equal(request.cache,'no-store');assert.equal(request.redirect,'error');assert.equal(request.headers.has('authorization'),false)}
-  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,4);
+  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,5);
  }finally{globalThis.fetch=original;delete globalThis.window;}
 });
 
@@ -628,7 +632,7 @@ test('Given_a_native_registration_When_created_Then_the_exact_public_client_is_d
    return result;
  }});
  owner.newForm();
- await owner.create(draft, true);
+ await owner.create(draft, "native");
  assert.equal(submissions, 1);
  assert.equal(calls.create, 0);
  assert.equal(states.at(-1).kind, 'details');
@@ -654,7 +658,7 @@ test('Given_a_native_registration_When_created_Then_the_exact_public_client_is_d
  assert.equal(states.at(-1).outcome, 'native-created');
  const lost = setup(t, { createNative: async () => { throw new Error('connection closed'); } });
  lost.owner.newForm();
- await lost.owner.create(draft, true);
+ await lost.owner.create(draft, "native");
  assert.equal(lost.states.at(-1).outcome, 'native-unknown');
  for (const state of [states.at(-1), lost.states.at(-1)]) {
    const problem = renderToStaticMarkup(createElement(ProblemView, { state }));
@@ -664,7 +668,7 @@ test('Given_a_native_registration_When_created_Then_the_exact_public_client_is_d
  const held = deferred();
  const pending = setup(t, { createNative: () => held.promise }, () => clock);
  pending.owner.newForm();
- const send = pending.owner.create(draft, true);
+ const send = pending.owner.create(draft, "native");
  await Promise.resolve();
  clock = session.expires;
  pending.owner.checkDeadline();
@@ -678,4 +682,27 @@ test('Given_a_native_registration_When_created_Then_the_exact_public_client_is_d
  for (const value of [details, { ...application, credential: details.credential }, { ...application, redirectUris: ['https://other.example/cb'] }, { ...application, clientSecret: secret }]) {
    assert.equal(await observe({ ...result, value }, null, now, native), null);
  }
+});
+
+
+test('Given_a_browser_registration_When_created_Then_separate_origins_and_callbacks_are_bound_without_a_secret', async t => {
+ const origin = 'https://portal.example:8443';
+ const browserDraft = { ...draft, origins: origin };
+ const body = validateBrowser(browserDraft).input;
+ assert.deepEqual(body, {clientId:draft.clientId, displayName:draft.displayName, redirectUris:[draft.redirectUris], origins:[origin]});
+ for (const text of [origin+'/',origin+'/callback',origin+'?q=1','https://*.example','null','http://portal.example', 'https://portal.example:443', 'garbage']) assert.equal(browserOrigin(text),false);
+ assert.ok(validateBrowser({...browserDraft, origins:[origin,origin].join('\n')}).errors.origins);
+ assert.ok(validateBrowser({...browserDraft, clientId:'bad id'}).errors.clientId);
+ const application={...details, profile:'managed-browser-v1', credential:null, origins:[origin]};
+ const result={status:201,value:application,etag:read.etag};
+ const {owner,states}=setup(t,{createBrowser: async input => {assert.deepEqual(input,body);return result;}});
+ owner.newForm(); await owner.create(browserDraft,'browser');
+ const base=states.at(-1);assert.equal(base.kind,'details');
+ const html=renderToStaticMarkup(createElement(DetailsView,{details:base.details,dismiss(){}}));
+ assert.ok(html.includes(origin) && html.includes(draft.redirectUris) && html.includes('S256'));
+ assert.doesNotMatch(html,/client_secret|Replace secret|Clone application/);
+ assert.equal(await observe({...result,value:{...application,origins:['https://different.example']}},null,now,body),null);
+ const different={status:200,value:{...application,displayName:'New',origins:['https://different.example']},etag:read.etag.replace('-1"','-2"')};
+ assert.equal(await edited(different,base,{displayName:'New',redirectUris:application.redirectUris},now),null);
+ owner.suspend();assert.equal(states.at(-1).outcome,'browser-created');
 });

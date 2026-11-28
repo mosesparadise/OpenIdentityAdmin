@@ -180,3 +180,8 @@ the shipped script and the MFA summary markup, the summary was visible before
 the script ran and focused at DOMContentLoaded. A non-focusable control stayed
 unfocused at that same point. This establishes a possible ordering in the
 browser. CI655 did not record when its deferred script ran.
+
+
+### Browser portion of T002 in verification
+
+The browser profile has local PostgreSQL and SQL Server HTTPS and schema evidence, generated contracts and editor coverage. T002 remains open pending the required acceptance checks. [Verification](verification.md#public-browser-registration) · [Integration guide](quickstart.md#public-browser-client)

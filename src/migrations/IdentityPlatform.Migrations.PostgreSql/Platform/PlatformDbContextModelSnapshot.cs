@@ -200,6 +200,31 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<int>("Slot")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.HasKey("ApplicationId", "Slot");
+
+                    b.HasIndex("Origin", "ApplicationId")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationBrowserOrigin", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationBrowserOrigin_Slot", "\"Slot\" >= 0 AND \"Slot\" < 10");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -2027,6 +2052,15 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
                         .WithMany()

@@ -28,6 +28,10 @@ internal static class ProtocolOptions
         options.ClientAuthenticationMethods.Clear();
         options.Scopes.Clear();
         options.Scopes.Add(OpenIddictConstants.Scopes.OpenId);
+        if (profiles.Managed)
+        {
+            options.ClientAuthenticationMethods.Add(OpenIddictConstants.ClientAuthenticationMethods.None);
+        }
         if (profiles.Pilot || profiles.Managed)
         {
             options.PromptValues.Add(OpenIddictConstants.PromptValues.Login);

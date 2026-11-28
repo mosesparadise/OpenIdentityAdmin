@@ -18,6 +18,7 @@ internal sealed class ApplicationWriteState
     private readonly ImmutableArray<string> permissions;
     private readonly ApplicationScopeSelection? selection;
     private readonly ApplicationCloneSource? cloneSource;
+    private readonly ImmutableArray<string> origins;
     private readonly long revision;
     private readonly long credentialRevision;
     private readonly string profile;
@@ -36,11 +37,12 @@ internal sealed class ApplicationWriteState
 
     /// <summary>Copies native presentation and lifecycle values so later entity mutation cannot alter the expected commit.</summary>
     internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret,
-        ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null)
+        ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null, ImmutableArray<string> origins = default)
     {
         this.application = application;
         this.selection = selection;
         this.cloneSource = cloneSource;
+        this.origins = origins;
         permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
         clientId = descriptor.ClientId!;
         displayName = descriptor.DisplayName!;
@@ -77,6 +79,10 @@ internal sealed class ApplicationWriteState
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        if (!origins.IsDefault && !origins.SequenceEqual(await ApplicationBrowserOrigin.ReadAsync(scope, Id, token), StringComparer.Ordinal))
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
         if (selection is not null)
         {
             await selection.VerifyAsync(scope, token);
@@ -98,7 +104,7 @@ internal sealed class ApplicationWriteState
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>
     internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, profile,
         !retired, issuedAt is { } issued && expiresAt is { } expires ? new(DateTimeOffset.FromUnixTimeSeconds(issued), DateTimeOffset.FromUnixTimeSeconds(expires)) : null,
-        authorityExpiry, enabled, retired);
+        authorityExpiry, enabled, retired, Origins: profile == ApplicationEditorRules.BrowserProfile ? origins : null);
 
     /// <summary>Projects the exact persisted permission expectation only after commit and cleanup, without changing existing editor wire contracts.</summary>
     internal ApplicationScopes Scopes(DateTimeOffset authorityExpiry) => new(Id, permissions

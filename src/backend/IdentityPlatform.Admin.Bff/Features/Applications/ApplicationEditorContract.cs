@@ -39,6 +39,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string PreconditionDescription = "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.";
     private const int VersionMinimum = 68;
     private const int VersionMaximum = 86;
+    internal const string BrowserOperation = "RegisterPublicBrowserApplication";
+    internal const string BrowserSummary = "Register a public browser client with separate HTTPS origins, exact callbacks and S256";
     internal const string NativeOperation = "CreateBrowserNativeApplication";
     internal const string NativeSummary = "Register a public native application with exact claimed HTTPS callbacks and S256";
     private const string CreateOperation = "CreateBrowserApplication";
@@ -66,6 +68,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     {
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, NativeOperation);
+        Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, BrowserOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -115,7 +118,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

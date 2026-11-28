@@ -9,12 +9,16 @@ public static class ApplicationEditorRules
 {
     public const string Profile = "managed-web-v1";
     public const string NativeRegistrationSuffix = "/native-registrations";
+    public const string BrowserProfile = "managed-browser-v1";
+    public const string BrowserRegistrationSuffix = "/browser-registrations";
     public const string NativeProfile = "managed-native-v1";
     public const int MaximumRedirects = 10;
     public const int MaximumRedirectLength = 2048;
     public const int MaximumRequestBytes = 32_768;
     public const string ExpiryFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private const string LocalhostSuffix = ".localhost";
+    private const string OriginsField = "origins";
+
     private const string ClientIdField = "clientId";
     private const string DisplayNameField = "displayName";
     private const string RedirectsField = "redirectUris";
@@ -50,6 +54,22 @@ public static class ApplicationEditorRules
         if (input.RedirectUris is not null && !input.RedirectUris.All(IsNativeRedirect))
         {
             errors[RedirectsField] = [InvalidValue];
+        }
+        return errors;
+    }
+
+    /// <summary>Checks the callback set and the independently supplied browser origin set before registration.</summary>
+    /// <example><code>var errors = ApplicationEditorRules.Validate(new ApplicationBrowserCreate("spa", "Portal", ["https://signin.example/callback"], ["https://portal.example"]));</code></example>
+    public static IReadOnlyDictionary<string, string[]> Validate(ApplicationBrowserCreate input)
+    {
+        var errors = ValidateFields(input.DisplayName, input.RedirectUris);
+        if (!IsClientId(input.ClientId))
+        {
+            errors.Add(ClientIdField, [InvalidValue]);
+        }
+        if (!BrowserOriginPolicy.IsValid(input.Origins))
+        {
+            errors.Add(OriginsField, [InvalidValue]);
         }
         return errors;
     }

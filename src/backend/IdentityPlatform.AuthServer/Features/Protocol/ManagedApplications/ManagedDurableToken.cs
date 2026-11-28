@@ -1,5 +1,4 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
@@ -23,7 +22,7 @@ internal static class ManagedDurableToken
                 validation.AuthorizationId != validation.Principal.GetAuthorizationId() || validation.Transaction.Request?.ClientId is not { } client
                 ? null : await ManagedTokenBinding.ReadAsync(scope, validation.Principal, client, token);
             if (binding is null || validation.EndpointType == OpenIddictServerEndpointType.Token &&
-                (binding.Registration.Profile == ApplicationEditorRules.NativeProfile) != NativeTokenTransport.Matches(validation.Transaction, binding.Registration.ClientId))
+                !NativeTokenTransport.MatchesRegistration(validation.Transaction, binding.Registration))
             {
                 validation.Reject(OpenIddictConstants.Errors.InvalidToken);
             }
