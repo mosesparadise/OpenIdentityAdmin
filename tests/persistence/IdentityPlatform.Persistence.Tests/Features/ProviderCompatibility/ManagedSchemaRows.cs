@@ -89,14 +89,21 @@ internal static class ManagedSchemaRows
         {
             row.MfaVerifiedAt = MfaTime;
         }
-        if (state is ManagedLoginState.Approved or ManagedLoginState.Consumed)
+        if (state is ManagedLoginState.Approved or ManagedLoginState.Consumed or ManagedLoginState.DeviceApproved)
         {
             row.ConsentVerifiedAt = ConsentTime;
         }
-        if (state == ManagedLoginState.Consumed)
+        if (state is ManagedLoginState.Consumed or ManagedLoginState.DeviceApproved)
         {
-            row.CodeId = Digest();
             row.AuthorizationId = Digest();
+            if (state == ManagedLoginState.DeviceApproved)
+            {
+                row.DeviceEntryId = Digest();
+            }
+            else
+            {
+                row.CodeId = Digest();
+            }
         }
         return row;
     }

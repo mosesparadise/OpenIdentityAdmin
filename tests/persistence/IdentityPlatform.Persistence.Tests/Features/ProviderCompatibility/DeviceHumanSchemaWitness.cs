@@ -6,8 +6,8 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class DeviceHumanSchemaWitness
 {
     private const string Pg = "PostgreSql";
-    private const string PgMigration = "20261128100434_ManagedDeviceHumanInteraction";
-    private const string SqlMigration = "20261128100437_ManagedDeviceHumanInteraction";
+    internal const string PgMigration = "20261128100434_ManagedDeviceHumanInteraction";
+    internal const string SqlMigration = "20261128100437_ManagedDeviceHumanInteraction";
     private const string Human = "ManagedLoginInteraction";
     private const string Window = "DevicePollingWindow";
     private const string Device = "DeviceEntryId";

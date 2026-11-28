@@ -14,6 +14,12 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 /// <summary>Exercises additive populated upgrades and actual database lifecycle constraints on both supported providers.</summary>
 public sealed class LifecycleSchemaTests
 {
+    // The immediate predecessor accepted only the original authorization-code states.
+    private static readonly ManagedLoginState[] PredecessorStates =
+    [
+        ManagedLoginState.PendingPassword, ManagedLoginState.PendingMfa, ManagedLoginState.PendingConsent,
+        ManagedLoginState.Approved, ManagedLoginState.Consumed, ManagedLoginState.Denied, ManagedLoginState.Expired
+    ];
     private const long PriorRevision = 7;
     private const long PriorCredentialRevision = 3;
     private static readonly int[] ValidReasons = [1, 2, 3];
@@ -72,7 +78,7 @@ public sealed class LifecycleSchemaTests
             await database.Database.ExecuteSqlRawAsync(LegacyPolicy, [id!, Profile, PriorRevision, PriorCredentialRevision,
                 ManagedSchemaRows.Created, ManagedSchemaRows.Expires, ManagedSchemaRows.Expires + 1], fixture.Token);
         }
-        foreach (var state in Enum.GetValues<ManagedLoginState>())
+        foreach (var state in PredecessorStates)
         {
             await ManagedLegacyRows.InsertAsync(database, ManagedSchemaRows.Interaction(state), fixture.Token);
         }
