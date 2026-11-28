@@ -205,6 +205,14 @@ journeys exercise a signed access token against the shipped orders API. The loca
 sample substitutes the test issuer address and its discovered public keys.
 [Service integration guide](quickstart.md#confidential-machine-client)
 
+The service exchanged its credential separately for signed orders and invoices
+tokens. Each token carried exactly its expected audience and scope. A combined
+request returned HTTP 400 with `invalid_scope`. After secret rotation, the old
+secret returned HTTP 401 and the new secret worked. Removing the scope assignment
+left the original scope referenced in the protected catalogue details. Restoring
+the assignment before disabling the service isolated the disablement check.
+Both PostgreSQL and SQL Server passed. Original TRX SHA-256 was `736c4eea29668b386f6fe1c1fa183f46d64bd606b1d09736f6f9f8869052e357`.
+
 ### Managed client assertion authentication in T005
 
 The native authentication dispatcher validates signed assertions against a locally
