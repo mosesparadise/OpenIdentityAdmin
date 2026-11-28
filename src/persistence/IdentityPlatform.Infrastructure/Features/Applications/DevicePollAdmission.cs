@@ -15,13 +15,42 @@ internal static class DevicePollAdmission
     /// <summary>Creates a polling window only for the actual persisted native device entry and its initial registration and deadline.</summary>
     internal static async ValueTask RegisterLockedAsync(ProtocolStorageScope scope, OpenIddictRequest request, ClaimsPrincipal userCode, CancellationToken token)
     {
+        var pair = await ReadPairLockedAsync(scope, request.ClientId ?? string.Empty, request.GetScopes(), userCode, OpenIddictConstants.Statuses.Valid, token);
+        var window = DevicePollingWindow.Start(pair.DeviceId, pair.Policy, pair.CreatedAt);
+        await StoreAsync(scope, window, pair.Now, token);
+    }
+
+    /// <summary>Revalidates the original pair and current registration under the approval transaction before the native code is updated.</summary>
+    internal static async ValueTask<DateTimeOffset> ApprovalDeadlineLockedAsync(ProtocolStorageScope scope, ClaimsPrincipal userCode, ImmutableArray<string> scopes, CancellationToken token)
+    {
+        if (scope.Owner.Transaction is null || userCode.GetClaim(OpenIddictConstants.Claims.ClientId) is not { } clientId)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        var pair = await ReadPairLockedAsync(scope, clientId, scopes, userCode, OpenIddictConstants.Statuses.Redeemed, token);
+        var digest = ManagedLoginRules.Digest(pair.DeviceId);
+        var stored = await scope.Owner.RunAsync(async current => await scope.Owner.Database.Set<DevicePollingWindow>().AsNoTracking()
+            .SingleOrDefaultAsync(row => row.Digest == digest, current), token);
+        if (stored is null || stored.ApplicationId != pair.Policy.ApplicationId || stored.ApplicationRevision != pair.Policy.Revision ||
+            stored.CreatedAt != pair.CreatedAt || stored.ExpiresAt != pair.ExpiresAt || pair.Now < stored.ObservedAt)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        return DateTimeOffset.FromUnixTimeSeconds(stored.ExpiresAt);
+    }
+
+    private sealed record NativePair(ApplicationPolicy Policy, string DeviceId, long CreatedAt, long ExpiresAt, long Now);
+
+    /// <summary>Loads the original anonymous device and user references, approved scope authority and native expiry under one governance lock.</summary>
+    private static async ValueTask<NativePair> ReadPairLockedAsync(ProtocolStorageScope scope, string clientId,
+        ImmutableArray<string> scopes, ClaimsPrincipal userCode, string userStatus, CancellationToken token)
+    {
         await ManagedRegistration.LockAsync(scope, token);
-        var registration = await DeviceClientRegistration.ReadLockedAsync(scope, request.ClientId ?? string.Empty, token) ?? throw ProtocolStorageOwner.Unavailable();
+        var registration = await DeviceClientRegistration.ReadLockedAsync(scope, clientId, token) ?? throw ProtocolStorageOwner.Unavailable();
         var policy = registration.Policy;
-        var scopes = request.GetScopes();
         var assigned = scopes.Where(name => name != OpenIddictConstants.Scopes.OpenId).ToArray();
-        if (userCode.GetClaim(OpenIddictConstants.Claims.ClientId) != request.ClientId || userCode.GetPresenters() is not [var presenter] ||
-            presenter != request.ClientId || !CatalogueRules.IsAssignment(assigned) || !scopes.ToHashSet(StringComparer.Ordinal).SetEquals(userCode.GetScopes()) ||
+        if (userCode.GetClaim(OpenIddictConstants.Claims.ClientId) != clientId || userCode.GetPresenters() is not [var presenter] ||
+            presenter != clientId || !CatalogueRules.IsAssignment(assigned) || !scopes.ToHashSet(StringComparer.Ordinal).SetEquals(userCode.GetScopes()) ||
             assigned.Any(name => !registration.State.Permissions.Contains(OpenIddictConstants.Permissions.Prefixes.Scope + name, StringComparer.Ordinal)))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -29,7 +58,7 @@ internal static class DevicePollAdmission
         await ApplicationScopeSelection.ReadAsync(scope, assigned.ToImmutableArray(), token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var deviceId = userCode.GetClaim(OpenIddictConstants.Claims.Private.DeviceCodeId) ?? throw ProtocolStorageOwner.Unavailable();
-        var authorizationId = await RequirePairAsync(scope, manager, policy.ApplicationId, userCode, token);
+        var authorizationId = await RequirePairAsync(scope, manager, policy.ApplicationId, userCode, userStatus, token);
         var device = await manager.FindByIdAsync(deviceId, token);
         if (device is null || !await ProtocolStorageRows.ReloadAsync(scope, device, token) || await manager.GetIdAsync(device, token) != deviceId ||
             await manager.GetApplicationIdAsync(device, token) != policy.ApplicationId || await manager.GetAuthorizationIdAsync(device, token) != authorizationId ||
@@ -41,18 +70,17 @@ internal static class DevicePollAdmission
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        var window = DevicePollingWindow.Start(deviceId, policy, created.ToUnixTimeSeconds());
-        var now = ManagedLoginRules.Observe(scope.Owner.Clock, window.CreatedAt);
-        if (now >= window.ExpiresAt)
+        var now = ManagedLoginRules.Observe(scope.Owner.Clock, created.ToUnixTimeSeconds());
+        if (now >= expires.ToUnixTimeSeconds())
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        await StoreAsync(scope, window, now, token);
+        return new(policy, deviceId, created.ToUnixTimeSeconds(), expires.ToUnixTimeSeconds(), now);
     }
 
     /// <summary>Checks the native user-code and anonymous authorization belong to the same registration and preserved scope set.</summary>
     private static async ValueTask<string> RequirePairAsync(ProtocolStorageScope scope, IOpenIddictTokenManager manager, string id,
-        ClaimsPrincipal userCode, CancellationToken token)
+        ClaimsPrincipal userCode, string userStatus, CancellationToken token)
     {
         var userId = userCode.GetTokenId() ?? throw ProtocolStorageOwner.Unavailable();
         var authId = userCode.GetAuthorizationId() ?? throw ProtocolStorageOwner.Unavailable();
@@ -60,7 +88,7 @@ internal static class DevicePollAdmission
         if (user is null || !await ProtocolStorageRows.ReloadAsync(scope, user, token) || await manager.GetIdAsync(user, token) != userId ||
             await manager.GetApplicationIdAsync(user, token) != id || await manager.GetAuthorizationIdAsync(user, token) != authId ||
             await manager.GetSubjectAsync(user, token) is not null || !await manager.HasTypeAsync(user, OpenIddictConstants.TokenTypeIdentifiers.Private.UserCode, token) ||
-            !await manager.HasStatusAsync(user, OpenIddictConstants.Statuses.Valid, token))
+            !await manager.HasStatusAsync(user, userStatus, token))
         {
             throw ProtocolStorageOwner.Unavailable();
         }

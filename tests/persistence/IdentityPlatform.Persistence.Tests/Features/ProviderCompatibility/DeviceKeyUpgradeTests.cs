@@ -86,7 +86,10 @@ public sealed class DeviceKeyUpgradeTests
         Assert.Equal(DevicePollResult.Unavailable, stale.Poll(policy, Start));
         Assert.Equal(DevicePollResult.Admitted, stale.Poll(policy, OnTime));
         await other.SaveChangesAsync(fixture.Token);
-        Assert.Equal(DevicePollResult.Unavailable, stale.Poll(policy, Deadline));
+        Assert.Equal(DevicePollResult.Expired, stale.Poll(policy, Deadline));
+        await other.SaveChangesAsync(fixture.Token);
+        await database.Entry(window).ReloadAsync(fixture.Token);
+        Assert.Equal(DevicePollResult.Unavailable, window.Poll(policy, OnTime));
     }
 
     /// <summary>Exercises actual RSA public metadata and native key thumbprints with a duplicate assertion after replacement.</summary>

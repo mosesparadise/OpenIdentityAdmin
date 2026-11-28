@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using OpenIddict.Server;
 using System.Security.Claims;
 using IdentityPlatform.Infrastructure.Features.Applications;
@@ -32,6 +33,12 @@ internal static class NativeDevicePollEvidence
             server.SetIssuer(Issuer).SetDeviceAuthorizationEndpointUris(Devices).SetEndUserVerificationEndpointUris(Verification)
                 .SetTokenEndpointUris(Tokens).AllowDeviceAuthorizationFlow().AddEphemeralEncryptionKey().AddEphemeralSigningKey()
                 .SetDeviceCodeLifetime(TimeSpan.FromSeconds(LifetimeSeconds)).SetUserCodeLifetime(TimeSpan.FromSeconds(LifetimeSeconds));
+            BoundDeviceApproval.Register(server);
+            server.AddEventHandler<OpenIddictServerEvents.ApplyTokenResponseContext>(handler => handler.UseInlineHandler(response =>
+            {
+                response.HandleRequest();
+                return ValueTask.CompletedTask;
+            }));
             server.AddEventHandler<OpenIddictServerEvents.ApplyEndUserVerificationResponseContext>(handler => handler.UseInlineHandler(response =>
             {
                 response.HandleRequest();
@@ -62,6 +69,8 @@ internal static class NativeDevicePollEvidence
         var policy = await database.Set<ApplicationPolicy>().SingleAsync(row => row.ApplicationId == id, fixture.Token);
         var persisted = await database.Set<DevicePollingWindow>().AsNoTracking().SingleAsync(row => row.ApplicationId == policy.ApplicationId, fixture.Token);
         Assert.Equal(FirstSlowInterval, persisted.IntervalSeconds);
+        await NativeDeviceApprovalEvidence.RequireAsync(fixture, id);
+        await database.Entry(policy).ReloadAsync(fixture.Token);
         policy.Enabled = false;
         policy.Revision++;
         await database.SaveChangesAsync(fixture.Token);
@@ -88,7 +97,7 @@ internal static class NativeDevicePollEvidence
     }
 
     /// <summary>Uses the original generated principal to bind both native code entries; the client receives the native opaque reference.</summary>
-    private static async Task<(string Code, string User)> CreatePairAsync(ProtocolStorageScope scope, CancellationToken token)
+    internal static async Task<(string Code, string User)> CreatePairAsync(ProtocolStorageScope scope, CancellationToken token)
     {
         var native = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
         native.EndpointType = OpenIddictServerEndpointType.DeviceAuthorization;

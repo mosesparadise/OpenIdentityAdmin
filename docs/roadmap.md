@@ -10,7 +10,7 @@ Server verified discovery, signing keys, preflight, public code exchange, UserIn
 denial from a second registered application's origin and withdrawal on disablement.
 See the [feature verification record](../specs/026-managed-client-profiles/verification.md#public-browser-registration).
 
-The device draft verifies the native code pair, persisted backoff, pending response and refusal on both providers. The public device registration and verification screens, approval and one-use redemption remain in progress. [PR148](https://github.com/mosesparadise/OpenIdentityAdmin/pull/148)
+The device draft verifies native code generation, polling backoff, refusal and single redemption on both providers. An approved device code retains its original ten-minute deadline. The component tests use a synthetic authenticated account decision. Public registration, the verification screen and a password/MFA-to-token HTTPS journey remain open. [PR148](https://github.com/mosesparadise/OpenIdentityAdmin/pull/148)
 
 Managed web integration settings are available on main. The authorized application details view shows the client ID, exact callbacks and S256 configuration with a server-side secret placeholder. Both providers now store the public and key-backed profile forms and check the upgraded schema at startup. PR143 delivered public native registration on main. Asymmetric authentication remains open. [PR142](https://github.com/mosesparadise/OpenIdentityAdmin/pull/142) [PR141](https://github.com/mosesparadise/OpenIdentityAdmin/pull/141) · [Verification](../specs/026-managed-client-profiles/verification.md)
 

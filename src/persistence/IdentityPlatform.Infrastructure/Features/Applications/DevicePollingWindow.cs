@@ -70,9 +70,15 @@ internal sealed class DevicePollingWindow
     /// <summary>Advances a live window, monotonically extending its interval on early polls. A timely poll can proceed to native device validation.</summary>
     internal DevicePollResult Poll(ApplicationPolicy policy, long now)
     {
-        if (!Current(policy, now) || policy.ApplicationId != ApplicationId || policy.Revision != ApplicationRevision || now < ObservedAt || now >= ExpiresAt)
+        if (!Current(policy, now) || policy.ApplicationId != ApplicationId || policy.Revision != ApplicationRevision || now < ObservedAt)
         {
             return DevicePollResult.Unavailable;
+        }
+        if (now >= ExpiresAt)
+        {
+            ObservedAt = ExpiresAt;
+            NextPollAt = ExpiresAt;
+            return DevicePollResult.Expired;
         }
         var early = now < NextPollAt;
         if (early)
@@ -117,5 +123,5 @@ internal sealed class DevicePollingWindow
 /// <summary>Only an admitted poll can proceed to the native pending, denied, or approved transaction state.</summary>
 internal enum DevicePollResult
 {
-    Unavailable, SlowDown, Admitted
+    Unavailable, SlowDown, Admitted, Expired
 }
