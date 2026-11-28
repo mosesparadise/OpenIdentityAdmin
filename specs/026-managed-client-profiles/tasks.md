@@ -231,4 +231,4 @@ token endpoint accepts signed machine requests and reaches the sample resource
 server. The editor and cookie-authenticated BFF also support machine key
 registration and replacement. Keyed web code exchange remains open. [Provider and management verification](verification.md#native-managed-client-assertion-consumption)
 
-T004 now verifies the installed OpenIddict device and user code generators on PostgreSQL and SQL Server, including the native verification URI and first client poll. [Device generation evidence](verification.md#device-authorization-code-generation)
+T004 now verifies the installed OpenIddict device and user code generators on PostgreSQL and SQL Server, including the native verification URI, early polling, paced pending responses, human-code resolution and refusal on the next poll. Public registration, the verification screen, affirmative approval and one-use redemption are open. [Device generation evidence](verification.md#device-authorization-code-generation)
