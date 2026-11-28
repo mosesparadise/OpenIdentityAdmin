@@ -56,7 +56,7 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
         Assert.Equal(enabled, details!.Enabled);
         Assert.Equal(ApplicationVersion.Create(test.Id, revision + 1), response.Headers.ETag!.Tag);
         Assert.Equal(test.ClientIdentifier, details.ClientId);
-        Assert.Equal(test.CallbackUri, Assert.Single(details.RedirectUris));
+        Assert.Equal(test.CallbackUri.Length == 0 ? Array.Empty<string>() : [test.CallbackUri], details.RedirectUris);
     }
 
     /// <summary>Reuses the exact pre-transition artifacts and independently proves rejection has no hidden managed/native write.</summary>

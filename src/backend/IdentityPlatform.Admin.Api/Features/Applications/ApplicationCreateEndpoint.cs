@@ -10,15 +10,22 @@ internal static class ApplicationCreateEndpoint
 {
     private const string Separator = "/";
     /// <summary>Retains one original deadline and exact native bearer identity through the existing owned mutation coordinator.</summary>
+    internal const string MachineOperation = "RegisterMachineApplication";
+    internal const string MachineSummary = "Register a confidential machine client for assigned API scopes";
+
+    /// <summary>Registers a service with no interactive callbacks and a generated secret disclosed only once.</summary>
+    internal static Task HandleMachineAsync(HttpContext http) => HandleCreationAsync(http, null, machine: true);
+
+    /// <summary>Registers an interactive confidential web client.</summary>
     internal static Task HandleAsync(HttpContext http) => HandleCreationAsync(http, null);
 
     /// <summary>Creates an independently credentialed clone while retaining the exact source precondition and original authority receipt.</summary>
     internal static Task HandleCloneAsync(HttpContext http, string id) => HandleCreationAsync(http, id);
 
     /// <summary>Publishes a new native identity and one-time credential only after owned commit, cleanup and original deadline checks.</summary>
-    private static Task HandleCreationAsync(HttpContext http, string? sourceId) => ApplicationHttpBoundary.RunAsync(http, async (budget, clock) =>
+    private static Task HandleCreationAsync(HttpContext http, string? sourceId, bool machine = false) => ApplicationHttpBoundary.RunAsync(http, async (budget, clock) =>
     {
-        var command = await ReadAsync(http, clock, sourceId);
+        var command = await ReadAsync(http, clock, sourceId, machine);
         var identity = await ApplicationHttpBoundary.AuthenticateAsync(http, budget, clock);
         var result = await ApplicationMutationOperation.ExecuteAsync(http.RequestServices.GetRequiredService<IServiceScopeFactory>(), identity, command,
             http.RequestServices.GetRequiredService<ApiResourceProfile>(), clock, budget, Guid.NewGuid());
@@ -32,13 +39,13 @@ internal static class ApplicationCreateEndpoint
     });
 
     /// <summary>Checks exact framing and actual bytes before strict JSON parsing; no precondition or unsupported property is silently accepted.</summary>
-    private static async Task<ApplicationMutationCommand> ReadAsync(HttpContext http, TimeProvider clock, string? sourceId)
+    private static async Task<ApplicationMutationCommand> ReadAsync(HttpContext http, TimeProvider clock, string? sourceId, bool machine)
     {
         try
         {
-            var path = sourceId is null ? ApplicationListEndpoint.Path : ApplicationListEndpoint.Path + Separator + Uri.EscapeDataString(sourceId) + ApplicationCloneRules.Suffix;
+            var path = machine ? ApplicationListEndpoint.Path + MachineClientRules.Suffix : sourceId is null ? ApplicationListEndpoint.Path : ApplicationListEndpoint.Path + Separator + Uri.EscapeDataString(sourceId) + ApplicationCloneRules.Suffix;
             var (bytes, version) = await ApplicationMutationInput.ReadAsync(http, path, HttpMethods.Post, precondition: sourceId is not null);
-            return (sourceId is null
+            return (machine ? ApplicationMutationCommand.CreateMachine(ApplicationJson.Parse<ApplicationMachineCreate>(bytes), clock.GetUtcNow()) : sourceId is null
                 ? ApplicationMutationCommand.Create(ApplicationJson.Parse<ApplicationCreate>(bytes), clock.GetUtcNow())
                 : ApplicationMutationCommand.Clone(sourceId, version!, ApplicationJson.Parse<ApplicationClone>(bytes), clock.GetUtcNow())) ?? throw new InvalidDataException();
         }

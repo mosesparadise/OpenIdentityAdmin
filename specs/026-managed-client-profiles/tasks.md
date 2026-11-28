@@ -196,3 +196,11 @@ approval binds both descriptor metadata and the underlying public key material.
 Changing the key identifier alone cannot count as a rotation. The replay key
 persists across credential revisions. The API registration, verification page
 and issuer handlers for these profiles still require integration.
+
+### Confidential machine registration in T003 and T006
+
+The protected registration editor, versioned BFF/API contracts, client-credentials
+exchange and service integration example are in verification. Both provider
+journeys exercise a signed access token against the shipped orders API. The local
+sample substitutes the test issuer address and its discovered public keys.
+[Service integration guide](quickstart.md#confidential-machine-client)

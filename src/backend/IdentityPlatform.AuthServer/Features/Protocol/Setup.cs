@@ -61,6 +61,7 @@ internal static class Setup
                 options.AddProtocolHosting();
                 if (profiles.Managed)
                 {
+                    options.AllowClientCredentialsFlow();
                     options.AddManagedApplications().AddManagedUserInfo();
                 }
             }

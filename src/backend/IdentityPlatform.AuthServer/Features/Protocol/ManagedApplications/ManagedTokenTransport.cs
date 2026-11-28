@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Net.Http.Headers;
@@ -12,6 +13,7 @@ internal static class ManagedTokenTransport
 {
     private const int MaximumHeaderLength = 4096;
     private const int MaximumFieldLength = 4096;
+    private const int MachineFieldCount = 2;
     private const int FieldCount = 4;
     private const string Basic = "Basic ";
     private const string FormType = "application/x-www-form-urlencoded";
@@ -36,6 +38,16 @@ internal static class ManagedTokenTransport
             return;
         }
         var fields = await request.ReadFormAsync(context.CancellationToken);
+        if (fields[OpenIddictConstants.Parameters.GrantType] == OpenIddictConstants.GrantTypes.ClientCredentials)
+        {
+            if (fields.Count != MachineFieldCount || fields.Keys.Any(name => name is not (OpenIddictConstants.Parameters.GrantType or OpenIddictConstants.Parameters.Scope)) ||
+                fields[OpenIddictConstants.Parameters.GrantType].Count != 1 || fields.Files.Count != 0 || request.Headers.Origin.Count != 0 ||
+                fields[OpenIddictConstants.Parameters.Scope].Count != 1 || MachineClientRules.ReadScopes(fields[OpenIddictConstants.Parameters.Scope]) is null)
+            {
+                context.Reject(OpenIddictConstants.Errors.InvalidRequest);
+            }
+            return;
+        }
         if (fields.Count != FieldCount || fields.Files.Count != 0 || fields.Any(pair => !Allowed(pair.Key) ||
             pair.Value.Count != 1 || pair.Value[0] is not { Length: > 0 and <= MaximumFieldLength }) ||
             fields[OpenIddictConstants.Parameters.GrantType] != OpenIddictConstants.GrantTypes.AuthorizationCode)

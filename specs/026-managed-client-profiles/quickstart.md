@@ -66,3 +66,23 @@ verifier values for each sign-in and verify them on return. Open the authorizati
 endpoint through top-level navigation. For cross-origin fetches, omit cookies.
 Send the access token to the discovered UserInfo endpoint in the Authorization
 bearer header. Disabling or retiring the registration withdraws its access.
+
+
+## Confidential machine client
+
+In Applications, choose **Machine client**. Register a service client ID, a display
+name, and an explicit UTC secret expiry. Copy the one-time secret to the service’s
+secret store. Assign at least one enabled API scope and configure the service with
+the issuer address, client ID and secret. Each token request can target one API
+audience. For example, assign `orders.read` for `orders-api`.
+
+Use OAuth client credentials with HTTP Basic client authentication. Send a form
+containing `grant_type=client_credentials&scope=orders.read` to the HTTPS token
+endpoint advertised in issuer discovery. Use the returned `access_token` as the
+bearer for `GET /orders`. The sample orders API validates the signature, issuer,
+audience, lifetime and `orders.read` scope. The token represents the service and
+contains `identity_type=machine`. The client receives its expiry in `expires_in`.
+
+Replacement immediately stops the old secret from obtaining another token.
+Disablement and permanent retirement also stop new exchanges. An API performing
+offline validation can accept a previously issued token until its expiration.

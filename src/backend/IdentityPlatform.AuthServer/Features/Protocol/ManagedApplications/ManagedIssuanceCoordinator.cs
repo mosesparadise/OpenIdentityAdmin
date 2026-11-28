@@ -18,6 +18,11 @@ internal sealed class ManagedIssuanceCoordinator(IServiceScopeFactory factory)
         var decision = ManagedEndpointDecision.Claim(http, context);
         var result = await ProtocolResponseChild.RunAsync(http, factory, async (scope, response, token) =>
         {
+            if (ManagedTokenAdmission.Find(context.Transaction)?.Machine is { } machine)
+            {
+                await new MachineIssuance(context, machine).RunAsync(scope, response, token);
+                return true;
+            }
             await using var issuance = new ManagedIssuance(scope, context);
             context.Transaction.SetProperty(typeof(ManagedIssuance).FullName!, issuance);
             try
@@ -86,6 +91,7 @@ internal sealed class BoundManagedIssuance : IOpenIddictServerHandler<OpenIddict
     /// <summary>Preserves native preparation and clamps only its already finite expiration.</summary>
     public ValueTask HandleAsync(OpenIddictServerEvents.ProcessSignInContext context)
     {
+        MachineIssuance.Find(context.Transaction)?.Bound();
         ManagedIssuance.Find(context.Transaction)?.Bound();
         return ValueTask.CompletedTask;
     }

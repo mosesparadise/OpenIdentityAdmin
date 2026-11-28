@@ -33,10 +33,11 @@ internal static class ManagedConsentTest
     private const string Scopes = "/api/v1/scopes";
     private const string Audiences = "/api/v1/audiences";
     private const string Audience = "{\"resource\":\"orders-api\",\"displayName\":\"Orders API\",\"owner\":\"Orders team\",\"enabled\":true}";
+    private const string MachineAssignment = """{"scopes":["orders.read"]}""";
     private const string Assign = "{\"scopes\":[\"email\",\"orders.read\"]}";
 
     /// <summary>Assigns email and one API scope using genuine permission, fresh MFA and optimistic concurrency checks.</summary>
-    internal static async Task SeedAsync(ManagedCacheTestContext test)
+    internal static async Task SeedAsync(ManagedCacheTestContext test, bool machine = false)
     {
         using var email = await test.Http.CatalogueAsync(HttpMethod.Post, Scopes, ApplicationScopeHttpTests.Scope);
         Assert.Equal(HttpStatusCode.Created, email.StatusCode);
@@ -55,7 +56,7 @@ internal static class ManagedConsentTest
         });
         using var api = await test.Http.CatalogueAsync(HttpMethod.Post, Scopes, scope);
         Assert.Equal(HttpStatusCode.Created, api.StatusCode);
-        using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), Assign,
+        using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), machine ? MachineAssignment : Assign,
             ApplicationVersion.Create(test.Id, 1), direct: false, csrf: await test.Http.TokenAsync());
         Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
     }
