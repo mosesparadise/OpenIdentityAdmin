@@ -103,3 +103,7 @@ The original client ID, presenter and request scopes are also checked against th
 user-code principal. The persisted code entries must be anonymous, and assigned
 catalogue scopes are read under the same lock. Both provider cases passed these
 checks. TRX SHA-256 was `eac5b93437ef66308eb3dcfd567aae4a39048fd19d3573cdcc56234c4ec98afb`.
+
+### Device authorization code generation
+
+OpenIddict 7.7.2 generated the anonymous device and user codes, their shared authorization, the opaque client references and the verification URI using its installed sign-in dispatcher. PostgreSQL and SQL Server both persisted the original pair under the same transaction as the polling window. The first early poll used the actual returned device code and the committed slow-down was observed through a fresh database scope. Disabling the registration then refused another poll. The fixture captures the native response before HTTP formatting. Human approval and single redemption remain open. Both provider cases passed. Original local TRX SHA-256 `75da3741e1629c664e7bef0af012507bcfb5123e22b2f4521a803c261211e939`.

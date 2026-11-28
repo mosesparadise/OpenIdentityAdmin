@@ -28,7 +28,7 @@ internal sealed class ManagedSchemaFixture(IContainer container, ServiceProvider
     internal CancellationToken Token => deadline.Token;
 
     /// <summary>Uses actual pinned engines and independently pinned previous Platform migrations; no SQLite or in-memory replacement is involved.</summary>
-    internal static async Task<ManagedSchemaFixture> CreateAsync(string provider, bool prior = false, string? target = null, TimeProvider? protocolClock = null)
+    internal static async Task<ManagedSchemaFixture> CreateAsync(string provider, bool prior = false, string? target = null, TimeProvider? protocolClock = null, Action<IServiceCollection>? configure = null)
     {
         var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
@@ -45,6 +45,7 @@ internal sealed class ManagedSchemaFixture(IContainer container, ServiceProvider
             {
                 registrations.AddSingleton(protocolClock).AddProtocolStorageOwnership();
             }
+            configure?.Invoke(registrations);
             services = registrations.BuildServiceProvider(validateScopes: true);
             var result = new ManagedSchemaFixture(container, services, deadline);
             await result.MigrateAsync(target ?? (prior ? provider == Postgres ? PriorPostgres : PriorSql : null));

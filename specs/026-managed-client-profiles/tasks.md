@@ -196,3 +196,5 @@ approval binds both descriptor metadata and the underlying public key material.
 Changing the key identifier alone cannot count as a rotation. The replay key
 persists across credential revisions. The API registration, verification page
 and issuer handlers for these profiles still require integration.
+
+T004 now verifies the installed OpenIddict device and user code generators on PostgreSQL and SQL Server, including the native verification URI and first client poll. [Device generation evidence](verification.md#device-authorization-code-generation)
