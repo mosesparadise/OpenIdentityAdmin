@@ -46,7 +46,8 @@ internal static class NativeDevicePollEvidence
     internal static async Task RequireAsync(ManagedSchemaFixture fixture)
     {
         var factory = fixture.Services.GetRequiredService<IServiceScopeFactory>();
-        var (id, external) = await SeedAsync(factory, fixture.Token);
+        var request = new ProtocolStorageRequest(fixture.Services.GetRequiredService<TimeProvider>(), fixture.Token);
+        var (id, external) = await request.RunAsync(factory, SeedAsync);
         await using (var polling = await ProtocolStorageScope.OpenAsync(factory, fixture.Token))
         {
             Assert.Equal(DevicePollResult.SlowDown, await DevicePollAdmission.PollAsync(polling, Client, external, fixture.Token));
@@ -64,9 +65,8 @@ internal static class NativeDevicePollEvidence
     }
 
     /// <summary>Seeds the library's real public application, inactive device entry and cadence row in one committed native transaction.</summary>
-    private static async Task<(string Id, string Code)> SeedAsync(IServiceScopeFactory factory, CancellationToken token)
+    private static async ValueTask<(string Id, string Code)> SeedAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        await using var scope = await ProtocolStorageScope.OpenAsync(factory, token);
         await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
         var apps = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var app = await apps.CreateAsync(DeviceClientRegistration.Descriptor(Client, Name), token);

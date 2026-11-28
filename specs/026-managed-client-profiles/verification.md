@@ -188,3 +188,5 @@ Original local reports
 ### Device authorization code generation
 
 OpenIddict 7.7.2 generated the anonymous device and user codes, their shared authorization, the opaque client references and the verification URI using its installed sign-in dispatcher. PostgreSQL and SQL Server both persisted the original pair under the same transaction as the polling window. The first early poll used the actual returned device code and the committed slow-down was observed through a fresh database scope. Disabling the registration then refused another poll. The fixture captures the native response before HTTP formatting. Human approval and single redemption remain open. Both provider cases passed. Original local TRX SHA-256 `75da3741e1629c664e7bef0af012507bcfb5123e22b2f4521a803c261211e939`.
+
+After integrating the device PR, both provider upgrade cases passed with device generation and key assertions on the same owned native dispatcher. The device request now runs under its actual parent storage request. Original local TRX SHA-256 `c235dc9b2cfaf89e4c5dafde0810fa66ad3cd97b267155d8ef22d65b505ab2c9`.
