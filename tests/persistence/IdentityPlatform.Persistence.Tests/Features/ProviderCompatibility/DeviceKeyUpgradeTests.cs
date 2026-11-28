@@ -34,6 +34,9 @@ public sealed class DeviceKeyUpgradeTests
     private static readonly string[] Tables = ["DevicePollingWindow", "ApplicationKeyApproval", "ApplicationAssertionUse"];
     internal const string PgMigration = "20261128003643_ManagedDevicePollingAndClientKeys";
     internal const string SqlMigration = "20261128003647_ManagedDevicePollingAndClientKeys";
+    internal const string PostgresKeyAudit = "20261128013521_ManagedKeyAuditRevision";
+    internal const string SqlKeyAudit = "20261128013526_ManagedKeyAuditRevision";
+    private const string KeyAuditTable = "ApplicationKeyAuditDetail";
     private const string Read = "SELECT * FROM";
     private const string TablePrefix = "SELECT * FROM \"platform\".\"";
 
@@ -58,6 +61,8 @@ public sealed class DeviceKeyUpgradeTests
         await ManagedKeyAssertionEvidence.RequireAsync(fixture);
         await NativeDevicePollEvidence.RequireAsync(fixture);
         var bound = await fixture.SnapshotAsync(provider);
+        await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(provider == Postgres ? PgMigration : SqlMigration));
+        RequireEqual(bound, await fixture.SnapshotAsync(provider));
         await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(previous));
         await fixture.MigrateAsync(null);
         RequireEqual(bound, await fixture.SnapshotAsync(provider));
@@ -171,17 +176,26 @@ public sealed class DeviceKeyUpgradeTests
     /// <summary>Removes only the three known empty tables and the one actual history row from a current snapshot.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> source)
     {
-        var migration = provider == Postgres ? PgMigration : SqlMigration;
+        if (source.ContainsKey(TablePrefix + KeyAuditTable + '"'))
+        {
+            source = RemoveMigration(source, provider == Postgres ? PostgresKeyAudit : SqlKeyAudit, [KeyAuditTable]);
+        }
+        return RemoveMigration(source, provider == Postgres ? PgMigration : SqlMigration, Tables);
+    }
+
+    /// <summary>Checks exact history growth and requires every removed table to be empty before comparing earlier rows.</summary>
+    private static Dictionary<string, string[]> RemoveMigration(Dictionary<string, string[]> source, string migration, string[] tables)
+    {
         var result = new Dictionary<string, string[]>(StringComparer.Ordinal);
         foreach (var (query, rows) in source)
         {
-            if (Tables.Any(table => query == TablePrefix + table + '"'))
+            if (tables.Any(table => query == TablePrefix + table + '"'))
             {
                 Assert.Empty(rows);
                 continue;
             }
             result[query] = query == AdministratorUpgradeWitness.PlatformHistory ? rows.Where(row => Parts(row)[0] != migration).ToArray() :
-                query.StartsWith(Read, StringComparison.Ordinal) ? rows : rows.Where(row => Parts(row) is not [Schema, var name, ..] || !Tables.Contains(name)).ToArray();
+                query.StartsWith(Read, StringComparison.Ordinal) ? rows : rows.Where(row => Parts(row) is not [Schema, var name, ..] || !tables.Contains(name)).ToArray();
         }
         BrowserAuditMigrationRows.RequireHistory(result[AdministratorUpgradeWitness.PlatformHistory], source[AdministratorUpgradeWitness.PlatformHistory], migration);
         return result;

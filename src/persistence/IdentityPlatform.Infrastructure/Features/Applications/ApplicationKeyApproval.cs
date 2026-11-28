@@ -65,7 +65,7 @@ internal sealed class ApplicationKeyApproval
         current.Fingerprint == Fingerprint && Material(current) == Thumbprint && current.KeyId == keyId && Thumbprint == thumbprint;
 
     /// <summary>Uses the RFC 7638 RSA public key thumbprint independently of mutable identifier and algorithm labels.</summary>
-    private static string Material(AdministratorPublicKey key) => Convert.ToHexStringLower(key.CreateNativeKey().ComputeJwkThumbprint());
+    internal static string Material(AdministratorPublicKey key) => Convert.ToHexStringLower(key.CreateNativeKey().ComputeJwkThumbprint());
 
     /// <summary>Requires an existing retained application and a single approval per identity; revision and fingerprint are concurrency preconditions.</summary>
     internal static void Configure(ModelBuilder builder, IDatabaseModelDialect dialect)

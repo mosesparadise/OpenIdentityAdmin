@@ -4,6 +4,14 @@
 
 The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/026-managed-client-profiles/spec.md) and [task register](../specs/026-managed-client-profiles/tasks.md) track protocol prerequisites, credential management, integration examples and protected documentation.
 
+Feature 026 has five draft reviews. PR146 covers browser registration and real
+Chromium sign-in. PR149 covers machine registration and service tokens used at
+the orders API. PR148 covers device code storage and polling. PR150 covers
+native assertion authentication, key registration and audited rotation. PR147
+covers permission-filtered contracts. Device end-user verification, public key
+management routes, issuer key-based token delivery and documentation viewer
+clearance remain open. [Browser](https://github.com/mosesparadise/OpenIdentityAdmin/pull/146) · [Machine](https://github.com/mosesparadise/OpenIdentityAdmin/pull/149) · [Device](https://github.com/mosesparadise/OpenIdentityAdmin/pull/148) · [Keys](https://github.com/mosesparadise/OpenIdentityAdmin/pull/150) · [Documentation](https://github.com/mosesparadise/OpenIdentityAdmin/pull/147)
+
 The public browser increment is in review. The BFF, editor and issuer register
 origins independently of callback URLs. Real HTTPS journeys on PostgreSQL and SQL
 Server verified discovery, signing keys, preflight, public code exchange, UserInfo,

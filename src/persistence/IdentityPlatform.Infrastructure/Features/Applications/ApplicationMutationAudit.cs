@@ -13,6 +13,8 @@ internal static class ApplicationMutationAudit
     private const string Accepted = "Accepted";
     private const string Created = "ApplicationCreated";
     private const string Edited = "ApplicationEdited";
+    private const string KeyRegistered = "ApplicationPublicKeyRegistered";
+    private const string KeyReplaced = "ApplicationPublicKeyReplaced";
     private const string Replaced = "ApplicationSecretReplaced";
     private const string Disabled = "ApplicationDisabled";
     private const string Enabled = "ApplicationEnabled";
@@ -37,6 +39,16 @@ internal static class ApplicationMutationAudit
             CorrelationId = stamp.Correlation,
             OccurredAt = stamp.At
         });
+        if (command.PublicKey is { } key)
+        {
+            scope.Owner.Database.Add(new ApplicationKeyAuditDetail
+            {
+                AuditId = stamp.Id,
+                PreviousRevision = state.CredentialRevision - 1,
+                CredentialRevision = state.CredentialRevision,
+                Fingerprint = key.Fingerprint
+            });
+        }
         if (command.Reason is { } reason)
         {
             scope.Owner.Database.Add(new ApplicationLifecycleAuditDetail { AuditId = stamp.Id, ReasonCode = reason });
@@ -64,6 +76,15 @@ internal static class ApplicationMutationAudit
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        if (command.PublicKey is { } key)
+        {
+            var keyAudit = await scope.Owner.Database.Set<ApplicationKeyAuditDetail>().AsNoTracking().SingleOrDefaultAsync(row => row.AuditId == stamp.Id, current);
+            if (keyAudit is null || keyAudit.CredentialRevision != state.CredentialRevision || keyAudit.PreviousRevision != state.CredentialRevision - 1 ||
+                keyAudit.Fingerprint != key.Fingerprint)
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
+        }
         if (command.Reason is { } reason)
         {
             var detail = await scope.Owner.Database.Set<ApplicationLifecycleAuditDetail>().AsNoTracking().SingleOrDefaultAsync(value => value.AuditId == stamp.Id, current);
@@ -89,6 +110,8 @@ internal static class ApplicationMutationAudit
         ApplicationMutationKind.Clone => Cloned,
         ApplicationMutationKind.Edit => Edited,
         ApplicationMutationKind.Replace => Replaced,
+        ApplicationMutationKind.ReplaceKey => KeyReplaced,
+        ApplicationMutationKind.CreateWebKey or ApplicationMutationKind.CreateMachineKey => KeyRegistered,
         ApplicationMutationKind.Disable => Disabled,
         ApplicationMutationKind.Enable => Enabled,
         ApplicationMutationKind.AssignScopes => ScopesAssigned,

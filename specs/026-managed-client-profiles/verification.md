@@ -116,3 +116,25 @@ checked the persisted receipt, fingerprint, time bounds and sequential duplicate
 Both provider cases passed. Original TRX SHA-256 was `504cdfd8237941a9a256486a04cc55c237639fdb74e1b968dfce6703499e72d4`.
 The composed provider test covers authentication. The key-management HTTP surface
 and authorization of the resulting access-token response remain separate work.
+
+The internal management operations now register confidential web and machine
+clients directly with a public key. They generate no shared secret. The API
+operation requires current write and credential permissions and recent MFA on
+registration. Replacement requires credential permission, recent MFA, confirmation
+and the current application version. The provider authority cases passed. They
+checked stale versions, loss of credential permission and the MFA expiry boundary.
+The operations have no versioned HTTP, BFF or editor entry point yet.
+
+Both databases retained an audit detail for each registration and replacement.
+The committed detail links its audit ID to the previous and resulting credential
+revisions and the public-key fingerprint. The old signing key and a spent
+assertion ID under the replacement key were refused. A fresh signed assertion
+succeeded. The replay store reclaimed expired entries for the same client and
+accepted fresh proof after the retention cutoff. Downgrade protects populated
+key audit history. Eight provider migration and compatibility cases passed.
+
+| Local evidence | Original TRX SHA-256 |
+| --- | --- |
+| PostgreSQL and SQL Server API mutation authority | `824ea13fce2f81dd4720c8ec981c02c4ad9ae5f5085e366a56621dea5052fe0e` |
+| Committed rotation history and credential use | `070fc3f19fa4201d418426de6496e1a3ec1116b008f5c80c7c0f2a2cf8f66891` |
+| Provider migration and compatibility cases | `be431df7c76926178979db1937dff94952215ef162f771151a5b4943134e9430` |

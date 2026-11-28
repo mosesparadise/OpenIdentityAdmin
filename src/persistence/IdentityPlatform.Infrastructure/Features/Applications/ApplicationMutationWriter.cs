@@ -21,8 +21,12 @@ internal static class ApplicationMutationWriter
     /// <summary>Uses real managers for all native writes and leaves version/policy persistence inside the same original transaction.</summary>
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
+        if (command.Kind == ApplicationMutationKind.ReplaceKey)
+        {
+            return await ManagedKeyReplacement.StageAsync(scope, command, token);
+        }
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine or ApplicationMutationKind.CreateWebKey or ApplicationMutationKind.CreateMachineKey)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }

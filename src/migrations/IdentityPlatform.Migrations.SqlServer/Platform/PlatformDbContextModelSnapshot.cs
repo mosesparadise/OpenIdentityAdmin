@@ -316,6 +316,31 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", b =>
+                {
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CredentialRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<long>("PreviousRevision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("ApplicationKeyAuditDetail", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationKeyAuditDetail_Revision", "[PreviousRevision] >= 0 AND [CredentialRevision] > [PreviousRevision] AND [CredentialRevision] - [PreviousRevision] = 1");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -2314,6 +2339,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", "AuditId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

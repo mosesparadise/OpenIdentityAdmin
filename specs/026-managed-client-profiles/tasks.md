@@ -223,3 +223,8 @@ entries, advancing the affected registrations' observation times before deletion
 Both real database providers accepted exactly one of two concurrent requests
 carrying the same valid assertion. Public registration, administrator key
 replacement and the final token-publication integration are still open.
+
+Registration and rotation now pass the internal management operation on both
+providers. Credential revisions and fingerprints are persisted with the
+administrator audit. The HTTP/BFF/editor paths and final protocol issuance are
+still open. [Provider and management verification](verification.md#native-managed-client-assertion-consumption)

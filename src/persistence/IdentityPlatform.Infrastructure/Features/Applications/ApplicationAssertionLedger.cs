@@ -62,7 +62,7 @@ internal static class ApplicationAssertionLedger
                 return null;
             }
             var ledger = db.Set<ApplicationAssertionUse>();
-            await CleanAsync(db, scope.Owner.Clock.GetUtcNow().ToUnixTimeSeconds(), current);
+            await CleanAsync(db, id, scope.Owner.Clock.GetUtcNow().ToUnixTimeSeconds(), current);
             if (await ledger.AnyAsync(row => row.ApplicationId == id && row.Digest == use.Digest, current) ||
                 await ledger.LongCountAsync(current) >= ManagedLoginRules.RetainedLimit)
             {
@@ -79,7 +79,7 @@ internal static class ApplicationAssertionLedger
         }, token, write: true);
 
     /// <summary>Bounds global retention and advances each affected client's time watermark before removing spent identifiers.</summary>
-    private static async Task CleanAsync(DbContext db, long now, CancellationToken token)
+    private static async Task CleanAsync(DbContext db, string currentId, long now, CancellationToken token)
     {
         var ledger = db.Set<ApplicationAssertionUse>();
         var expired = await ledger.Where(row => row.RetainUntil < now).OrderBy(row => row.RetainUntil)
@@ -89,7 +89,7 @@ internal static class ApplicationAssertionLedger
             return;
         }
         var ids = expired.Select(row => row.ApplicationId).Distinct(StringComparer.Ordinal).ToArray();
-        await db.Set<ApplicationPolicy>().Where(row => ids.Contains(row.ApplicationId) && row.ObservedAt < now)
+        await db.Set<ApplicationPolicy>().Where(row => row.ApplicationId != currentId && ids.Contains(row.ApplicationId) && row.ObservedAt < now)
             .ExecuteUpdateAsync(update => update.SetProperty(row => row.ObservedAt, now), token);
         ledger.RemoveRange(expired);
         await db.SaveChangesAsync(token);

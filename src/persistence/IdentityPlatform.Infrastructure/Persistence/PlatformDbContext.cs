@@ -28,6 +28,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
         DevicePollingWindow.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationAssertionUse.Configure(builder, ProviderOptions.Provider(options).Model);
+        ApplicationKeyAuditDetail.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationKeyApproval.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationBrowserOrigin.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);

@@ -57,9 +57,11 @@ internal sealed class ApiMutationAuthority
         ApiIdentity identity, ApplicationMutationCommand command, string callback, CancellationToken token)
     {
         var permission = Permission(command.Kind);
-        var fresh = command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone;
-        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token);
-        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, permission, fresh);
+        var registeringKey = command.Kind is ApplicationMutationKind.CreateWebKey or ApplicationMutationKind.CreateMachineKey;
+        var additional = registeringKey ? CredentialPermission : null;
+        var fresh = registeringKey || command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.ReplaceKey or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone;
+        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token, additional);
+        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, permission, fresh, additional);
     }
 
     /// <summary>Admits only a validated grant intent with current persisted revocation permission and original fresh MFA bounds.</summary>
@@ -158,8 +160,8 @@ internal sealed class ApiMutationAuthority
     /// <summary>Selects only the named action's persisted grant; unknown actions cannot fall through to ordinary write permission.</summary>
     private static string Permission(ApplicationMutationKind kind) => kind switch
     {
-        ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine or ApplicationMutationKind.Edit or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone => WritePermission,
-        ApplicationMutationKind.Replace => CredentialPermission,
+        ApplicationMutationKind.Create or ApplicationMutationKind.CreateWebKey or ApplicationMutationKind.CreateMachineKey or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine or ApplicationMutationKind.Edit or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone => WritePermission,
+        ApplicationMutationKind.Replace or ApplicationMutationKind.ReplaceKey => CredentialPermission,
         ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => LifecyclePermission,
         _ => throw ProtocolStorageOwner.Unavailable()
     };

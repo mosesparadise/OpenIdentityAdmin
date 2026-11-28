@@ -28,7 +28,12 @@ internal static class ManagedApplicationProfile
             ClientSecret = secret,
             DisplayName = command.DisplayName
         };
-        if (command.Kind == ApplicationMutationKind.CreateMachine)
+        if (command.PublicKey is { } key)
+        {
+            result.JsonWebKeySet = new Microsoft.IdentityModel.Tokens.JsonWebKeySet();
+            result.JsonWebKeySet.Keys.Add(key.CreateNativeKey());
+        }
+        if (command.Kind is ApplicationMutationKind.CreateMachine or ApplicationMutationKind.CreateMachineKey)
         {
             result.Permissions.UnionWith(MachinePermissions);
             return result;
