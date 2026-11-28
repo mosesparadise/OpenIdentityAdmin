@@ -76,7 +76,7 @@ internal sealed class ManagedLoginReservation
     }
 
     /// <summary>Counts all retained interactions and every nonterminal live row without per-application capacity bypass.</summary>
-    private static ValueTask<bool> HasCapacityAsync(ProtocolStorageScope scope, string browser, long now, CancellationToken token) =>
+    internal static ValueTask<bool> HasCapacityAsync(ProtocolStorageScope scope, string browser, long now, CancellationToken token) =>
         scope.Owner.RunAsync(async current =>
         {
             var rows = scope.Owner.Database.Set<ManagedLoginInteraction>();

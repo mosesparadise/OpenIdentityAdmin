@@ -23,6 +23,14 @@ public sealed class IndexModel : PageModel
     {
         get; private set;
     }
+    public string? DeviceDisplayName
+    {
+        get; private set;
+    }
+    public string? DeviceCode
+    {
+        get; private set;
+    }
     public string? ClientId
     {
         get; private set;
@@ -47,6 +55,8 @@ public sealed class IndexModel : PageModel
             return BadRequest();
         }
         var result = await ExecuteAsync(request, ManagedHumanAction.Read, null, null);
+        DeviceCode = request.DeviceUserCode;
+        DeviceDisplayName = request.DeviceDisplayName;
         ClientId = result.ClientId;
         Disclosure = result.Disclosure;
         Phase = (int)result.State;
@@ -72,6 +82,15 @@ public sealed class IndexModel : PageModel
         }
         var result = await ExecuteAsync(request, action.Value, form[AdministratorBrowser.Username].SingleOrDefault(),
             action == ManagedHumanAction.Password ? form[AdministratorBrowser.Password].SingleOrDefault() : form[AdministratorBrowser.Code].SingleOrDefault());
+        if (result.Accepted && request.DeviceUserCode is not null && result.State is ManagedLoginState.DeviceApproved or ManagedLoginState.Denied)
+        {
+            DeviceCode = request.DeviceUserCode;
+            DeviceDisplayName = request.DeviceDisplayName;
+            ClientId = result.ClientId;
+            Phase = (int)result.State;
+            ManagedFormPolicy.Apply(HttpContext, request, result);
+            return Page();
+        }
         if (result.Accepted && result.State == ManagedLoginState.Approved)
         {
             return LocalRedirect(QueryHelpers.AddQueryString(ProtocolOptions.AuthorizePath, new Dictionary<string, string?>
@@ -85,6 +104,8 @@ public sealed class IndexModel : PageModel
         {
             return LocalRedirect(QueryHelpers.AddQueryString(ManagedFormProof.Path, ManagedFormProof.Field, Flow));
         }
+        DeviceCode = request.DeviceUserCode;
+        DeviceDisplayName = request.DeviceDisplayName;
         ClientId = result.ClientId;
         Disclosure = result.Disclosure;
         Phase = (int)result.State;
@@ -112,7 +133,8 @@ public sealed class IndexModel : PageModel
         var browser = ManagedBrowser.Read(HttpContext) ?? throw ProtocolStorageOwner.Unavailable();
         var current = ProtocolStorageAmbient.Current ?? throw ProtocolStorageOwner.Unavailable();
         var result = await ManagedHumanOperation.RunAsync(current.Scope, request, action,
-            WebEncoders.Base64UrlEncode(Convert.FromHexString(browser)), username, proof, HttpContext.RequestAborted);
+            WebEncoders.Base64UrlEncode(Convert.FromHexString(browser)), username, proof, HttpContext.RequestAborted,
+            (row, token) => Protocol.Devices.DeviceHumanDecision.CompleteAsync(current.Scope, request, row, token));
         if (result.NeedsDummyWork)
         {
             HttpContext.RequestServices.GetRequiredService<DummyPassword>().Verify(proof!);

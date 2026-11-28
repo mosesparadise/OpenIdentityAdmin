@@ -70,6 +70,7 @@ public sealed class ManagedSchemaTests
         await using var fixture = await ManagedSchemaFixture.CreateAsync(provider);
         await using var scope = fixture.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         database.Add(ManagedSchemaRows.Policy());
         database.AddRange(ManagedSchemaRows.Reservation(), ManagedSchemaRows.Reservation());
         database.Add(ManagedSchemaRows.Boundaries());
@@ -81,7 +82,6 @@ public sealed class ManagedSchemaTests
         database.ChangeTracker.Clear();
         var policy = await database.Set<ApplicationPolicy>().SingleAsync(fixture.Token);
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
-        ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
         Assert.Equal(TestDatabaseProviders.Resolve(provider).Migrations(DatabaseStore.Platform), await database.Database.GetAppliedMigrationsAsync(fixture.Token));
         await ClientProfileStorageChecks.RequireAsync(fixture);

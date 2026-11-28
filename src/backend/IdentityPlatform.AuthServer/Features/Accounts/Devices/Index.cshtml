@@ -1,0 +1,16 @@
+@page "/account/device"
+@model IdentityPlatform.AuthServer.Features.Accounts.Devices.IndexModel
+@{ ViewData["Title"] = "Connect a device"; }
+<section class="card" aria-labelledby="heading">
+  <h1 id="heading">Connect a device</h1>
+  <p>Enter the code shown on your device. You’ll review which application is requesting access before you approve it.</p>
+  @if (Model.Failed)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1">Check the code on your device or request a new code.</div>
+  }
+  <form method="post" action="/account/device" asp-antiforgery="true">
+    <label for="device-code">Device verification code</label>
+    <input id="device-code" name="UserCode" type="text" maxlength="32" autocomplete="off" required />
+    <button class="primary" type="submit">Continue</button>
+  </form>
+</section>

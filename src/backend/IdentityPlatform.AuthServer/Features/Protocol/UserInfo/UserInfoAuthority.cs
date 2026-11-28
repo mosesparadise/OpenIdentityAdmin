@@ -28,21 +28,23 @@ internal sealed class UserInfoAuthority(ManagedRegistration registration, Manage
         }
         await ManagedRegistration.LockAsync(scope, token);
         var client = principal.GetPresenters()[0];
-        var registration = await ManagedRegistration.ReadAsync(scope, client, token);
         var authorization = principal.GetAuthorizationId();
         var row = await scope.Owner.RunAsync(current => new ValueTask<ManagedLoginInteraction?>(scope.Owner.Database.Set<ManagedLoginInteraction>()
             .AsNoTracking().SingleOrDefaultAsync(value => value.AuthorizationId == authorization, current)), token);
+        var device = row?.DeviceEntryId is not null;
+        var registration = device ? (await DeviceClientRegistration.ReadLockedAsync(scope, client, token))?.State.Registration :
+            await ManagedRegistration.ReadAsync(scope, client, token);
         if (registration is null || row is null || !Bound(principal, registration, row) ||
-            !await ManagedScopePolicy.TryVerifyAsync(scope, client, ManagedScopeBinding.Read(row), token))
+            !await ManagedScopePolicy.TryVerifyAsync(scope, client, ManagedScopeBinding.Read(row), token, device))
         {
             return null;
         }
         var expiration = await NativeAsync(scope, principal, registration, token);
-        if (expiration is null || await ManagedIssuanceSource.TryOpenAsync(scope, row, observe: false, token) is not { } source)
+        if (expiration is null || await ManagedIssuanceSource.TryOpenAsync(scope, row, observe: false, token, completedDevice: device) is not { } source)
         {
             return null;
         }
-        var deadline = Math.Min(expiration.Value.ToUnixTimeSeconds(), Math.Min(row.ExpiresAt, registration.ExpiresAt));
+        var deadline = Math.Min(expiration.Value.ToUnixTimeSeconds(), device ? registration.ExpiresAt : Math.Min(row.ExpiresAt, registration.ExpiresAt));
         var result = new UserInfoAuthority(registration, row, source.Snapshot(row), source.Email(row), DateTimeOffset.FromUnixTimeSeconds(deadline));
         return await result.VerifyAsync(scope, principal, token) ? result : null;
     }
@@ -59,7 +61,7 @@ internal sealed class UserInfoAuthority(ManagedRegistration registration, Manage
     private static bool Bound(ClaimsPrincipal principal, ManagedRegistration registration, ManagedLoginInteraction row)
     {
         var decision = ManagedScopeBinding.Read(row);
-        return row.State == ManagedLoginState.Consumed && row.AuthorizationId == principal.GetAuthorizationId() &&
+        return (row.DeviceEntryId is null ? row.State == ManagedLoginState.Consumed : row.State == ManagedLoginState.DeviceApproved && registration.Profile == DevicePollingWindow.Profile) && row.AuthorizationId == principal.GetAuthorizationId() &&
             row.UserId == principal.GetClaim(OpenIddictConstants.Claims.Subject) && row.ApplicationId == registration.ApplicationId &&
             row.ApplicationRevision == registration.Revision && decision.Requested.SequenceEqual(decision.Granted, StringComparer.Ordinal) &&
             principal.GetScopes().SequenceEqual(decision.Granted, StringComparer.Ordinal) && principal.GetAudiences().SequenceEqual(decision.Resources, StringComparer.Ordinal);
@@ -90,10 +92,13 @@ internal sealed class UserInfoAuthority(ManagedRegistration registration, Manage
     /// <summary>Rechecks independent persisted account/ceremony/consent state and fresh native policy after formatter callbacks, before committing the read phase.</summary>
     internal async ValueTask<bool> VerifyAsync(ProtocolStorageScope scope, ClaimsPrincipal principal, CancellationToken token)
     {
-        await scope.Owner.RunAsync(current => new ValueTask(source.VerifyAsync((PlatformDbContext)scope.Owner.Database, scope.Owner.Clock, current)), token);
+        var device = row.DeviceEntryId is not null;
+        var currentRegistration = device ? (await DeviceClientRegistration.ReadLockedAsync(scope, registration.ClientId, token))?.State.Registration :
+            await ManagedRegistration.ReadAsync(scope, registration.ClientId, token);
+        await scope.Owner.RunAsync(current => new ValueTask(source.VerifyAsync((PlatformDbContext)scope.Owner.Database, scope.Owner.Clock, current, completedDevice: device)), token);
         return Expires > scope.Owner.Clock.GetUtcNow() && Candidate(principal) && Bound(principal, registration, row) &&
-            registration.Matches(await ManagedRegistration.ReadAsync(scope, registration.ClientId, token)) &&
-            await ManagedScopePolicy.TryVerifyAsync(scope, registration.ClientId, ManagedScopeBinding.Read(row), token) &&
+            registration.Matches(currentRegistration) &&
+            await ManagedScopePolicy.TryVerifyAsync(scope, registration.ClientId, ManagedScopeBinding.Read(row), token, device) &&
             await NativeAsync(scope, principal, registration, token) is { } current && current >= Expires;
     }
 }

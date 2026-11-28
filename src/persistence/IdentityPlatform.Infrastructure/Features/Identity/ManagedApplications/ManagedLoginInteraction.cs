@@ -19,6 +19,10 @@ internal sealed class ManagedLoginInteraction
     {
         get; set;
     }
+    public string? DeviceEntryId
+    {
+        get; set;
+    }
     public long ApplicationRevision
     {
         get; set;
@@ -126,5 +130,6 @@ internal enum ManagedLoginState
     Approved = 4,
     Consumed = 5,
     Denied = 6,
-    Expired = 7
+    Expired = 7,
+    DeviceApproved = 8
 }

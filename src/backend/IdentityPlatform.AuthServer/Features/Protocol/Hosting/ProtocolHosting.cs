@@ -42,7 +42,8 @@ internal static class ProtocolHosting
     private static async Task RunConfiguredAsync(HttpContext http, RequestDelegate next, OpenIddictServerEndpointType endpoint,
         ProtocolProfiles profiles, ProtocolHostRequest host)
     {
-        var request = new ProtocolStorageRequest(http.RequestServices.GetRequiredService<TimeProvider>(), http.RequestAborted);
+        var deviceOutput = new Devices.DevicePublication();
+        var request = new ProtocolStorageRequest(http.RequestServices.GetRequiredService<TimeProvider>(), http.RequestAborted, deviceOutput.Require);
         await using var deadline = new ProtocolResponseDeadline(http, request);
         if (profiles.Pilot && await PilotTransportIdentity.MatchesAsync(http, endpoint))
         {
@@ -62,18 +63,22 @@ internal static class ProtocolHosting
         }
         else
         {
-            await RunOwnedAsync(http, next, endpoint, request);
+            await RunOwnedAsync(http, next, endpoint, request, deviceOutput);
         }
     }
 
     /// <summary>Installs the marker in the actual fresh scope used by authentication, native stores and endpoint decisions.</summary>
-    private static Task RunOwnedAsync(HttpContext http, RequestDelegate next, OpenIddictServerEndpointType endpoint, ProtocolStorageRequest original) =>
+    private static Task RunOwnedAsync(HttpContext http, RequestDelegate next, OpenIddictServerEndpointType endpoint, ProtocolStorageRequest original, Devices.DevicePublication deviceOutput) =>
         ProtocolHttpBoundary.RunAsync(http, http.RequestServices.GetRequiredService<IServiceScopeFactory>(),
             original, async (_, scope, token) =>
             {
                 var request = scope.Services.GetRequiredService<ProtocolHostRequest>();
                 request.Bind(http, endpoint, ProtocolHostMode.Owned);
                 var cors = scope.Services.GetRequiredService<ProtocolProfiles>().Managed;
+                if (cors && await Devices.DeviceEndpoint.TryAsync(http, scope, endpoint, deviceOutput, token) is { } device)
+                {
+                    return device;
+                }
                 if (cors && await ManagedBrowserCors.PreflightAsync(http, scope, token))
                 {
                     return ProtocolResponseOutcome.ReadOnly;

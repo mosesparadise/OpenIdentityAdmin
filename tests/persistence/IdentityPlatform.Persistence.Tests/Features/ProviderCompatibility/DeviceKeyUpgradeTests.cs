@@ -57,6 +57,8 @@ public sealed class DeviceKeyUpgradeTests
         await RequireKeysAsync(fixture);
         await NativeDevicePollEvidence.RequireAsync(fixture);
         var bound = await fixture.SnapshotAsync(provider);
+        await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(provider == Postgres ? PgMigration : SqlMigration));
+        RequireEqual(bound, await fixture.SnapshotAsync(provider));
         await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(previous));
         await fixture.MigrateAsync(null);
         RequireEqual(bound, await fixture.SnapshotAsync(provider));
@@ -173,6 +175,7 @@ public sealed class DeviceKeyUpgradeTests
     /// <summary>Removes only the three known empty tables and the one actual history row from a current snapshot.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> source)
     {
+        source = DeviceHumanSchemaWitness.Predecessor(provider, source);
         var migration = provider == Postgres ? PgMigration : SqlMigration;
         var result = new Dictionary<string, string[]>(StringComparer.Ordinal);
         foreach (var (query, rows) in source)

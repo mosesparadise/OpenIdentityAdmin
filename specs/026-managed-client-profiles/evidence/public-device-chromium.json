@@ -1,0 +1,34 @@
+{
+  "reported": "2026-11-28T10:35:45.940242+00:00",
+  "sourceSnapshot": "451b4b4a6b622196c42d529eaaf615a363812b45",
+  "sourceTree": "5ae26078dc4397ddf4b1c351d60270b6f32a9eed",
+  "sourceParent": "bb849a0bfdd3a72409260ddffbee01abdb122942",
+  "probeSha256": "ed977b91484bbc3cd59039d38ee701b4bbb2800427baa4d411a9a1260b382d02",
+  "harnessTargetsSha256": "c36113c8c5d7199f4b355af3f237c649ea5a52215af39328d2d36377ece257dc",
+  "rawTrxSha256": "3f53ab445f1b3762f0c465ad9d1e1965c844913462c88ad2e5c2244771464eb4",
+  "engine": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)",
+  "playwrightDotNet": "1.63.0",
+  "cases": [
+    {
+      "provider": "PostgreSql",
+      "test": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.PublicDeviceBrowserProbe.ApproveDisplayedDeviceAndRedeemOnce(provider: \"PostgreSql\")",
+      "testId": "221babdd-fef4-6e05-962f-e8a26376c4ca",
+      "executionId": "0e28c2f5-5a66-4ac2-87c3-89897da31092",
+      "duration": "00:01:03.0000000",
+      "outcome": "Passed",
+      "observation": "Device browser witness | PostgreSql | Chromium 151.0.7922.173 | TLS verified; empty browser context; issuer-only document and subresource requests | form strict-origin, same-origin POST 302 | public device 200; slow_down; pending before sign-in and after fresh MFA; manual code plus client plus openid shown; explicit approval; issuer completion | separate cookie-free public token POST 200; bearer access token; second POST invalid_grant | durable approved subject/MFA/consent; administrator authority unchanged"
+    },
+    {
+      "provider": "SqlServer",
+      "test": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.PublicDeviceBrowserProbe.ApproveDisplayedDeviceAndRedeemOnce(provider: \"SqlServer\")",
+      "testId": "2e3d67a1-29fb-1e42-0260-9c638a3aff0a",
+      "executionId": "950d2aeb-9ebb-45a4-80fb-98a96a704b26",
+      "duration": "00:01:06.1540000",
+      "outcome": "Passed",
+      "observation": "Device browser witness | SqlServer | Chromium 151.0.7922.173 | TLS verified; empty browser context; issuer-only document and subresource requests | form strict-origin, same-origin POST 302 | public device 200; slow_down; pending before sign-in and after fresh MFA; manual code plus client plus openid shown; explicit approval; issuer completion | separate cookie-free public token POST 200; bearer access token; second POST invalid_grant | durable approved subject/MFA/consent; administrator authority unchanged"
+    }
+  ],
+  "registration": "Pre-provisioned via OpenIddict manager and current DevicePollingWindow profile on each disposable database, as in public HTTPS integration tests. The browser and device then use public HTTPS routes.",
+  "clock": "Existing fixture clock advanced by ten seconds per eligible poll; fresh TOTP from the independent native-wall-clock helper.",
+  "limits": "Local system Chromium. Test HTTPS certificate trusted only in the isolated browser profile. The witness receives a bearer access token and verifies durable human proof. It does not call a protected API with that token. The raw TRX is hashed and the identity-checked projection retained to avoid persisting any unsolicited framework diagnostics."
+}

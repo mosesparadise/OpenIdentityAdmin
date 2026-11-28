@@ -66,3 +66,12 @@ verifier values for each sign-in and verify them on return. Open the authorizati
 endpoint through top-level navigation. For cross-origin fetches, omit cookies.
 Send the access token to the discovered UserInfo endpoint in the Authorization
 bearer header. Disabling or retiring the registration withdraws its access.
+
+## Verify a device with an existing public registration
+
+The managed issuer advertises its device authorization endpoint in discovery. A device with an enabled public device registration starts the flow by posting a URL-encoded form to `/connect/device` with its `client_id` and a space-separated `scope` that includes `openid`. It may request the email and API scopes assigned to that registration. The application editor’s device enrollment option is still under development.
+
+1. Display the returned `verification_uri` and `user_code`. Keep the separate `device_code` on the device.
+2. The user opens the verification address, enters the displayed code, and signs in with their password and a fresh authenticator code. The consent page shows the registered application name, client ID, matching code and requested access. Approval and cancellation both finish on the issuer.
+3. Post `client_id`, `device_code` and `grant_type=urn:ietf:params:oauth:grant-type:device_code` to `/connect/token`. Wait for the advertised interval before polling, or five seconds when the response omits it. Continue on `authorization_pending`. On `slow_down`, increase the interval by five seconds for all subsequent polls.
+4. An approved device can redeem once within the original ten-minute lifetime. Stop on `access_denied`, `expired_token` or `invalid_grant`. To try again, request a new code pair. Use the access token as a bearer credential for the granted resource or the issuer’s UserInfo endpoint.

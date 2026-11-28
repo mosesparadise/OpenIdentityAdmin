@@ -113,7 +113,8 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
             .Where(row => row.ApplicationId == original.ApplicationId && !row.Retired && row.Enabled && row.Revision == original.Revision && row.CredentialRevision == original.CredentialRevision &&
                 row.ObservedAt == original.ObservedAt && row.Profile == original.Profile && row.CredentialExpiresAt == original.CredentialExpiresAt)
             .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.ObservedAt, now), current)), token, write: true);
-        var actual = await ManagedRegistration.ReadAsync(scope, original.ClientId, token);
+        var actual = original.Profile == DevicePollingWindow.Profile ? (await DeviceClientRegistration.ReadLockedAsync(scope, original.ClientId, token))?.State.Registration :
+            await ManagedRegistration.ReadAsync(scope, original.ClientId, token);
         if (changed != 1 || !original.Matches(actual) || actual!.ObservedAt != now)
         {
             throw ProtocolStorageOwner.Unavailable();

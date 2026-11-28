@@ -18,6 +18,14 @@ internal sealed class DevicePollingWindow
     private static readonly string CadenceSql = $@"""ApplicationRevision"" > 0 AND ""IntervalSeconds"" BETWEEN {IntervalStep} AND {LifetimeSeconds}";
 
     public string Digest { get; private set; } = string.Empty;
+    public long? LastCleanupAttempt
+    {
+        get; internal set;
+    }
+    public string? NativeAuthorizationId
+    {
+        get; internal set;
+    }
     public string ApplicationId { get; private set; } = string.Empty;
     public long ApplicationRevision
     {
@@ -101,6 +109,7 @@ internal sealed class DevicePollingWindow
         var row = builder.Entity<DevicePollingWindow>();
         row.HasKey(value => value.Digest);
         row.Property(value => value.Digest).HasMaxLength(DigestLength);
+        row.Property(value => value.NativeAuthorizationId).HasMaxLength(ApplicationProjection.IdentifierLength);
         row.Property(value => value.ApplicationId).HasMaxLength(ApplicationProjection.IdentifierLength);
         row.Property(value => value.NextPollAt).IsConcurrencyToken();
         row.Property(value => value.ObservedAt).IsConcurrencyToken();
@@ -115,6 +124,7 @@ internal sealed class DevicePollingWindow
         if (dialect.IdentityOrdinalCollation is { } ordinal)
         {
             row.Property(value => value.Digest).UseCollation(ordinal);
+            row.Property(value => value.NativeAuthorizationId).UseCollation(ordinal);
             row.Property(value => value.ApplicationId).UseCollation(ordinal);
         }
     }

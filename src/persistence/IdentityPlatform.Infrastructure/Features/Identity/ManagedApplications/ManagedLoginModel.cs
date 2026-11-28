@@ -20,9 +20,9 @@ internal static class ManagedLoginModel
         "\"ObservedAt\" >= \"CreatedAt\" AND \"RetainUntil\" >= \"ExpiresAt\"";
     private const string NativeSql = "(\"RequestId\" IS NULL AND \"RequestExpiresAt\" IS NULL AND \"NativeDependencyCreatedAt\" IS NULL AND \"NativeDependencyExpiresAt\" IS NULL) OR " +
         "(\"RequestId\" IS NOT NULL AND \"RequestExpiresAt\" IS NOT NULL AND \"NativeDependencyCreatedAt\" IS NOT NULL AND \"NativeDependencyExpiresAt\" IS NOT NULL AND " +
-        "\"RequestExpiresAt\" >= \"ExpiresAt\" AND \"NativeDependencyCreatedAt\" >= \"CreatedAt\" AND \"NativeDependencyExpiresAt\" >= \"RequestExpiresAt\" AND " +
+        "\"RequestExpiresAt\" >= \"ExpiresAt\" AND ((\"DeviceEntryId\" IS NULL AND \"NativeDependencyCreatedAt\" >= \"CreatedAt\") OR (\"DeviceEntryId\" IS NOT NULL AND \"NativeDependencyCreatedAt\" <= \"CreatedAt\")) AND \"NativeDependencyExpiresAt\" >= \"RequestExpiresAt\" AND " +
         "\"NativeDependencyExpiresAt\" > \"NativeDependencyCreatedAt\" AND \"RetainUntil\" >= \"NativeDependencyExpiresAt\")";
-    private const string StateSql = "\"State\" IN (1, 2, 3, 4, 5, 6, 7)";
+    private const string StateSql = "\"State\" IN (1, 2, 3, 4, 5, 6, 7, 8) AND (\"State\" <> 8 OR \"DeviceEntryId\" IS NOT NULL)";
     private const string PasswordProof = "\"CeremonyId\" IS NOT NULL AND \"CeremonyBrowserDigest\" IS NOT NULL AND \"BrowserBudgetId\" IS NOT NULL AND " +
         "\"UserId\" IS NOT NULL AND \"SecurityStamp\" IS NOT NULL AND \"AuthenticationGeneration\" IS NOT NULL AND \"AuthenticationGeneration\" > 0 AND " +
         "\"FactorGeneration\" IS NOT NULL AND \"FactorGeneration\" > 0 AND \"EnrollmentRevision\" IS NOT NULL AND \"EnrollmentRevision\" >= 0 AND " +
@@ -34,9 +34,10 @@ internal static class ManagedLoginModel
     private const string ConsentProof = "\"ConsentVerifiedAt\" IS NOT NULL AND \"ConsentVerifiedAt\" >= \"MfaVerifiedAt\" AND \"ConsentVerifiedAt\" < \"ExpiresAt\"";
     private const string ProofSql = "\"State\" IN (6, 7) OR (\"State\" = 1 AND " + NoProof + ") OR (\"RequestId\" IS NOT NULL AND " + PasswordProof +
         " AND ((\"State\" = 2 AND \"MfaVerifiedAt\" IS NULL AND \"ConsentVerifiedAt\" IS NULL) OR (\"State\" = 3 AND " + MfaProof +
-        " AND \"ConsentVerifiedAt\" IS NULL) OR (\"State\" IN (4, 5) AND " + MfaProof + " AND " + ConsentProof + ")))";
-    private const string CodeSql = "(\"State\" = 5 AND \"AuthorizationId\" IS NOT NULL AND \"CodeId\" IS NOT NULL) OR " +
-        "(\"State\" <> 5 AND \"AuthorizationId\" IS NULL AND \"CodeId\" IS NULL)";
+        " AND \"ConsentVerifiedAt\" IS NULL) OR (\"State\" IN (4, 5, 8) AND " + MfaProof + " AND " + ConsentProof + ")))";
+    private const string CodeSql = "(\"DeviceEntryId\" IS NULL AND ((\"State\" = 5 AND \"AuthorizationId\" IS NOT NULL AND \"CodeId\" IS NOT NULL) OR " +
+        "(\"State\" <> 5 AND \"AuthorizationId\" IS NULL AND \"CodeId\" IS NULL))) OR " +
+        "(\"DeviceEntryId\" IS NOT NULL AND \"State\" <> 5 AND \"RequestId\" IS NOT NULL AND \"AuthorizationId\" IS NOT NULL AND \"CodeId\" IS NULL)";
 
     /// <summary>Preserves full native account bounds and independent replay retention without any foreign-key deletion cascade.</summary>
     internal static void Configure(ModelBuilder builder, IDatabaseModelDialect dialect)
@@ -49,7 +50,7 @@ internal static class ManagedLoginModel
         {
             FactorSchema.Text(row, name, FactorSchema.DigestLength, dialect);
         }
-        foreach (var name in new[] { nameof(ManagedLoginInteraction.ApplicationId), nameof(ManagedLoginInteraction.RequestId),
+        foreach (var name in new[] { nameof(ManagedLoginInteraction.ApplicationId), nameof(ManagedLoginInteraction.RequestId), nameof(ManagedLoginInteraction.DeviceEntryId),
             nameof(ManagedLoginInteraction.AuthorizationId), nameof(ManagedLoginInteraction.CodeId) })
         {
             FactorSchema.Text(row, name, ApplicationProjection.IdentifierLength, dialect);
@@ -58,6 +59,7 @@ internal static class ManagedLoginModel
         FactorSchema.Text(row, nameof(ManagedLoginInteraction.SecurityStamp), FactorSchema.StampLength, dialect);
         row.Property(value => value.Revision).IsConcurrencyToken();
         row.Property(value => value.ObservedAt).IsConcurrencyToken();
+        row.HasIndex(value => value.DeviceEntryId).IsUnique();
         row.HasIndex(value => value.RequestId).IsUnique();
         row.HasIndex(value => value.CeremonyId).IsUnique();
         row.HasIndex(value => value.CodeId).IsUnique();

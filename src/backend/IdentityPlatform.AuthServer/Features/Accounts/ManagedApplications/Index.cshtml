@@ -3,8 +3,19 @@
 @{ ViewData["Title"] = "Application sign in"; }
 <section class="card" aria-labelledby="heading">
   <p class="eyebrow">Application sign in</p>
-  <h1 id="heading">@(Model.Phase == 1 ? "Sign in" : Model.Phase == 2 ? "Verify your authenticator" : Model.Phase == 3 ? "Review access" : Model.Phase == 6 ? "Sign-in cancelled" : "Consent saved")</h1>
-  <p>Application: <strong>@Model.ClientId</strong></p>
+  <h1 id="heading">@(Model.Phase == 1 ? "Sign in" : Model.Phase == 2 ? "Verify your authenticator" : Model.Phase == 3 ? "Review access" : Model.Phase == 8 ? "Device approved" : Model.Phase == 6 ? "Sign-in cancelled" : "Consent saved")</h1>
+  @if (Model.DeviceDisplayName is { } name)
+  {
+    <p>Application: <strong>@name</strong> (<code>@Model.ClientId</code>)</p>
+  }
+  else
+  {
+    <p>Application: <strong>@Model.ClientId</strong></p>
+  }
+  @if (Model.DeviceCode is not null && Model.Phase is >= 1 and <= 3)
+  {
+    <p>Check that your device displays <strong>@Model.DeviceCode</strong>.</p>
+  }
   @if (Model.Error is not null)
   {
     <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
@@ -53,7 +64,7 @@
   }
   else
   {
-    <p>Return to your application. No sign-in credentials have been issued.</p>
+    <p>@(Model.DeviceCode is not null ? "Return to your device." : "Return to your application. No sign-in credentials have been issued.")</p>
   }
   <p class="footnote">If this request has expired, start a new sign-in from your application.</p>
 </section>

@@ -10,7 +10,7 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class ManagedSchemaNegatives
 {
     private const string UnknownProfile = "unsupported";
-    private const int UnknownState = 8;
+    private const int UnknownState = int.MaxValue;
     private const int AccountOverflow = 451;
     private const int StampOverflow = 257;
     private static readonly Action<ApplicationPolicy>[] InvalidPolicies =
@@ -55,6 +55,13 @@ internal static class ManagedSchemaNegatives
             mutate(row);
             await RejectAsync(fixture, row);
         }
+        var unbound = ManagedSchemaRows.Interaction(ManagedLoginState.DeviceApproved);
+        unbound.DeviceEntryId = null;
+        unbound.AuthorizationId = null;
+        await RejectAsync(fixture, unbound);
+        var unapproved = ManagedSchemaRows.Interaction(ManagedLoginState.DeviceApproved);
+        unapproved.ConsentVerifiedAt = null;
+        await RejectAsync(fixture, unapproved);
         await RejectPrematureProofAsync(fixture);
         await DuplicateAsync(fixture, row => row.RequestId);
         await DuplicateAsync(fixture, row => row.CodeId);

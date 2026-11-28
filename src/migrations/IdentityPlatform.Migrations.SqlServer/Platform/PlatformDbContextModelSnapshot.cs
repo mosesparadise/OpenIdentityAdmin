@@ -493,6 +493,14 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .IsConcurrencyToken()
                         .HasColumnType("int");
 
+                    b.Property<long?>("LastCleanupAttempt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NativeAuthorizationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
                     b.Property<long>("NextPollAt")
                         .IsConcurrencyToken()
                         .HasColumnType("bigint");
@@ -879,6 +887,11 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .HasColumnType("nvarchar(64)")
                         .UseCollation("Latin1_General_100_BIN2");
 
+                    b.Property<string>("DeviceEntryId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
                     b.Property<long?>("EnrollmentRevision")
                         .HasColumnType("bigint");
 
@@ -955,6 +968,10 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .IsUnique()
                         .HasFilter("[CodeId] IS NOT NULL");
 
+                    b.HasIndex("DeviceEntryId")
+                        .IsUnique()
+                        .HasFilter("[DeviceEntryId] IS NOT NULL");
+
                     b.HasIndex("RequestId")
                         .IsUnique()
                         .HasFilter("[RequestId] IS NOT NULL");
@@ -969,17 +986,17 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("ManagedLoginInteraction", "platform", t =>
                         {
-                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Code", "([State] = 5 AND [AuthorizationId] IS NOT NULL AND [CodeId] IS NOT NULL) OR ([State] <> 5 AND [AuthorizationId] IS NULL AND [CodeId] IS NULL)");
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Code", "([DeviceEntryId] IS NULL AND (([State] = 5 AND [AuthorizationId] IS NOT NULL AND [CodeId] IS NOT NULL) OR ([State] <> 5 AND [AuthorizationId] IS NULL AND [CodeId] IS NULL))) OR ([DeviceEntryId] IS NOT NULL AND [State] <> 5 AND [RequestId] IS NOT NULL AND [AuthorizationId] IS NOT NULL AND [CodeId] IS NULL)");
 
-                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Native", "([RequestId] IS NULL AND [RequestExpiresAt] IS NULL AND [NativeDependencyCreatedAt] IS NULL AND [NativeDependencyExpiresAt] IS NULL) OR ([RequestId] IS NOT NULL AND [RequestExpiresAt] IS NOT NULL AND [NativeDependencyCreatedAt] IS NOT NULL AND [NativeDependencyExpiresAt] IS NOT NULL AND [RequestExpiresAt] >= [ExpiresAt] AND [NativeDependencyCreatedAt] >= [CreatedAt] AND [NativeDependencyExpiresAt] >= [RequestExpiresAt] AND [NativeDependencyExpiresAt] > [NativeDependencyCreatedAt] AND [RetainUntil] >= [NativeDependencyExpiresAt])");
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Native", "([RequestId] IS NULL AND [RequestExpiresAt] IS NULL AND [NativeDependencyCreatedAt] IS NULL AND [NativeDependencyExpiresAt] IS NULL) OR ([RequestId] IS NOT NULL AND [RequestExpiresAt] IS NOT NULL AND [NativeDependencyCreatedAt] IS NOT NULL AND [NativeDependencyExpiresAt] IS NOT NULL AND [RequestExpiresAt] >= [ExpiresAt] AND (([DeviceEntryId] IS NULL AND [NativeDependencyCreatedAt] >= [CreatedAt]) OR ([DeviceEntryId] IS NOT NULL AND [NativeDependencyCreatedAt] <= [CreatedAt])) AND [NativeDependencyExpiresAt] >= [RequestExpiresAt] AND [NativeDependencyExpiresAt] > [NativeDependencyCreatedAt] AND [RetainUntil] >= [NativeDependencyExpiresAt])");
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Policy", "([PolicySnapshot] IS NULL AND [PolicyDigest] IS NULL) OR ([PolicySnapshot] IS NOT NULL AND [PolicyDigest] IS NOT NULL)");
 
-                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Proof", "[State] IN (6, 7) OR ([State] = 1 AND [CeremonyId] IS NULL AND [CeremonyBrowserDigest] IS NULL AND [BrowserBudgetId] IS NULL AND [UserId] IS NULL AND [SecurityStamp] IS NULL AND [AuthenticationGeneration] IS NULL AND [FactorGeneration] IS NULL AND [EnrollmentRevision] IS NULL AND [PasswordVerifiedAt] IS NULL AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([RequestId] IS NOT NULL AND [CeremonyId] IS NOT NULL AND [CeremonyBrowserDigest] IS NOT NULL AND [BrowserBudgetId] IS NOT NULL AND [UserId] IS NOT NULL AND [SecurityStamp] IS NOT NULL AND [AuthenticationGeneration] IS NOT NULL AND [AuthenticationGeneration] > 0 AND [FactorGeneration] IS NOT NULL AND [FactorGeneration] > 0 AND [EnrollmentRevision] IS NOT NULL AND [EnrollmentRevision] >= 0 AND [PasswordVerifiedAt] IS NOT NULL AND [PasswordVerifiedAt] >= [CreatedAt] AND [PasswordVerifiedAt] < [ExpiresAt] AND (([State] = 2 AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([State] = 3 AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NULL) OR ([State] IN (4, 5) AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NOT NULL AND [ConsentVerifiedAt] >= [MfaVerifiedAt] AND [ConsentVerifiedAt] < [ExpiresAt])))");
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Proof", "[State] IN (6, 7) OR ([State] = 1 AND [CeremonyId] IS NULL AND [CeremonyBrowserDigest] IS NULL AND [BrowserBudgetId] IS NULL AND [UserId] IS NULL AND [SecurityStamp] IS NULL AND [AuthenticationGeneration] IS NULL AND [FactorGeneration] IS NULL AND [EnrollmentRevision] IS NULL AND [PasswordVerifiedAt] IS NULL AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([RequestId] IS NOT NULL AND [CeremonyId] IS NOT NULL AND [CeremonyBrowserDigest] IS NOT NULL AND [BrowserBudgetId] IS NOT NULL AND [UserId] IS NOT NULL AND [SecurityStamp] IS NOT NULL AND [AuthenticationGeneration] IS NOT NULL AND [AuthenticationGeneration] > 0 AND [FactorGeneration] IS NOT NULL AND [FactorGeneration] > 0 AND [EnrollmentRevision] IS NOT NULL AND [EnrollmentRevision] >= 0 AND [PasswordVerifiedAt] IS NOT NULL AND [PasswordVerifiedAt] >= [CreatedAt] AND [PasswordVerifiedAt] < [ExpiresAt] AND (([State] = 2 AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([State] = 3 AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NULL) OR ([State] IN (4, 5, 8) AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NOT NULL AND [ConsentVerifiedAt] >= [MfaVerifiedAt] AND [ConsentVerifiedAt] < [ExpiresAt])))");
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Revision", "[Revision] > 0 AND [ApplicationRevision] > 0");
 
-                            t.HasCheckConstraint("CK_ManagedLoginInteraction_State", "[State] IN (1, 2, 3, 4, 5, 6, 7)");
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_State", "[State] IN (1, 2, 3, 4, 5, 6, 7, 8) AND ([State] <> 8 OR [DeviceEntryId] IS NOT NULL)");
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Time", "[CreatedAt] >= 0 AND [ExpiresAt] > [CreatedAt] AND [ExpiresAt] - [CreatedAt] <= 300 AND [ObservedAt] >= [CreatedAt] AND [RetainUntil] >= [ExpiresAt]");
                         });

@@ -11,6 +11,13 @@ internal static class ManagedFormPolicy
     private const string InertReferrer = "no-referrer";
     private const string Invalid = "Managed form presentation is unavailable.";
 
+    /// <summary>Permits the issuer origin header on form submission while withholding the source page URL.</summary>
+    internal static void DeviceEntry(HttpContext context)
+    {
+        AccountRequestGuard.SetFormDestination(context, null);
+        context.Response.Headers[Referrer] = FormReferrer;
+    }
+
     /// <summary>Allows only the bound callback origin on actionable consent, leaving password/MFA same-origin and all terminal output inert.</summary>
     internal static void Apply(HttpContext context, ManagedHumanRequest request, ManagedHumanResult result)
     {
@@ -19,7 +26,7 @@ internal static class ManagedFormPolicy
             throw new InvalidOperationException(Invalid);
         }
         var actionable = result.State is ManagedLoginState.PendingPassword or ManagedLoginState.PendingMfa or ManagedLoginState.PendingConsent;
-        var destination = result.State == ManagedLoginState.PendingConsent ? new Uri(request.Callback, UriKind.Absolute) : null;
+        var destination = result.State == ManagedLoginState.PendingConsent && request.DeviceUserCode is null ? new Uri(request.Callback, UriKind.Absolute) : null;
         AccountRequestGuard.SetFormDestination(context, destination);
         context.Response.Headers[Referrer] = actionable ? FormReferrer : InertReferrer;
     }
