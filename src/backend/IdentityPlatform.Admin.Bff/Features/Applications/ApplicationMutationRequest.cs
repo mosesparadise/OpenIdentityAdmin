@@ -135,6 +135,27 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Parses only the selected independently validated DTO; unknown, duplicate and null fields cannot reach the API.</summary>
     private static object Validate(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now)
     {
+        if (action == ApplicationProxyAction.Clone)
+        {
+            var clone = ApplicationJson.Parse<ApplicationClone>(bytes);
+            return ApplicationCloneRules.IsValid(clone, now) ? clone : throw new InvalidDataException();
+        }
+        else if (action == ApplicationProxyAction.AssignScopes)
+        {
+            var assignment = ApplicationJson.Parse<ApplicationScopeInput>(bytes);
+            return CatalogueRules.IsAssignment(assignment.Scopes) ? assignment : throw new InvalidDataException();
+        }
+        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable or ApplicationProxyAction.Retire)
+        {
+            var input = ApplicationJson.Parse<ApplicationLifecycle>(bytes);
+            return ApplicationLifecycleRules.Reason(input) is not null ? input : throw new InvalidDataException();
+        }
+        return ValidateRegistration(bytes, action, now);
+    }
+
+    /// <summary>Validates profile-specific creation, editing and credential inputs before forwarding their exact bodies.</summary>
+    private static object ValidateRegistration(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now)
+    {
         object value;
         IReadOnlyDictionary<string, string[]> errors;
         if (action == ApplicationProxyAction.Create)
@@ -160,11 +181,6 @@ internal sealed class ApplicationMutationRequest
             var machine = ApplicationJson.Parse<ApplicationMachineCreate>(bytes);
             return MachineClientRules.IsValid(machine, now) ? machine : throw new InvalidDataException();
         }
-        else if (action == ApplicationProxyAction.Clone)
-        {
-            var clone = ApplicationJson.Parse<ApplicationClone>(bytes);
-            return ApplicationCloneRules.IsValid(clone, now) ? clone : throw new InvalidDataException();
-        }
         else if (action == ApplicationProxyAction.Edit)
         {
             var input = ApplicationJson.Parse<ApplicationEdit>(bytes);
@@ -180,16 +196,6 @@ internal sealed class ApplicationMutationRequest
             var input = ApplicationJson.Parse<ApplicationSecretReplacement>(bytes);
             value = input;
             errors = ApplicationEditorRules.Validate(input, now);
-        }
-        else if (action == ApplicationProxyAction.AssignScopes)
-        {
-            var assignment = ApplicationJson.Parse<ApplicationScopeInput>(bytes);
-            return CatalogueRules.IsAssignment(assignment.Scopes) ? assignment : throw new InvalidDataException();
-        }
-        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable or ApplicationProxyAction.Retire)
-        {
-            var input = ApplicationJson.Parse<ApplicationLifecycle>(bytes);
-            return ApplicationLifecycleRules.Reason(input) is not null ? input : throw new InvalidDataException();
         }
         else
         {
@@ -222,9 +228,9 @@ internal sealed class ApplicationMutationRequest
                 details.Enabled == true && details.Origins is not null && details.Origins.SequenceEqual(browser.Origins.Order(StringComparer.Ordinal), StringComparer.Ordinal),
             ApplicationNativeCreate native => revision == 1 && details.Profile == ApplicationEditorRules.NativeProfile && details.Credential is null &&
                 details.ClientId == native.ClientId && details.DisplayName == native.DisplayName && SameRedirects(details, native.RedirectUris) && details.Enabled == true,
-            ApplicationCreate create => revision == 1 && details.ClientId == create.ClientId && details.DisplayName == create.DisplayName &&
+            ApplicationCreate create => revision == 1 && details.Profile == ApplicationEditorRules.Profile && details.ClientId == create.ClientId && details.DisplayName == create.DisplayName &&
                 SameRedirects(details, create.RedirectUris) && SameExpiry(details, create.CredentialExpiresAt) && details.Enabled == true,
-            ApplicationClone clone => revision == 1 && details.Id != Id && details.ClientId == clone.ClientId &&
+            ApplicationClone clone => revision == 1 && details.Profile == ApplicationEditorRules.Profile && details.Id != Id && details.ClientId == clone.ClientId &&
                 details.DisplayName == clone.DisplayName && SameExpiry(details, clone.CredentialExpiresAt) && details.Enabled == false,
             ApplicationEdit edit => details.DisplayName == edit.DisplayName && SameRedirects(details, edit.RedirectUris),
             ApplicationSecretReplacement replacement => SameExpiry(details, replacement.CredentialExpiresAt),

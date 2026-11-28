@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
-using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Core.Features.Catalogue;
+using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -10,6 +10,8 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 /// <summary>Freezes current catalogue eligibility under governance and verifies it after native writes without duplicating authoritative assignments.</summary>
 internal sealed class ApplicationScopeSelection(ImmutableArray<ApplicationScopeSelection.Entry> entries)
 {
+    internal MachineTokenReferences MachineReferences => new(entries);
+
     /// <summary>Resolves exact ordinal names through native managers and independently reads current managed scope and audience policy.</summary>
     internal static async Task<ApplicationScopeSelection> ReadAsync(ProtocolStorageScope scope, ImmutableArray<string> names, CancellationToken token)
     {

@@ -185,3 +185,12 @@ browser. CI655 did not record when its deferred script ran.
 ### Browser portion of T002 in verification
 
 The browser profile has local PostgreSQL and SQL Server HTTPS and schema evidence, generated contracts and editor coverage. T002 remains open pending the required acceptance checks. [Verification](verification.md#public-browser-registration) · [Integration guide](quickstart.md#public-browser-client)
+
+
+### Confidential machine registration in T003 and T006
+
+The protected registration editor, versioned BFF/API contracts, client-credentials
+exchange and service integration example are in verification. Both provider
+journeys exercise a signed access token against the shipped orders API. The local
+sample substitutes the test issuer address and its discovered public keys.
+[Service integration guide](quickstart.md#confidential-machine-client)

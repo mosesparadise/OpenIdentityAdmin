@@ -24,6 +24,9 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
     private const int ResponseFields = 3;
     private NativeIssuedToken? entry;
     private bool generating;
+    private readonly NativeResponseCompletion formatter = new(context, string.Empty, current => ResponseMatches(current, grant));
+
+    private const string NoStore = "no-store";
 
     /// <summary>Finds only the current coordinated machine operation on this native transaction.</summary>
     internal static MachineIssuance? Find(OpenIddictServerTransaction transaction) =>
@@ -49,9 +52,12 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
             await ProtocolStorageDispatch.RunAsync(scope.Owner, () => context.CancellationToken,
                 current => context.CancellationToken = current, () => dispatcher.DispatchAsync(context));
             await response.SealAsync();
-            await VerifyAsync(scope, budget, cutoff, token);
+            var tokenId = context.AccessTokenPrincipal?.GetTokenId() ?? throw ProtocolStorageOwner.Unavailable();
+            await grant.References.SaveAsync(scope, tokenId, token);
+            await grant.ObserveAsync(scope, token);
             await RecordAsync(scope, token);
             await RequireAuthorityAsync(scope, token);
+            await VerifyAsync(scope, budget, cutoff, token);
             await transaction.CommitAsync(token);
         }
         finally { context.Transaction.SetProperty<MachineIssuance>(typeof(MachineIssuance).FullName!, null); }
@@ -82,7 +88,7 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
     /// <summary>Observes the native generator and its actual signed access token, rejecting additional or nested token generation.</summary>
     internal async ValueTask GenerateAsync(OpenIddictServerEvents.GenerateTokenContext current, Func<ValueTask> native)
     {
-        if (entry is not null || current.TokenType != OpenIddictConstants.TokenTypeIdentifiers.AccessToken ||
+        if (!MachinePrincipal.Prepared(context, grant) || entry is not null || current.TokenType != OpenIddictConstants.TokenTypeIdentifiers.AccessToken ||
             !ReferenceEquals(current.Transaction, context.Transaction) || !ReferenceEquals(current.Principal, context.AccessTokenPrincipal))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -112,24 +118,34 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
     private async ValueTask VerifyAsync(ProtocolStorageScope scope, ManagedNativeBudget before, long cutoff, CancellationToken token)
     {
         var after = await ManagedNativeBudget.ReadAsync(scope, cutoff, token);
-        if (!context.IsRequestHandled || context.IsRejected || context.IsRequestSkipped || after != (before with
+        if (!formatter.IsCurrent() || !ResponseMatches(context, grant) || !context.IsRequestHandled || context.IsRejected || context.IsRequestSkipped || after != (before with
         {
             Tokens = before.Tokens + 1
         }) ||
             entry is null || !entry.Matches(context.AccessTokenPrincipal, context.AccessToken) ||
             !await entry.VerifyAsync(scope, scope.Services.GetRequiredService<IOpenIddictTokenManager>(), grant.Registration.ApplicationId, token) ||
             context.Transaction.GetHttpRequest()!.HttpContext.Features.Get<IHttpResponseFeature>() is not ProtocolResponseCapture capture ||
-            !WireMatches(capture))
+            !WireMatches(capture) || !await grant.References.MatchesAsync(scope, context.AccessTokenPrincipal!.GetTokenId()!, token))
         {
             throw ProtocolStorageOwner.Unavailable();
         }
     }
 
+    /// <summary>Observes completion of the actual native JSON formatter on this transaction.</summary>
+    internal ValueTask FormatAsync(OpenIddictServerEvents.BaseRequestContext current, Func<ValueTask> native) => formatter.ObserveAsync(current, native);
+
+    /// <summary>Checks the exact response vocabulary and binds its advertised lifetime to the prepared signed credential.</summary>
+    private static bool ResponseMatches(OpenIddictServerEvents.ProcessSignInContext current, MachineGrant bound) =>
+        MachinePrincipal.Prepared(current, bound) && current.EndpointType == OpenIddictServerEndpointType.Token &&
+        current.Response.GetParameters().Count == ResponseFields && current.Response.AccessToken == current.AccessToken && !string.IsNullOrEmpty(current.AccessToken) &&
+        current.Response.TokenType == OpenIddictConstants.TokenTypes.Bearer && current.Response.ExpiresIn is > 0 and <= AdministratorRegistrationPolicy.TokenLifetimeSeconds &&
+        current.Response.ExpiresIn <= Math.Ceiling((current.AccessTokenPrincipal!.GetExpirationDate()!.Value - current.AccessTokenPrincipal!.GetCreationDate()!.Value).TotalSeconds);
+
     /// <summary>Requires a bearer access token and bounded lifetime, without an ID token, refresh token, cookie or redirect.</summary>
     private bool WireMatches(ProtocolResponseCapture capture)
     {
         if (!capture.IsSealed || capture.StatusCode != StatusCodes.Status200OK || capture.Headers.SetCookie.Count != 0 ||
-            capture.Headers.Location.Count != 0 || capture.Headers.CacheControl != "no-store")
+            capture.Headers.Location.Count != 0 || capture.Headers.AccessControlAllowOrigin.Count != 0 || capture.Headers.CacheControl != NoStore)
         {
             return false;
         }
@@ -139,13 +155,13 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
             root.TryGetProperty(OpenIddictConstants.Parameters.AccessToken, out var access) && access.GetString() == context.AccessToken &&
             root.TryGetProperty(OpenIddictConstants.Parameters.TokenType, out var type) && type.GetString() == OpenIddictConstants.TokenTypes.Bearer &&
             root.TryGetProperty(OpenIddictConstants.Parameters.ExpiresIn, out var lifetime) && lifetime.TryGetInt64(out var seconds) &&
-            seconds is > 0 and <= AdministratorRegistrationPolicy.TokenLifetimeSeconds;
+            seconds == context.Response.ExpiresIn;
     }
 
     /// <summary>Rechecks the authenticated native identity, credential revision and exact catalogue binding under the same transaction.</summary>
     private async ValueTask RequireAuthorityAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        if (!await grant.MatchesAsync(scope, await MachineGrant.ReadAsync(scope, context.Request, token), token))
+        if (!await grant.MatchesAsync(scope, (await MachineGrant.ReadAsync(scope, context.Request, token)).Grant, token))
         {
             throw ProtocolStorageOwner.Unavailable();
         }

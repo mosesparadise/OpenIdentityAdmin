@@ -14,45 +14,70 @@ internal sealed class MachineGrant(ManagedRegistration registration, ImmutableAr
     internal ManagedRegistration Registration => registration;
     internal ImmutableArray<string> Scopes => scopes;
     internal ImmutableArray<string> Resources => resources;
+    internal MachineTokenReferences References => selection.MachineReferences;
     internal string Subject => MachineClientRules.Subject(registration.ApplicationId);
 
     /// <summary>Reads the current finite machine profile and repeats native secret validation under the lock shared with replacement.</summary>
-    internal static async ValueTask<MachineGrant?> ReadAsync(ProtocolStorageScope scope, OpenIddictRequest request, CancellationToken token)
+    internal static async ValueTask<(MachineGrant? Grant, string? Error)> ReadAsync(ProtocolStorageScope scope, OpenIddictRequest request, CancellationToken token)
     {
         var names = MachineClientRules.ReadScopes(request.Scope);
-        if (names is null || !request.IsClientCredentialsGrantType() || request.ClientId is not { } client || request.ClientSecret is not { Length: > 0 } secret)
+        if (names is null)
         {
-            return null;
+            return (null, OpenIddictConstants.Errors.InvalidScope);
+        }
+        if (!request.IsClientCredentialsGrantType() || request.ClientId is not { } client || request.ClientSecret is not { Length: > 0 } secret)
+        {
+            return (null, OpenIddictConstants.Errors.InvalidClient);
         }
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var application = await manager.FindByClientIdAsync(client, token);
         if (application is null || !await ProtocolStorageRows.ReloadAsync(scope, application, token) || await manager.GetClientIdAsync(application, token) != client ||
             await manager.GetIdAsync(application, token) is not { } id)
         {
-            return null;
+            return (null, OpenIddictConstants.Errors.InvalidClient);
         }
         var policy = await scope.Owner.RunAsync(async current => await scope.Owner.Database.Set<ApplicationPolicy>().AsNoTracking()
             .SingleOrDefaultAsync(row => row.ApplicationId == id, current), token);
         if (policy is null || !Eligible(policy, id, scope.Owner.Clock))
         {
-            return null;
+            return (null, OpenIddictConstants.Errors.InvalidClient);
         }
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
         if (!ManagedApplicationProfile.MatchesProfile(MachineClientRules.Profile, descriptor) || descriptor.ClientId != client ||
-            names.Any(name => !descriptor.Permissions.Contains(OpenIddictConstants.Permissions.Prefixes.Scope + name)) ||
             !await manager.ValidateClientSecretAsync(application, secret, token))
         {
-            return null;
+            return (null, OpenIddictConstants.Errors.InvalidClient);
+        }
+        if (names.Any(name => !descriptor.Permissions.Contains(OpenIddictConstants.Permissions.Prefixes.Scope + name)))
+        {
+            return (null, OpenIddictConstants.Errors.InvalidScope);
         }
         try
         {
             await ApplicationMutationWriter.RequireMutableAsync(scope, id, client, token);
             var assigned = await ApplicationScopeSelection.ReadAsync(scope, names.ToImmutableArray(), token);
             var current = new ManagedRegistration(id, client, policy.Revision, policy.CredentialRevision, policy.CredentialExpiresAt, policy.ObservedAt, [], MachineClientRules.Profile);
-            return new(current, names.ToImmutableArray(), assigned.MachineResources().ToImmutableArray(), assigned);
+            var resources = assigned.MachineResources();
+            return resources.Length == 1 ? (new(current, names.ToImmutableArray(), resources.ToImmutableArray(), assigned), null) :
+                (null, OpenIddictConstants.Errors.InvalidScope);
         }
-        catch (ApplicationMutationRejected) { return null; }
+        catch (ApplicationMutationRejected) { return (null, OpenIddictConstants.Errors.InvalidScope); }
+    }
+
+    /// <summary>Persists a successful machine exchange's time under the same policy and credential revision as its native token.</summary>
+    internal async ValueTask ObserveAsync(ProtocolStorageScope scope, CancellationToken token)
+    {
+        var now = ManagedLoginRules.Observe(scope.Owner.Clock, registration.ObservedAt);
+        var changed = await scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<ApplicationPolicy>()
+            .Where(row => row.ApplicationId == registration.ApplicationId && row.Profile == MachineClientRules.Profile && row.Enabled && !row.Retired &&
+                row.Revision == registration.Revision && row.CredentialRevision == registration.CredentialRevision &&
+                row.ObservedAt >= registration.ObservedAt && row.ObservedAt <= now && row.CredentialExpiresAt > now)
+            .ExecuteUpdateAsync(update => update.SetProperty(row => row.ObservedAt, now), current)), token, write: true);
+        if (changed != 1)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
     }
 
     /// <summary>Rejects changed catalogue identities, audience revisions or registration authority across endpoint handoff and response formatting.</summary>

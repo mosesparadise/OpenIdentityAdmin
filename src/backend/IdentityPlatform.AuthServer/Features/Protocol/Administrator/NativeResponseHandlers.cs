@@ -12,7 +12,8 @@ internal sealed class NativeJsonResponse<TContext>(OpenIddictServerAspNetCoreHan
     /// <summary>Observes only explicitly active administrator issuance; ordinary native errors and pilot responses remain delegated unchanged.</summary>
     public ValueTask HandleAsync(TContext context) => NativeIssuanceProof.Find(context.Transaction) is { } proof
         ? proof.FormatAsync(context, () => native.HandleAsync(context)) : ManagedIssuanceProof.Find(context.Transaction) is { } managed
-            ? managed.FormatAsync(context, () => native.HandleAsync(context)) : NativeErrorFormatter.Find(context.Transaction) is { } error
+            ? managed.FormatAsync(context, () => native.HandleAsync(context)) : MachineIssuance.Find(context.Transaction) is { } machine
+            ? machine.FormatAsync(context, () => native.HandleAsync(context)) : NativeErrorFormatter.Find(context.Transaction) is { } error
             ? error.ObserveAsync(context, NativeErrorFormat.Json, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }
 

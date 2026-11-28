@@ -1,5 +1,6 @@
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.AspNetCore;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -49,17 +50,19 @@ internal sealed class ManagedTokenAdmission
         if (context.Request.IsClientCredentialsGrantType())
         {
             var factory = context.Transaction.GetHttpRequest()!.HttpContext.RequestServices.GetRequiredService<IServiceScopeFactory>();
-            admission.Machine = await ProtocolStorageChild.RunAsync(factory, async (scope, token) =>
+            var result = await ProtocolStorageChild.RunAsync(factory, async (scope, token) =>
             {
                 await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+                NativeErrorOrigin.RecordPhase(context.Transaction, scope.Owner);
                 await ManagedRegistration.LockAsync(scope, token);
                 var grant = await MachineGrant.ReadAsync(scope, context.Request, token);
                 await transaction.CommitAsync(token);
                 return grant;
             });
-            if (admission.Machine is null)
+            admission.Machine = result.Grant;
+            if (result.Error is { } error)
             {
-                context.Reject(OpenIddictConstants.Errors.InvalidScope);
+                context.Reject(error);
                 return;
             }
         }

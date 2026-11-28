@@ -40,7 +40,8 @@ internal static class ManagedTokenTransport
         var fields = await request.ReadFormAsync(context.CancellationToken);
         if (fields[OpenIddictConstants.Parameters.GrantType] == OpenIddictConstants.GrantTypes.ClientCredentials)
         {
-            if (fields.Count != MachineFieldCount || fields.Files.Count != 0 || request.Headers.Origin.Count != 0 ||
+            if (fields.Count != MachineFieldCount || fields.Keys.Any(name => name is not (OpenIddictConstants.Parameters.GrantType or OpenIddictConstants.Parameters.Scope)) ||
+                fields[OpenIddictConstants.Parameters.GrantType].Count != 1 || fields.Files.Count != 0 || request.Headers.Origin.Count != 0 ||
                 fields[OpenIddictConstants.Parameters.Scope].Count != 1 || MachineClientRules.ReadScopes(fields[OpenIddictConstants.Parameters.Scope]) is null)
             {
                 context.Reject(OpenIddictConstants.Errors.InvalidRequest);
