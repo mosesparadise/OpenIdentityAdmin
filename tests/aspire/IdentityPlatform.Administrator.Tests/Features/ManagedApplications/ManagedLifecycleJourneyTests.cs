@@ -23,7 +23,7 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
     [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
     public async Task Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(string provider)
     {
-        await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
+        await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider, clock: new FactorClock(TimeProvider.System));
         var old = new ManagedTokenFlow(test);
         await old.ApproveAsync();
         var code = await old.CodeAsync();

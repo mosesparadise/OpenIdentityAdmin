@@ -18,7 +18,7 @@ internal static class LocalDemoFailureEvidence
     private static readonly CompositeFormat Location = CompositeFormat.Parse("{0}:{1}");
     private static readonly string[] Sources = ["ApplicationEditorResponse.cs", "ApplicationEditorJourney.cs", "BrowserSecretOracle.cs", "LocalDemoBrowser.cs",
         "ManagedBrowserJourney.cs", "ManagedBrowserRelyingParty.cs", "LocalDemoNavigation.cs", "ApplicationGrantJourney.cs",
-        "SampleRuntimeScenario.cs", "SampleBrowserJourney.cs", "SampleCatalogueJourney.cs"];
+        "SampleRuntimeScenario.cs", "SampleBrowserJourney.cs", "SampleCatalogueJourney.cs", "SampleCloneJourney.cs", "SampleCloneScenario.cs"];
 
     /// <summary>Uses only known source filenames and positive line numbers; bounded inner traversal preserves causal locations without exception text.</summary>
     internal static string Describe(Exception error)
