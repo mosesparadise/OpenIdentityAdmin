@@ -14,12 +14,12 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class NativeDevicePollEvidence
 {
     private const int FirstSlowInterval = 10;
-    private const string Client = "television-one";
+    internal const string Client = "television-one";
     private const string Name = "Television";
-    private static readonly Uri Issuer = new("https://devices.example.test/");
+    internal static readonly Uri Issuer = new("https://devices.example.test/");
     private const string Devices = "/connect/device";
-    private const string Verification = "/connect/verify";
-    private const string Tokens = "/connect/token";
+    internal const string Verification = "/connect/verify";
+    internal const string Tokens = "/connect/token";
     private const int LifetimeSeconds = 600;
     private const string Scope = "openid";
 
@@ -32,6 +32,11 @@ internal static class NativeDevicePollEvidence
             server.SetIssuer(Issuer).SetDeviceAuthorizationEndpointUris(Devices).SetEndUserVerificationEndpointUris(Verification)
                 .SetTokenEndpointUris(Tokens).AllowDeviceAuthorizationFlow().AddEphemeralEncryptionKey().AddEphemeralSigningKey()
                 .SetDeviceCodeLifetime(TimeSpan.FromSeconds(LifetimeSeconds)).SetUserCodeLifetime(TimeSpan.FromSeconds(LifetimeSeconds));
+            server.AddEventHandler<OpenIddictServerEvents.ApplyEndUserVerificationResponseContext>(handler => handler.UseInlineHandler(response =>
+            {
+                response.HandleRequest();
+                return ValueTask.CompletedTask;
+            }));
             server.AddEventHandler<OpenIddictServerEvents.ApplyDeviceAuthorizationResponseContext>(handler => handler.UseInlineHandler(response =>
             {
                 response.HandleRequest();
@@ -45,11 +50,13 @@ internal static class NativeDevicePollEvidence
     internal static async Task RequireAsync(ManagedSchemaFixture fixture)
     {
         var factory = fixture.Services.GetRequiredService<IServiceScopeFactory>();
-        var (id, external) = await SeedAsync(factory, fixture.Token);
+        var request = new ProtocolStorageRequest(fixture.Services.GetRequiredService<TimeProvider>(), fixture.Token);
+        var (id, external, user) = await request.RunAsync(factory, SeedAsync);
         await using (var polling = await ProtocolStorageScope.OpenAsync(factory, fixture.Token))
         {
             Assert.Equal(DevicePollResult.SlowDown, await DevicePollAdmission.PollAsync(polling, Client, external, fixture.Token));
         }
+        await NativeDeviceVerificationEvidence.RequireDenialAsync(fixture, external, user);
         await using var scope = fixture.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var policy = await database.Set<ApplicationPolicy>().SingleAsync(row => row.ApplicationId == id, fixture.Token);
@@ -63,9 +70,8 @@ internal static class NativeDevicePollEvidence
     }
 
     /// <summary>Seeds the library's real public application, inactive device entry and cadence row in one committed native transaction.</summary>
-    private static async Task<(string Id, string Code)> SeedAsync(IServiceScopeFactory factory, CancellationToken token)
+    private static async ValueTask<(string Id, string Code, string User)> SeedAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        await using var scope = await ProtocolStorageScope.OpenAsync(factory, token);
         await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
         var apps = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var app = await apps.CreateAsync(DeviceClientRegistration.Descriptor(Client, Name), token);
@@ -76,13 +82,13 @@ internal static class NativeDevicePollEvidence
             scope.Owner.Database.Add(policy);
             await scope.Owner.Database.SaveChangesAsync(current);
         }, token, write: true);
-        var code = await CreatePairAsync(scope, token);
+        var (code, user) = await CreatePairAsync(scope, token);
         await transaction.CommitAsync(token);
-        return (id, code);
+        return (id, code, user);
     }
 
     /// <summary>Uses the original generated principal to bind both native code entries; the client receives the native opaque reference.</summary>
-    private static async Task<string> CreatePairAsync(ProtocolStorageScope scope, CancellationToken token)
+    private static async Task<(string Code, string User)> CreatePairAsync(ProtocolStorageScope scope, CancellationToken token)
     {
         var native = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
         native.EndpointType = OpenIddictServerEndpointType.DeviceAuthorization;
@@ -104,6 +110,6 @@ internal static class NativeDevicePollEvidence
         Assert.Equal(LifetimeSeconds, signIn.Response.ExpiresIn);
         Assert.Equal(new Uri(Issuer, Verification).AbsoluteUri, signIn.Response.VerificationUri);
         await DevicePollAdmission.RegisterLockedAsync(scope, native.Request, signIn.UserCodePrincipal!, token);
-        return signIn.Response.DeviceCode;
+        return (signIn.Response.DeviceCode, signIn.Response.UserCode);
     }
 }
