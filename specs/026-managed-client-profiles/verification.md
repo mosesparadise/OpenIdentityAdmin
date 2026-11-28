@@ -113,3 +113,43 @@ Both provider cases passed locally, including strict lifetime validation, after
 this change. Their TRX SHA-256 was `6d2bc492b07461dbb48fc66dea4bf79413aabd5c947af6510d4f555772dd4a36`.
 The four local navigation diagnostic controls also passed with system Chromium
 151. Their TRX SHA-256 was `b9f021b80adff04ef0883858ace93e76da490b99f726e577557801b86e099b7a`.
+
+## Device polling and managed key storage
+
+Four local migration cases passed, covering PostgreSQL and SQL Server. They
+exercised conflicting writes to the same device window, early and on-time polls,
+rollback of the clock, exact expiry, old key rejection after replacement,
+same-key relabeling, and repeated assertion IDs across revisions. SQL Server
+was tested with a 400-character application ID. Both guard a populated
+downgrade and preserve predecessor data across an empty round trip.
+These tests exercise storage directly, outside of public protocol endpoints.
+
+Two additional provider cases created a real OpenIddict public device application,
+an anonymous native authorization, and linked user and device code entries. The
+polling store matched the managed and native application, the original scope set,
+the two native token types and their common authorization. A poll through the
+native reference ID committed a five-second interval increase. A fresh scope saw
+that increase and refused the disabled registration. The fixture used a fixed
+protocol clock for interval boundaries. Public verification and redemption are
+still pending. PostgreSQL and SQL Server TRX SHA-256 was `8e9ecbf6ff10d90e6e91ed548b5c7166d096fa4bb527ef9865a58642094afd91`.
+
+The original client ID, presenter and request scopes are also checked against the
+user-code principal. The persisted code entries must be anonymous, and assigned
+catalogue scopes are read under the same lock. Both provider cases passed these
+checks. TRX SHA-256 was `eac5b93437ef66308eb3dcfd567aae4a39048fd19d3573cdcc56234c4ec98afb`.
+
+### Device authorization code generation
+
+OpenIddict 7.7.2 generated the anonymous device and user codes, their shared authorization, the opaque client references and the verification URI using its installed sign-in dispatcher. PostgreSQL and SQL Server both persisted the original pair under the same transaction as the polling window. The first early poll used the actual returned device code and the committed slow-down was observed through a fresh database scope. Disabling the registration then refused another poll. The fixture captures the native response before HTTP formatting. Human approval and single redemption remain open. Both provider cases passed. Original local TRX SHA-256 `75da3741e1629c664e7bef0af012507bcfb5123e22b2f4521a803c261211e939`.
+
+A further two-provider run used the actual emitted device code in a paced native token request and received `authorization_pending`. A separate native verification request resolved the emitted human code. OpenIddict then committed the refusal, and the next paced token request returned `access_denied`. The cadence transaction and native authentication each had their own database scope under the original poll request. This component check exercises no browser approval or token delivery. Both cases passed with zero skips. Original local TRX SHA-256 `bfe6725a6ee1d32343e8ed8a774e630307cb8b748b993b69ff3d5570202487f6`.
+
+### Native device approval and redemption
+
+Two further tests approved actual emitted user codes after a synthetic account decision. The managed verification handler acquires the governance lock before native user-code redemption and rechecks the stored registration revision, assigned scopes, native code pair and retained window before OpenIddict protects the approved device payload. Approval at 30 seconds retained the original ten-minute expiry. An unrelated advance to the registration observation time left the pending device request usable.
+
+A fresh database scope read each committed device entry and independently checked the original native identity, authorization, authenticated subject, approved status and exact expiry. The linked user entry was redeemed. A paced first exchange produced an access token for that subject. Reuse produced the native token error response `invalid_grant` with no access token. A second approved code was held until its original expiry and obtained the expired polling decision. Once expiry is observed, rolling the clock backwards cannot reopen that window.
+
+The PostgreSQL and SQL Server component cases passed with zero skips. The test boundary begins with a synthetic authenticated subject and ends at the native response. Public device enrollment, a human verification screen and an HTTPS password/MFA/consent-to-token journey remain outstanding. Original local TRX SHA-256 `b9de9cdb9e9435ffe79f916ea0671bbe8337f2408a7f4c425fb662222363d68b`.
+
+Both cases passed again with the native end-user-verification filter on each approval handler. Other endpoint types do not instantiate the device handlers. Original local TRX SHA-256 `436ce34c5fe3ba9414c5e02cadf127ea37451e992fda48408f1b826e88dc4b3c`.

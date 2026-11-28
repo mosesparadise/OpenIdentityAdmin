@@ -185,3 +185,16 @@ browser. CI655 did not record when its deferred script ran.
 ### Browser portion of T002 in verification
 
 The browser profile has local PostgreSQL and SQL Server HTTPS and schema evidence, generated contracts and editor coverage. T002 remains open pending the required acceptance checks. [Verification](verification.md#public-browser-registration) · [Integration guide](quickstart.md#public-browser-client)
+
+
+### Device polling and managed client key storage under T004 and T005
+
+Both Platform migrations add retained device polling intervals, per-application
+public RSA key approvals, and a per-client assertion replay key. A device poll
+is bound to a live public device policy and its original revision. The RSA
+approval binds both descriptor metadata and the underlying public key material.
+Changing the key identifier alone cannot count as a rotation. The replay key
+persists across credential revisions. The API registration, verification page
+and issuer handlers for these profiles still require integration.
+
+T004 now verifies the installed OpenIddict device and user code generators on PostgreSQL and SQL Server, including the native verification URI, early polling, paced pending responses, human-code resolution and refusal on the next poll. A synthetic account decision now drives actual native approval, an access token and rejection on a second exchange. Both databases preserve the original expiry after approval. Public device registration, user verification with password/MFA and explicit consent, and the complete HTTP journey remain open. [Device generation evidence](verification.md#device-authorization-code-generation)
