@@ -71,7 +71,7 @@ internal static class NativeDeviceVerificationEvidence
     }
 
     /// <summary>Uses a fresh native transaction per device or user request with the fixture's real issuer, endpoint and opaque reference.</summary>
-    private static async ValueTask<OpenIddictServerTransaction> CreateAsync(ProtocolStorageScope scope, OpenIddictServerEndpointType endpoint, OpenIddictRequest request)
+    internal static async ValueTask<OpenIddictServerTransaction> CreateAsync(ProtocolStorageScope scope, OpenIddictServerEndpointType endpoint, OpenIddictRequest request)
     {
         var native = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
         native.EndpointType = endpoint;
