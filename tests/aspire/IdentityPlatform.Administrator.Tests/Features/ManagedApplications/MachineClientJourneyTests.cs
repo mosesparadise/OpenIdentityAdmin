@@ -21,8 +21,10 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
     private const string Display = "Order indexing service";
     private const string Scope = "orders.read";
     private const string Audience = "orders-api";
+    private const string InvoiceAudience = "invoices-api";
     private const string Discovery = "/.well-known/openid-configuration";
     private const string Endpoint = "/connect/token";
+    private const string ScopeSeparator = " ";
     private const string ScopeField = "scope";
     private const string GrantField = "grant_type";
     private const string Grant = "client_credentials";
@@ -35,6 +37,8 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
     private const string Access = "access_token";
 
     private const int AssignedRevision = 2;
+    private const int ClearedRevision = 4;
+    private const int ReassignedRevision = 5;
     private const string IncorrectCredential = "unused-invalid-secret";
     private const string OpenId = "openid";
     private const string Basic = "Basic";
@@ -65,7 +69,8 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
         var test = new ManagedCacheTestContext(http, service.Application.Id, Client, string.Empty, service.ClientSecret);
         using var denied = await TokenAsync(http, Scope, service.ClientSecret);
         await RequireErrorAsync(denied, HttpStatusCode.BadRequest, InvalidScope);
-        await ManagedConsentTest.SeedAsync(test, machine: true);
+        var scopeId = await ManagedConsentTest.SeedAsync(test, machine: true);
+        await RequireAudienceSelectionAsync(http, test.Id, service.ClientSecret);
         using var wrong = await TokenAsync(http, Scope, IncorrectCredential);
         await RequireErrorAsync(wrong, HttpStatusCode.Unauthorized, InvalidClient);
         using var identity = await TokenAsync(http, OpenId, service.ClientSecret);
@@ -77,9 +82,39 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
         Assert.False(tokens.RootElement.TryGetProperty(RefreshToken, out _));
         await VerifyAsync(http, tokens.RootElement.GetProperty(Access).GetString()!, service.Application.Id);
         var replacement = await RotateAsync(http, service);
-        await ManagedLifecycleJourneyTests.TransitionAsync(test, enabled: false, revision: RotatedRevision);
+        await RequireRetainedScopeAsync(test, scopeId);
+        await ManagedLifecycleJourneyTests.TransitionAsync(test, enabled: false, revision: ReassignedRevision);
         using var disabled = await TokenAsync(http, Scope, replacement);
         await RequireErrorAsync(disabled, HttpStatusCode.Unauthorized, InvalidClient);
+    }
+
+    /// <summary>Checks separate signed tokens for distinct audiences and the issuer's refusal of a combined request.</summary>
+    private static async Task RequireAudienceSelectionAsync(ApplicationHttpFixture http, string id, string secret)
+    {
+        using var invoice = await TokenAsync(http, ManagedConsentTest.OtherApiScope, secret);
+        Assert.Equal(HttpStatusCode.OK, invoice.StatusCode);
+        using var invoiceBody = JsonDocument.Parse(await invoice.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        await VerifyAsync(http, invoiceBody.RootElement.GetProperty(Access).GetString()!, id, InvoiceAudience, ManagedConsentTest.OtherApiScope);
+        using var both = await TokenAsync(http, Scope + ScopeSeparator + ManagedConsentTest.OtherApiScope, secret);
+        await RequireErrorAsync(both, HttpStatusCode.BadRequest, InvalidScope);
+    }
+
+    /// <summary>Removes the live application assignment and observes the original issued token's retained scope through the protected API.</summary>
+    private static async Task RequireRetainedScopeAsync(ManagedCacheTestContext test, string scopeId)
+    {
+        const string Scopes = "/api/v1/scopes/";
+        const string Referenced = "referenced";
+        using var clear = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), ApplicationScopeHttpTests.Clear,
+            ApplicationVersion.Create(test.Id, RotatedRevision), direct: false, csrf: await test.Http.TokenAsync());
+        Assert.Equal(HttpStatusCode.OK, clear.StatusCode);
+        using var response = await test.Http.CatalogueAsync(HttpMethod.Get, Scopes + Uri.EscapeDataString(scopeId));
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        Assert.True(body.RootElement.GetProperty(Referenced).GetBoolean());
+        const string OrdersOnly = """{"scopes":["orders.read"]}""";
+        using var assign = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), OrdersOnly,
+            ApplicationVersion.Create(test.Id, ClearedRevision), direct: false, csrf: await test.Http.TokenAsync());
+        Assert.Equal(HttpStatusCode.OK, assign.StatusCode);
     }
 
     /// <summary>Rotates the secret through the BFF and exercises both credentials against the native token endpoint.</summary>
@@ -116,7 +151,7 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
     }
 
     /// <summary>Verifies the signature with the issuer's discovered public keys, expected audience, lifetime and nonhuman subject.</summary>
-    private static async Task VerifyAsync(ApplicationHttpFixture http, string token, string id)
+    private static async Task VerifyAsync(ApplicationHttpFixture http, string token, string id, string audience = Audience, string scope = Scope)
     {
         var issuer = http.IssuerClient.BaseAddress!;
         using var discovery = await http.IssuerClient.GetFromJsonAsync<JsonDocument>(Discovery, TestContext.Current.CancellationToken);
@@ -129,7 +164,7 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
             ValidateIssuer = true,
             ValidIssuer = discovery.RootElement.GetProperty(Issuer).GetString(),
             ValidateAudience = true,
-            ValidAudience = Audience,
+            ValidAudience = audience,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
             ValidateIssuerSigningKey = true,
@@ -141,9 +176,13 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
         Assert.True(result.IsValid);
         Assert.Equal(Machine, result.ClaimsIdentity.FindFirst(IdentityType)?.Value);
         Assert.Equal(SubjectPrefix + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(id))), result.ClaimsIdentity.FindFirst(Subject)?.Value);
-        Assert.Equal(Scope, result.ClaimsIdentity.FindFirst(ScopeField)?.Value);
+        Assert.Equal(scope, result.ClaimsIdentity.FindFirst(ScopeField)?.Value);
+        Assert.Equal(audience, Assert.Single(((JsonWebToken)result.SecurityToken).Audiences));
         Assert.Null(result.ClaimsIdentity.FindFirst(Email));
-        await MachineResourceTest.RequireAsync(token, parameters.ValidIssuer!, signing.GetSigningKeys());
+        if (audience == Audience)
+        {
+            await MachineResourceTest.RequireAsync(token, parameters.ValidIssuer!, signing.GetSigningKeys());
+        }
         parameters.ValidAudience = AdminAudience;
         Assert.False((await handler.ValidateTokenAsync(token, parameters)).IsValid);
     }

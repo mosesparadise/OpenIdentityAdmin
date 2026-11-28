@@ -86,3 +86,9 @@ contains `identity_type=machine`. The client receives its expiry in `expires_in`
 Replacement immediately stops the old secret from obtaining another token.
 Disablement and permanent retirement also stop new exchanges. An API performing
 offline validation can accept a previously issued token until its expiration.
+
+Each successful machine exchange retains one native access-token row. All managed
+registrations share the existing 20,000-row token budget, including expired rows.
+At the limit the issuer refuses new issuance. Services should reuse a token for
+its authorized audience and scopes during its advertised lifetime. This increment
+provides no scheduled cleanup of expired machine tokens.
