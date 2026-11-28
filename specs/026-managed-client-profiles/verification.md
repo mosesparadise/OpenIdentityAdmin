@@ -86,3 +86,11 @@ Local Release verification passed all 44 non-browser contract cases. Two
 provider cases used actual PostgreSQL and SQL Server source sessions, current
 grants and native token records. They checked loss of a grant, shortening the
 persisted token expiry, and refusal after the reader transaction had disposed.
+
+CI663's PostgreSQL confidential lifecycle test reached its final fresh exchange
+at 63.373 seconds. The issuer used the test's frozen clock and the independent
+validator reported that the ID token had expired. SQL Server passed the same test
+in 50.287 seconds. The scenario now uses an advancing clock for its real-time
+journeys and retains the original 60-second code deadline and strict validation.
+
+The targeted scenario passed on both providers using the elapsed issuer clock. Original local MTP report SHA-256 `ed6b1a98853ad90d6fa1a8c1ad0f94d4c5ec36efd347486bd2764334cd563ba2`.
