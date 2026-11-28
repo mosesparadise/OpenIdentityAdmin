@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using System.Security.Claims;
+using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +13,27 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 internal static class DevicePollAdmission
 {
     /// <summary>Creates a polling window only for the actual persisted native device entry and its initial registration and deadline.</summary>
-    internal static async ValueTask RegisterLockedAsync(ProtocolStorageScope scope, string clientId, ClaimsPrincipal userCode, CancellationToken token)
+    internal static async ValueTask RegisterLockedAsync(ProtocolStorageScope scope, OpenIddictRequest request, ClaimsPrincipal userCode, CancellationToken token)
     {
         await ManagedRegistration.LockAsync(scope, token);
-        var registration = await DeviceClientRegistration.ReadLockedAsync(scope, clientId, token) ?? throw ProtocolStorageOwner.Unavailable();
+        var registration = await DeviceClientRegistration.ReadLockedAsync(scope, request.ClientId ?? string.Empty, token) ?? throw ProtocolStorageOwner.Unavailable();
         var policy = registration.Policy;
+        var scopes = request.GetScopes();
+        var assigned = scopes.Where(name => name != OpenIddictConstants.Scopes.OpenId).ToArray();
+        if (userCode.GetClaim(OpenIddictConstants.Claims.ClientId) != request.ClientId || userCode.GetPresenters() is not [var presenter] ||
+            presenter != request.ClientId || !CatalogueRules.IsAssignment(assigned) || !scopes.ToHashSet(StringComparer.Ordinal).SetEquals(userCode.GetScopes()) ||
+            assigned.Any(name => !registration.State.Permissions.Contains(OpenIddictConstants.Permissions.Prefixes.Scope + name, StringComparer.Ordinal)))
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        await ApplicationScopeSelection.ReadAsync(scope, assigned.ToImmutableArray(), token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var deviceId = userCode.GetClaim(OpenIddictConstants.Claims.Private.DeviceCodeId) ?? throw ProtocolStorageOwner.Unavailable();
         var authorizationId = await RequirePairAsync(scope, manager, policy.ApplicationId, userCode, token);
         var device = await manager.FindByIdAsync(deviceId, token);
         if (device is null || !await ProtocolStorageRows.ReloadAsync(scope, device, token) || await manager.GetIdAsync(device, token) != deviceId ||
             await manager.GetApplicationIdAsync(device, token) != policy.ApplicationId || await manager.GetAuthorizationIdAsync(device, token) != authorizationId ||
+            await manager.GetSubjectAsync(device, token) is not null ||
             !await manager.HasTypeAsync(device, OpenIddictConstants.TokenTypeIdentifiers.Private.DeviceCode, token) ||
             !await manager.HasStatusAsync(device, OpenIddictConstants.Statuses.Inactive, token) ||
             await manager.GetCreationDateAsync(device, token) is not { } created || await manager.GetExpirationDateAsync(device, token) is not { } expires ||
@@ -47,7 +59,7 @@ internal static class DevicePollAdmission
         var user = await manager.FindByIdAsync(userId, token);
         if (user is null || !await ProtocolStorageRows.ReloadAsync(scope, user, token) || await manager.GetIdAsync(user, token) != userId ||
             await manager.GetApplicationIdAsync(user, token) != id || await manager.GetAuthorizationIdAsync(user, token) != authId ||
-            !await manager.HasTypeAsync(user, OpenIddictConstants.TokenTypeIdentifiers.Private.UserCode, token) ||
+            await manager.GetSubjectAsync(user, token) is not null || !await manager.HasTypeAsync(user, OpenIddictConstants.TokenTypeIdentifiers.Private.UserCode, token) ||
             !await manager.HasStatusAsync(user, OpenIddictConstants.Statuses.Valid, token))
         {
             throw ProtocolStorageOwner.Unavailable();

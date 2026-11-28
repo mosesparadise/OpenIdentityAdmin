@@ -92,8 +92,10 @@ internal static class NativeDevicePollEvidence
             Type = OpenIddictConstants.TokenTypeIdentifiers.Private.UserCode,
             ReferenceId = UserCode
         }, token);
-        var principal = new ClaimsPrincipal(new ClaimsIdentity()).SetAuthorizationId(authId).SetScopes(Scope)
+        var principal = new ClaimsPrincipal(new ClaimsIdentity()).SetClaim(OpenIddictConstants.Claims.ClientId, Client).SetPresenters(Client)
+            .SetAuthorizationId(authId).SetScopes(Scope)
             .SetTokenId(await tokens.GetIdAsync(user, token)).SetClaim(OpenIddictConstants.Claims.Private.DeviceCodeId, await tokens.GetIdAsync(device, token));
-        await DevicePollAdmission.RegisterLockedAsync(scope, Client, principal, token);
+        var request = new OpenIddictRequest { ClientId = Client, Scope = Scope };
+        await DevicePollAdmission.RegisterLockedAsync(scope, request, principal, token);
     }
 }
