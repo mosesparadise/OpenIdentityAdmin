@@ -765,6 +765,12 @@ test('Given_a_machine_registration_When_created_Then_the_service_receives_one_se
  assert.ok((await keys.owner.replace({credentialExpiresAt:body.credentialExpiresAt,confirmed:false})).confirmed);
  await keys.owner.replace({...publicFields,kid:'replacement',credentialExpiresAt:body.credentialExpiresAt,confirmed:true});
  assert.equal(sawRotation,true);assert.equal(keys.states.at(-1).kind,'updated');assert.equal(keys.states.at(-1).secret,undefined);
+ const lost=setup(t,{createMachineKey:async()=>({status:503})});
+ lost.owner.newForm();await lost.owner.create({...service,...publicFields},'keyed-machine');
+ assert.equal(lost.states.at(-1).outcome,'key-unknown');
+ const problem=renderToStaticMarkup(createElement(ProblemView,{state:lost.states.at(-1)}));
+ assert.doesNotMatch(problem,/undisplayed secret/);
+
 
 
  assert.doesNotMatch(html,/HTTPS callbacks|Clone application|S256/);

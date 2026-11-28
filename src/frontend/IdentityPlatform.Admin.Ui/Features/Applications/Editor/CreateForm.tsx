@@ -27,7 +27,7 @@ export function CreateFields({ draft, errors, setDraft, summary, mode = "create"
     "aria-invalid": !!errors[name], "aria-describedby": `editor-${name}-help${errors[name] ? ` editor-${name}-error` : ""}` });
   const error = (name: keyof Draft) => errors[name] && <p className="field-error" id={`editor-${name}-error`}>{errors[name]}</p>;
   return <>
-    {!!Object.keys(errors).length && <div className="editor-notice" role="alert" tabIndex={-1} ref={summary}><h3>Check these fields</h3><ul>{(Object.keys(errors) as (keyof Errors)[]).map(name => <li key={name}><a href={`#editor-${name}`}>{mode === "clone" && name === "confirmed" ? "Confirm cloning" : labels[name]}: {errors[name]}</a></li>)}</ul></div>}
+    {!!Object.keys(errors).length && <div className="editor-notice" role="alert" tabIndex={-1} ref={summary}><h3>Check these fields</h3><ul>{(Object.keys(errors) as (keyof Errors)[]).map(name => <li key={name}><a href={`#editor-${name}`}>{mode === "clone" && name === "confirmed" ? "Confirm cloning" : keyed && name === "credentialExpiresAt" ? "Key expiry (UTC)" : labels[name]}: {errors[name]}</a></li>)}</ul></div>}
     {(mode === "create" || mode === "clone") && <div><label htmlFor="editor-clientId">Client ID <span>(required)</span></label><input {...field("clientId")} maxLength={100} required spellCheck={false} />
       <p id="editor-clientId-help">A unique, permanent identifier. Case-sensitive; no spaces. It cannot be renamed.</p>{error("clientId")}</div>}
     {mode !== "replace" && <><div><label htmlFor="editor-displayName">Display name <span>(required)</span></label><input {...field("displayName")} maxLength={200} required />
