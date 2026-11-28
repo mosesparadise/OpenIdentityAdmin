@@ -77,7 +77,9 @@ public sealed class BrowserSessionDocumentTests
         using var client = app.GetTestClient();
         var text = await client.GetStringAsync(DocumentUri, TestContext.Current.CancellationToken);
         Assert.Equal(text, await client.GetStringAsync(DocumentUri, TestContext.Current.CancellationToken));
-        RequireContract(JsonNode.Parse(text)!);
+        var document = JsonNode.Parse(text)!;
+        RequireContract(document);
+        PermissionContractAssertions.Require(document.AsObject(), browser: true);
         foreach (var method in new[] { HttpMethod.Post, HttpMethod.Head })
         {
             using var request = new HttpRequestMessage(method, StatusPath);

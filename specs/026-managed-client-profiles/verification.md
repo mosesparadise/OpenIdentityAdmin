@@ -65,3 +65,38 @@ and compact and desktop widths. The password and MFA error checks observed
 actual focus after the deferred page scripts ran. CI655 did not record its
 script timing. Its package-feed HTTP 403 and CI648's unclassified navigation
 error remain in the run history. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867) · [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
+
+
+## Permission-filtered contract generation
+
+The projection uses the current source session, credential deadline and persisted
+permissions under the management reader transaction. It extracts operations carrying
+the caller's required grants and follows the local schemas and security schemes that
+the result references. The browser session and antiforgery helper operations have
+no permission declaration and are omitted. The full source document is preserved
+for subsequent readers. The protected documentation routes remain dormant.
+
+The vendor review matched the Swagger UI 11.0.1 embedded bundle to swagger-ui-dist
+5.34.1, including its DOMPurify 3.4.17 runtime. The published source map still
+mismatches the running bundle. Scalar.AspNetCore 3.3.0 matched the standalone
+asset in @scalar/api-reference 1.85.0. Complete bundled component provenance
+and license decisions remain outstanding for viewer activation.
+
+Local Release verification passed all 44 non-browser contract cases. Two
+provider cases used actual PostgreSQL and SQL Server source sessions, current
+grants and native token records. They checked loss of a grant, shortening the
+persisted token expiry, and refusal after the reader transaction had disposed.
+
+CI663's PostgreSQL confidential lifecycle test reached its final fresh exchange
+at 63.373 seconds. The issuer used the test's frozen clock and the independent
+validator reported that the ID token had expired. SQL Server passed the same test
+in 50.287 seconds. The scenario now uses an advancing clock for its real-time
+journeys and retains the original 60-second code deadline and strict validation.
+
+The targeted scenario passed on both providers using the elapsed issuer clock. Original local MTP report SHA-256 `ed6b1a98853ad90d6fa1a8c1ad0f94d4c5ec36efd347486bd2764334cd563ba2`.
+
+CI663 ended cancelled with 138 successful jobs, nine cancelled jobs, the PostgreSQL lifecycle failure and the resulting aggregate acceptance failure. [Hosted run](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46089739250)
+
+### Contract visibility across the five profile drafts
+
+A local integration checkout combined this projection from `ce49ebde` with the profile implementations at `7097a8c`. Both the real versioned Admin API and the cookie-authenticated BFF generated their contracts in the test. A reader could see none of the four protected registration/rotation operations. An application writer could see the browser and shared-secret machine registrations. A credential operator could see rotation. Key enrollment and its request schema were visible only with both write and credential permissions. Both API and BFF cases passed. The additional cross-branch assertions were local to the verification checkout. Original local TRX SHA-256 `816a46b80b88632a0223f221ef34c55de136fad4510dffd42466f113d945ea87`.

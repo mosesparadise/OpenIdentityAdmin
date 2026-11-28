@@ -92,6 +92,8 @@ public sealed class ApplicationReadOwnershipTests(BootstrapFixture fixture)
             await scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().SelectApiReadAsync(transaction, database, scenario.Account.ActorId);
         }
         Assert.ThrowsAny<Exception>(() => scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>());
+        await using var reader = await ApplicationMutationFixture.CreateAsync(fixture, provider);
+        await DocumentReadAuthority.RequireAsync(reader);
     }
 
     /// <summary>Creates an independent API service root with the real runtime provider and no issuer private credentials.</summary>

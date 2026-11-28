@@ -180,3 +180,12 @@ the shipped script and the MFA summary markup, the summary was visible before
 the script ran and focused at DOMContentLoaded. A non-focusable control stayed
 unfocused at that same point. This establishes a possible ordering in the
 browser. CI655 did not record when its deferred script ran.
+
+
+### Permission-filtered contract generation in T006
+
+The management API can project the authoritative generated document inside its
+current reader transaction. The BFF and API contract cases exercise separate
+reader permissions, combined grants, hidden schemas, recursive references and
+security defaults. Authenticated HTTP delivery and viewer acceptance remain open.
+[Verification](verification.md#permission-filtered-contract-generation)

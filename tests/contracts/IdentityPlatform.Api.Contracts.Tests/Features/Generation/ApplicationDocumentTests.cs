@@ -87,6 +87,7 @@ public sealed class ApplicationDocumentTests
         Assert.Equal(PathCount, document[Paths]!.AsObject().Count);
         ApplicationRetirementAssertions.Require(document, browser: false);
         ApplicationEditorAssertions.Require(document, browser: false);
+        PermissionContractAssertions.Require(document.AsObject(), browser: false);
         GrantContractAssertions.Require(document, browser: false);
         ApplicationScopeContractAssertions.Require(document, browser: false);
         CatalogueContractAssertions.Require(document, browser: false);
