@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -27,8 +27,8 @@ internal static class NativeDeviceApprovalEvidence
         var clock = Assert.IsType<NativeConsumptionClock>(fixture.Services.GetRequiredService<TimeProvider>());
         var start = clock.GetUtcNow();
         var factory = fixture.Services.GetRequiredService<IServiceScopeFactory>();
-        var first = await SeedAsync(fixture, factory, clock);
-        var second = await SeedAsync(fixture, factory, clock);
+        var first = await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, NativeDevicePollEvidence.IssuePairAsync);
+        var second = await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, NativeDevicePollEvidence.IssuePairAsync);
         await using (var observation = fixture.Scope())
         {
             var db = observation.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -52,16 +52,6 @@ internal static class NativeDeviceApprovalEvidence
         Assert.Equal(DevicePollResult.Expired, expired);
         clock.Set(start);
     }
-
-    /// <summary>Generates a new pending native pair in its own original issuance transaction.</summary>
-    private static Task<(string Code, string User)> SeedAsync(ManagedSchemaFixture fixture, IServiceScopeFactory factory, TimeProvider clock) =>
-        new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, async (scope, token) =>
-        {
-            await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
-            var pair = await NativeDevicePollEvidence.CreatePairAsync(scope, token);
-            await transaction.CommitAsync(token);
-            return pair;
-        });
 
     /// <summary>Reopens the committed native entries independently and checks the subject, registration, authorization, deadline and used human code.</summary>
     private static Task<bool> RequirePersistedAsync(ManagedSchemaFixture fixture, string device, ApprovedPair binding, string applicationId, DateTimeOffset deadline)
