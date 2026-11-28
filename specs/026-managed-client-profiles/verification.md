@@ -69,6 +69,8 @@ error remain in the run history. [CI655](https://github.com/mosesparadise/OpenId
 
 ## Public browser registration
 
+The hosted run on `e8630f6` reached the coverage merge. GitHub reset the connection while the job fetched a coverage artifact. On attempt 2 the download succeeded, but the coverage verifier rejected inputs produced on attempt 1. All coverage producers and the verifier must run in the same attempt for this evidence to be accepted. [Original coverage job](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46092831013/job/140843557372) · [Retry](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46092831013/job/141007762632)
+
 Two real provider upgrade and rollback cases passed. Original TRX SHA-256 was `490e11c67dfb3611c80e259d8ee983bcf6888daf933bc54a59d6db4e72c35105`.
 
 Two provider HTTPS journeys passed. Each registered two public clients through the protected BFF, exercised preflight and discovery, completed human consent and a credential-free S256 exchange, verified user-bound UserInfo, refused a different registered origin, and disabled the client. Original TRX SHA-256 was `95f1f4c8aae712d6fa3cf8ee7dabeea339b7ad8d1d11a0cf420c6696e9585c44`.
