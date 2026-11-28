@@ -33,6 +33,7 @@ public sealed class BrowserOriginUpgradeTests
     [InlineData(Sql, Traits = [ProviderTrait, Sql])]
     public async Task Given_ExplicitBrowserOrigins_When_UpgradingAndRollingBack_Then_BindingsAreUniqueBoundedAndRetained(string provider)
     {
+        var target = provider == Postgres ? PostgresMigration : SqlMigration;
         var prior = provider == Postgres ? ProfileStorageWitness.PostgresMigration : ProfileStorageWitness.SqlMigration;
         await using var fixture = await ManagedSchemaFixture.CreateAsync(provider, target: prior);
         var id = ManagedSchemaRows.Digest();
@@ -43,11 +44,11 @@ public sealed class BrowserOriginUpgradeTests
             await database.SaveChangesAsync(fixture.Token);
         }
         var before = await fixture.SnapshotAsync(provider);
-        await fixture.MigrateAsync(null);
+        await fixture.MigrateAsync(target);
         RequireEqual(before, Predecessor(provider, await fixture.SnapshotAsync(provider)));
         await fixture.MigrateAsync(prior);
         RequireEqual(before, await fixture.SnapshotAsync(provider));
-        await fixture.MigrateAsync(null);
+        await fixture.MigrateAsync(target);
         await InsertAsync(fixture, id, 0, Origin);
         await InsertAsync(fixture, id, LastSlot, SecondOrigin);
         await Assert.ThrowsAsync<DbUpdateException>(() => InsertAsync(fixture, id, 1, Origin));
@@ -57,13 +58,17 @@ public sealed class BrowserOriginUpgradeTests
         await Assert.ThrowsAsync<DbUpdateException>(() => InsertAsync(fixture, ManagedSchemaRows.Digest(), 1, Origin));
         var bound = await fixture.SnapshotAsync(provider);
         await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(prior));
-        await fixture.MigrateAsync(null);
+        await fixture.MigrateAsync(target);
         RequireEqual(bound, await fixture.SnapshotAsync(provider));
     }
 
     /// <summary>Projects only the verified empty origin table and the single known migration away for predecessor comparisons.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        if (DeviceKeyUpgradeTests.Present(after))
+        {
+            after = DeviceKeyUpgradeTests.Predecessor(provider, after);
+        }
         Assert.Empty(after[Query]);
         var migration = provider == Postgres ? PostgresMigration : SqlMigration;
         var result = new Dictionary<string, string[]>(StringComparer.Ordinal);

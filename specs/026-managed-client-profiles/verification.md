@@ -78,3 +78,14 @@ All 44 non-browser API contract cases passed. Original TRX SHA-256 was `6d375524
 The HTTP journey sends browser Origin headers with cookies disabled. Both cases in the first run ended on the first HTTP 204 when the buffered transport attempted an empty body write. The passing run omits the write for an empty capture. Interactive browser, CI and independent acceptance evidence are recorded separately when available.
 
 CI660 stopped in test selection, mutation source prechecks, static import ordering and the Node contract inventory. The revised matrix accounts for one new HTTPS journey and one new persistence case per provider. Locally, all 93 selection cases and 47 contract tooling cases passed. The revised browser and native journeys passed all four cases on PostgreSQL and SQL Server. Original TRX SHA-256 was `8f075f4a3beadfa46079b91da5846e8736e87b8dfb8fd4c11518015963848aaa`. The broader upgrade suite passed all 16 cases, including guarded downgrade from each immediate predecessor. [CI660](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46086256328)
+
+
+## Device polling and managed key storage
+
+Four local migration cases passed, covering PostgreSQL and SQL Server. They
+exercised conflicting writes to the same device window, early and on-time polls,
+rollback of the clock, exact expiry, old key rejection after replacement,
+same-key relabeling, and repeated assertion IDs across revisions. SQL Server
+was tested with a 400-character application ID. Both guard a populated
+downgrade and preserve predecessor data across an empty round trip.
+These tests exercise storage directly, outside of public protocol endpoints.

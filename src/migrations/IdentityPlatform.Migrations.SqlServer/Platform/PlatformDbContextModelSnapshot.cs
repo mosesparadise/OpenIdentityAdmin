@@ -205,6 +205,35 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationAssertionUse", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("CredentialRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ApplicationId", "Digest");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.ToTable("ApplicationAssertionUse", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationAssertionUse_Time", "[CredentialRevision] > 0 AND [RetainUntil] > 0");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.Property<string>("ApplicationId")
@@ -252,6 +281,39 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.HasKey("AuditId");
 
                     b.ToTable("ApplicationCloneAuditDetail", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyApproval", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("CredentialRevision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("Thumbprint")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(64)");
+
+                    b.HasKey("ApplicationId");
+
+                    b.ToTable("ApplicationKeyApproval", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationKeyApproval_Revision", "[CredentialRevision] > 0");
+                        });
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
@@ -402,6 +464,54 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                             t.HasCheckConstraint("CK_ApplicationRetirement_Revision", "[OriginalRevision] > 0 AND [RetiredRevision] - [OriginalRevision] = 1");
 
                             t.HasCheckConstraint("CK_ApplicationRetirement_Time", "[RetiredAt] >= 0 AND [ReplayUntil] > [RetiredAt] AND [ReplayUntil] - [RetiredAt] = 86400");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("ApplicationRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("IntervalSeconds")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.Property<long>("NextPollAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.ToTable("DevicePollingWindow", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_DevicePollingWindow_Cadence", "[ApplicationRevision] > 0 AND [IntervalSeconds] BETWEEN 5 AND 600");
+
+                            t.HasCheckConstraint("CK_DevicePollingWindow_Time", "[CreatedAt] >= 0 AND [CreatedAt] <= [ObservedAt] AND [ObservedAt] <= [NextPollAt] AND [NextPollAt] <= [ExpiresAt] AND [ExpiresAt] - [CreatedAt] = 600");
                         });
                 });
 
@@ -2171,6 +2281,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationAssertionUse", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
@@ -2186,6 +2305,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", "AuditId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyApproval", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -2221,6 +2349,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", null)
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "GrantJobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

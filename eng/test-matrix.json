@@ -33,14 +33,14 @@
       "AppHost": 118
     },
     "PostgreSql": {
-      "Persistence": 43,
+      "Persistence": 44,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
       "Administrator": 1431
     },
     "SqlServer": {
-      "Persistence": 43,
+      "Persistence": 44,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,

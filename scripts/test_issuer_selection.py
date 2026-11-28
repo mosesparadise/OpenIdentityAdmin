@@ -126,7 +126,7 @@ class IssuerSelectionTests(unittest.TestCase):
         for provider in PROVIDERS:
             foundation = select_projects(self.matrix, provider, partition='foundation')
             issuer = select_projects(self.matrix, provider, partition='issuer')
-            self.assertEqual({'Persistence': 43}, foundation)
+            self.assertEqual({'Persistence': 44}, foundation)
             apphost = select_projects(self.matrix, provider, partition='apphost')
             self.assertEqual({'AppHost': 25}, apphost)
             self.assertFalse(apphost.keys() & (foundation.keys() | issuer.keys()))
