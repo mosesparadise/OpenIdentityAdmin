@@ -54,6 +54,7 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
         Assert.False(await test.AcceptsAsync(created.Application.Id, created.Credential.ClientSecret));
         Assert.True(await test.AcceptsAsync(created.Application.Id, replaced.Credential.ClientSecret));
         Assert.Equal(FinalRevision, await test.AuditsAsync());
+        await ApplicationKeyAuthorityEvidence.RequireAsync(test);
     }
 
     /// <summary>Same-resource races serialize under actual provider locks and only the winning duplicate/versioned write receives an audit.</summary>

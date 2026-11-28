@@ -11,6 +11,7 @@ internal static class Setup
     /// <summary>Imports the real native self-redirection descriptor and adds a principal-boundary check before native generators execute.</summary>
     internal static OpenIddictServerBuilder AddManagedApplications(this OpenIddictServerBuilder builder)
     {
+        BoundDeviceApproval.Register(builder);
         builder.Services.AddScoped<ManagedCacheCoordinator>();
         builder.Services.AddScoped<ManagedIssuanceCoordinator>();
         builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<OpenManagedIssuance>()

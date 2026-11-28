@@ -1,3 +1,4 @@
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using System.Text.Json;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Core.Features.ApplicationGrants;
@@ -63,7 +64,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Checks framing and preconditions before reading finite actual bytes and validating the selected Core contract.</summary>
     internal static async Task<ApplicationMutationRequest> ReadAsync(HttpContext http, ApplicationProxyAction action, string? id, DateTimeOffset now)
     {
-        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
+        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine or ApplicationProxyAction.CreateMachineKey ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
         {
             throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
         }
@@ -113,7 +114,7 @@ internal sealed class ApplicationMutationRequest
     private static string? ReadVersion(HttpRequest request, ApplicationProxyAction action)
     {
         var values = request.Headers.IfMatch;
-        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine)
+        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine or ApplicationProxyAction.CreateMachineKey)
         {
             if (values.Count != 0)
             {
@@ -135,6 +136,18 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Parses only the selected independently validated DTO; unknown, duplicate and null fields cannot reach the API.</summary>
     private static object Validate(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now)
     {
+        if (action == ApplicationProxyAction.CreateMachineKey)
+        {
+            var input = ApplicationJson.Parse<ApplicationKeyMachineCreate>(bytes);
+            return input.Application is not null && MachineClientRules.IsValid(input.Application, now) && IsPublicKey(input.PublicKey)
+                ? input : throw new InvalidDataException();
+        }
+        if (action == ApplicationProxyAction.ReplaceKey)
+        {
+            var input = ApplicationJson.Parse<ApplicationKeyReplacement>(bytes);
+            return input.Confirm && ApplicationEditorRules.TryReadExpiry(input.CredentialExpiresAt, now, out _) && IsPublicKey(input.PublicKey)
+                ? input : throw new InvalidDataException();
+        }
         if (action == ApplicationProxyAction.Clone)
         {
             var clone = ApplicationJson.Parse<ApplicationClone>(bytes);
@@ -152,6 +165,10 @@ internal sealed class ApplicationMutationRequest
         }
         return ValidateRegistration(bytes, action, now);
     }
+
+    /// <summary>Forwards only locally validated public material through the browser's fixed downstream application route.</summary>
+    private static bool IsPublicKey(ApplicationPublicKey? value) => value is not null &&
+        AdministratorPublicKey.Parse(JsonSerializer.Serialize(value, ApplicationJson.Options)) is not null;
 
     /// <summary>Validates profile-specific creation, editing and credential inputs before forwarding their exact bodies.</summary>
     private static object ValidateRegistration(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now)
@@ -211,7 +228,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Binds returned fields and exact successor revision to this immutable parsed action, without trusting response shape alone.</summary>
     internal bool Matches(ApplicationDetails details, long revision)
     {
-        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine or ApplicationProxyAction.Clone))
+        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateMachine or ApplicationProxyAction.CreateMachineKey or ApplicationProxyAction.Clone))
         {
             var previous = long.Parse(Version!.AsSpan(RevisionOffset, Version!.Length - VersionPunctuation), System.Globalization.CultureInfo.InvariantCulture);
             if (Id != details.Id || previous == long.MaxValue || revision != previous + 1 || !ApplicationVersion.Matches(Version, Id!, previous))
@@ -221,6 +238,9 @@ internal sealed class ApplicationMutationRequest
         }
         return input switch
         {
+            ApplicationKeyMachineCreate keyed => revision == 1 && details.Profile == MachineClientRules.KeyProfile && details.Enabled == true &&
+                details.ClientId == keyed.Application.ClientId && details.DisplayName == keyed.Application.DisplayName && SameExpiry(details, keyed.Application.CredentialExpiresAt),
+            ApplicationKeyReplacement replacement => details.Profile == MachineClientRules.KeyProfile && SameExpiry(details, replacement.CredentialExpiresAt),
             ApplicationMachineCreate machine => revision == 1 && details.Profile == MachineClientRules.Profile && details.RedirectUris.Count == 0 &&
                 details.ClientId == machine.ClientId && details.DisplayName == machine.DisplayName && SameExpiry(details, machine.CredentialExpiresAt) && details.Enabled == true,
             ApplicationBrowserCreate browser => revision == 1 && details.Profile == ApplicationEditorRules.BrowserProfile && details.Credential is null &&
@@ -261,6 +281,7 @@ internal sealed class ApplicationMutationRequest
 
     /// <summary>Encodes one opaque ID as a path segment; operation suffixes are code-owned.</summary>
     private static string ResourcePath(ApplicationProxyAction action, string? id) => action == ApplicationProxyAction.Create ? string.Empty :
+        action == ApplicationProxyAction.CreateMachineKey ? MachineClientRules.KeyRegistrationSuffix :
         action == ApplicationProxyAction.CreateMachine ? MachineClientRules.Suffix :
         action == ApplicationProxyAction.CreateBrowser ? ApplicationEditorRules.BrowserRegistrationSuffix :
         action == ApplicationProxyAction.CreateNative ? ApplicationEditorRules.NativeRegistrationSuffix :
@@ -269,6 +290,7 @@ internal sealed class ApplicationMutationRequest
             ApplicationProxyAction.Edit => string.Empty,
             ApplicationProxyAction.Clone => ApplicationCloneRules.Suffix,
             ApplicationProxyAction.AssignScopes => ApplicationScopeRules.Suffix,
+            ApplicationProxyAction.ReplaceKey => MachineClientRules.KeyReplacementSuffix,
             ApplicationProxyAction.Replace => ReplacementSuffix,
             ApplicationProxyAction.Disable => ApplicationLifecycleRules.DisableSuffix,
             ApplicationProxyAction.Enable => ApplicationLifecycleRules.EnableSuffix,
@@ -280,7 +302,7 @@ internal sealed class ApplicationMutationRequest
 /// <summary>Closes the writable transport surface to reviewed application actions; retirement has its own acceptance response.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative, CreateBrowser, CreateMachine
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative, CreateBrowser, CreateMachine, CreateMachineKey, ReplaceKey
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

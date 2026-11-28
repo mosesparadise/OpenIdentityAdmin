@@ -8,6 +8,16 @@ internal static class Setup
     private const int BetweenNativeHandlers = 500;
     internal static int CleanupConsumptionOrder => OpenIddictServerHandlers.ValidateClientCertificate.Descriptor.Order + BetweenNativeHandlers;
 
+    /// <summary>Captures validated managed assertions and consumes them before grant validation in a composed native token pipeline.</summary>
+    internal static OpenIddictServerBuilder AddManagedAssertions(this OpenIddictServerBuilder builder)
+    {
+        builder.AddEventHandler<OpenIddictServerEvents.ValidateTokenContext>(handler => handler.UseScopedHandler<ManagedAssertionCapture>()
+            .SetOrder(OpenIddictServerHandlers.Protection.ValidateAuthorizationEntry.Descriptor.Order + BetweenNativeHandlers));
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessAuthenticationContext>(handler => handler.UseScopedHandler<ManagedClientAssertion>()
+            .SetOrder(OpenIddictServerHandlers.ValidateClientCertificate.Descriptor.Order + BetweenNativeHandlers));
+        return builder;
+    }
+
     /// <summary>Adds deny-only proof consumption to an existing assertion pipeline; it neither repeats base composition nor creates endpoints or permissions.</summary>
     internal static OpenIddictServerBuilder AddAdministratorCleanupAssertions(this OpenIddictServerBuilder builder)
     {

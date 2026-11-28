@@ -33,18 +33,18 @@
       "AppHost": 118
     },
     "PostgreSql": {
-      "Persistence": 43,
+      "Persistence": 44,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1432
+      "Administrator": 1433
     },
     "SqlServer": {
-      "Persistence": 43,
+      "Persistence": 44,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1537
+      "Administrator": 1538
     }
   },
   "browser": {
@@ -123,8 +123,8 @@
       "SqlServer": 179
     },
     "ManagedApplications": {
-      "PostgreSql": 153,
-      "SqlServer": 153
+      "PostgreSql": 154,
+      "SqlServer": 154
     },
     "ApplicationGrants": {
       "PostgreSql": 94,
@@ -379,11 +379,12 @@
         "ManagedRetirementRaceTests",
         "NativeClientJourneyTests",
         "BrowserClientJourneyTests",
-        "MachineClientJourneyTests"
+        "MachineClientJourneyTests",
+        "KeyedMachineJourneyTests"
       ],
       "counts": {
-        "PostgreSql": 74,
-        "SqlServer": 74
+        "PostgreSql": 75,
+        "SqlServer": 75
       }
     },
     "Disclosure": {

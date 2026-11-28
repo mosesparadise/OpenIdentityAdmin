@@ -51,6 +51,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bff/api/v1/applications/machine-key-registrations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register a machine application with a public RSA authentication key */
+        post: operations["RegisterBrowserKeyedMachineApplication"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/bff/api/v1/applications/machine-registrations": {
         parameters: {
             query?: never;
@@ -200,6 +217,23 @@ export interface paths {
         put?: never;
         /** Freshly confirm remaining work in a stopped revocation job */
         post: operations["ContinueBrowserApplicationGrantRevocation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bff/api/v1/applications/{id}/key-replacements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Replace the registered public key using the current application ETag */
+        post: operations["ReplaceBrowserApplicationPublicKey"];
         delete?: never;
         options?: never;
         head?: never;
@@ -476,6 +510,15 @@ export interface components {
             displayName: string;
             redirectUris: string[];
         };
+        ApplicationKeyMachineCreate: {
+            application: components["schemas"]["ApplicationMachineCreate"];
+            publicKey: components["schemas"]["ApplicationPublicKey"];
+        };
+        ApplicationKeyReplacement: {
+            confirm: boolean;
+            credentialExpiresAt: string;
+            publicKey: components["schemas"]["ApplicationPublicKey"];
+        };
         ApplicationLifecycle: {
             /** @enum {boolean} */
             confirm: true;
@@ -501,6 +544,14 @@ export interface components {
             page: number | string;
             /** Format: int32 */
             pageSize: number | string;
+        };
+        ApplicationPublicKey: {
+            alg: string;
+            e: string;
+            kid: string;
+            kty: string;
+            n: string;
+            use: string;
         };
         ApplicationRetirementAcceptance: {
             applicationId: string;
@@ -900,6 +951,92 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ApplicationBrowserCreate"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    /** @description Exact strong aggregate version; absent for protected or unmanaged registrations. */
+                    ETag: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationDetails"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    RegisterBrowserKeyedMachineApplication: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Native token bound to this browser generation and application mutation purpose. */
+                "X-CSRF-TOKEN": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApplicationKeyMachineCreate"];
             };
         };
         responses: {
@@ -2090,6 +2227,130 @@ export interface operations {
             503: {
                 headers: {
                     "Cache-Control": "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    ReplaceBrowserApplicationPublicKey: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412. */
+                "If-Match": string;
+                /** @description Native token bound to this browser generation and application mutation purpose. */
+                "X-CSRF-TOKEN": string;
+            };
+            path: {
+                /** @description Exact native application identity; the BFF reserves antiforgery for its token endpoint. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApplicationKeyReplacement"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    /** @description Exact strong aggregate version; absent for protected or unmanaged registrations. */
+                    ETag: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicationDetails"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Precondition Failed */
+            412: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Precondition Required */
+            428: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    /** @description Application data and generated credentials must not be cached. */
+                    "Cache-Control"?: "no-store";
                     [name: string]: unknown;
                 };
                 content: {

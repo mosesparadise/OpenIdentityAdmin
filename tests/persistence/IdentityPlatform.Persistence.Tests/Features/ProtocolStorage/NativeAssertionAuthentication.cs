@@ -95,18 +95,18 @@ internal static class NativeAssertionAuthentication
     /// <summary>Uses actual native authentication and all default validation handlers; no prevalidated principal is injected.</summary>
     internal static Task<OpenIddictServerEvents.ProcessAuthenticationContext> AuthenticateAsync(IServiceProvider root, string assertion,
         bool tokenEndpoint, CancellationToken token,
-        Func<OpenIddictServerEvents.ProcessAuthenticationContext, CancellationToken, ValueTask>? continuation = null) => new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token)
+        Func<OpenIddictServerEvents.ProcessAuthenticationContext, CancellationToken, ValueTask>? continuation = null, string? machineClient = null) => new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token)
         .RunAsync(root.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
         {
             var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
             transaction.EndpointType = tokenEndpoint ? OpenIddictServerEndpointType.Token : OpenIddictServerEndpointType.PushedAuthorization;
             transaction.Request = new OpenIddictRequest
             {
-                ClientId = AdministratorProtocolIdentity.ClientId,
+                ClientId = machineClient ?? AdministratorProtocolIdentity.ClientId,
                 ClientAssertion = assertion,
                 ClientAssertionType = OpenIddictConstants.ClientAssertionTypes.JwtBearer,
-                GrantType = tokenEndpoint ? OpenIddictConstants.GrantTypes.AuthorizationCode : null,
-                Code = tokenEndpoint ? InvalidCode : null
+                GrantType = machineClient is not null ? OpenIddictConstants.GrantTypes.ClientCredentials : tokenEndpoint ? OpenIddictConstants.GrantTypes.AuthorizationCode : null,
+                Code = tokenEndpoint && machineClient is null ? InvalidCode : null
             };
             transaction.BaseUri = new Uri(NativeAssertionMaterial.Issuer);
             transaction.RequestUri = new Uri(NativeAssertionMaterial.Issuer);

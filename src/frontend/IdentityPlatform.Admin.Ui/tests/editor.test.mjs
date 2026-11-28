@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateMachine, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { validate, validatePublicKey, validateMachine, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
 import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
@@ -165,8 +165,18 @@ test('Given_generated_transport_When_operations_run_Then_paths_proofs_and_creden
   assert.equal(requests[5].url, 'https://bff.example.test/bff/api/v1/applications/machine-registrations');
   assert.equal(requests[5].headers.get('X-CSRF-TOKEN'), proof.value.requestToken);
   assert.deepEqual(await requests[5].json(), machine);
+  const publicKey={kty:'RSA',kid:'orders',alg:'RS256',use:'sig',n:Buffer.alloc(384,191).toString('base64url'),e:'AQAB'};
+  const registerKey={application:machine,publicKey};
+  await client.createMachineKey(registerKey,proof.value.requestToken,signal);
+  assert.equal(requests[6].url,'https://bff.example.test/bff/api/v1/applications/machine-key-registrations');
+  assert.deepEqual(await requests[6].json(),registerKey);
+  const rotation={publicKey,credentialExpiresAt:machine.credentialExpiresAt,confirm:true};
+  await client.replaceKey('opaque /?id',read.etag,rotation,proof.value.requestToken,signal);
+  assert.ok(requests[7].url.endsWith('/opaque%20%2F%3Fid/key-replacements'));assert.equal(requests[7].headers.get('If-Match'),read.etag);
+  assert.equal(requests[7].headers.get('X-CSRF-TOKEN'),proof.value.requestToken);assert.deepEqual(await requests[7].json(),rotation);
+
   for(const request of requests){assert.equal(request.credentials,'same-origin');assert.equal(request.cache,'no-store');assert.equal(request.redirect,'error');assert.equal(request.headers.has('authorization'),false)}
-  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,6);
+  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,8);
  }finally{globalThis.fetch=original;delete globalThis.window;}
 });
 
@@ -728,6 +738,41 @@ test('Given_a_machine_registration_When_created_Then_the_service_receives_one_se
  const base=states.at(-1); assert.equal(base.kind,'created'); assert.equal(base.secret,secret);
  const html=renderToStaticMarkup(createElement(DetailsView,{details:base.details,dismiss(){}}));
  assert.match(html,/client_credentials/); assert.match(html,/client_secret_basic/);
+ const keyed = {...application,profile:'managed-machine-key-v1'};
+ const keyedPage = renderToStaticMarkup(createElement(DetailsView,{details:keyed,dismiss(){}}));
+ assert.match(keyedPage,/private_key_jwt/); assert.match(keyedPage,/RS256/); assert.match(keyedPage,/Retire application/);
+ assert.doesNotMatch(keyedPage,/Replace secret|Edit application|client_secret_basic|client_secret&quot;/);
+ assert.match(keyedPage,/Replace public key/);
+ const publicFields = {kid:'orders-signing',modulus:Buffer.alloc(384,191).toString('base64url'),exponent:'AQAB'};
+ const material = {kty:'RSA',kid:publicFields.kid,alg:'RS256',use:'sig',n:publicFields.modulus,e:'AQAB'};
+ assert.deepEqual(validatePublicKey(publicFields).key,material);
+ for (const invalid of [{kid:''},{modulus:'AQ'},{exponent:'='},{exponent:'AB'},{exponent:'AA'},{exponent:'A'}])
+   assert.equal(validatePublicKey({...publicFields,...invalid}).key,undefined);
+ const generated = {status:201,value:keyed,etag:success.etag};
+ let sawRotation = false;
+ const keys = setup(t,{createMachineKey:async (input,csrf) => {
+   assert.deepEqual(input,{application:body,publicKey:material});assert.equal(csrf,proof.value.requestToken);return generated;
+ },replaceKey:async (id,version,input,csrf) => {
+   assert.equal(id,keyed.id);assert.equal(version,generated.etag);assert.equal(csrf,proof.value.requestToken);
+   assert.deepEqual(input,{publicKey:{...material,kid:'replacement'},credentialExpiresAt:body.credentialExpiresAt,confirm:true});
+   sawRotation=true;return {status:200,value:keyed,etag:version.replace('-1"','-2"')};
+ }});
+ keys.owner.newForm();
+ assert.ok((await keys.owner.create(service,'keyed-machine')).modulus);
+ await keys.owner.create({...service,...publicFields},'keyed-machine');
+ assert.equal(keys.states.at(-1).kind,'details');assert.equal(keys.states.at(-1).secret,undefined);
+ keys.owner.open('replace');
+ assert.ok((await keys.owner.replace({credentialExpiresAt:body.credentialExpiresAt,confirmed:false})).confirmed);
+ await keys.owner.replace({...publicFields,kid:'replacement',credentialExpiresAt:body.credentialExpiresAt,confirmed:true});
+ assert.equal(sawRotation,true);assert.equal(keys.states.at(-1).kind,'updated');assert.equal(keys.states.at(-1).secret,undefined);
+ const lost=setup(t,{createMachineKey:async()=>({status:503})});
+ lost.owner.newForm();await lost.owner.create({...service,...publicFields},'keyed-machine');
+ assert.equal(lost.states.at(-1).outcome,'key-unknown');
+ const problem=renderToStaticMarkup(createElement(ProblemView,{state:lost.states.at(-1)}));
+ assert.doesNotMatch(problem,/undisplayed secret/);
+
+
+
  assert.doesNotMatch(html,/HTTPS callbacks|Clone application|S256/);
  for (const changed of [{profile:'managed-web-v1'},{redirectUris:[draft.redirectUris]},{credential:null}])
    assert.equal(await created({...response,value:{application:{...application,...changed},clientSecret:secret}},body,now),null);

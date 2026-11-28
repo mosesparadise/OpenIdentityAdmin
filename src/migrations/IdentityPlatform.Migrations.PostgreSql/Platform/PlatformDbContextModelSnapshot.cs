@@ -200,6 +200,33 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationAssertionUse", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("CredentialRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ApplicationId", "Digest");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.ToTable("ApplicationAssertionUse", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationAssertionUse_Time", "\"CredentialRevision\" > 0 AND \"RetainUntil\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.Property<string>("ApplicationId")
@@ -243,6 +270,62 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasKey("AuditId");
 
                     b.ToTable("ApplicationCloneAuditDetail", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyApproval", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("CredentialRevision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Thumbprint")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("ApplicationId");
+
+                    b.ToTable("ApplicationKeyApproval", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationKeyApproval_Revision", "\"CredentialRevision\" > 0");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", b =>
+                {
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("CredentialRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("PreviousRevision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("ApplicationKeyAuditDetail", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationKeyAuditDetail_Revision", "\"PreviousRevision\" >= 0 AND \"CredentialRevision\" > \"PreviousRevision\" AND \"CredentialRevision\" - \"PreviousRevision\" = 1");
+                        });
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
@@ -387,6 +470,52 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                             t.HasCheckConstraint("CK_ApplicationRetirement_Revision", "\"OriginalRevision\" > 0 AND \"RetiredRevision\" - \"OriginalRevision\" = 1");
 
                             t.HasCheckConstraint("CK_ApplicationRetirement_Time", "\"RetiredAt\" >= 0 AND \"ReplayUntil\" > \"RetiredAt\" AND \"ReplayUntil\" - \"RetiredAt\" = 86400");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("ApplicationRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("IntervalSeconds")
+                        .IsConcurrencyToken()
+                        .HasColumnType("integer");
+
+                    b.Property<long>("NextPollAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.ToTable("DevicePollingWindow", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_DevicePollingWindow_Cadence", "\"ApplicationRevision\" > 0 AND \"IntervalSeconds\" BETWEEN 5 AND 600");
+
+                            t.HasCheckConstraint("CK_DevicePollingWindow_Time", "\"CreatedAt\" >= 0 AND \"CreatedAt\" <= \"ObservedAt\" AND \"ObservedAt\" <= \"NextPollAt\" AND \"NextPollAt\" <= \"ExpiresAt\" AND \"ExpiresAt\" - \"CreatedAt\" = 600");
                         });
                 });
 
@@ -2060,6 +2189,15 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationAssertionUse", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
@@ -2074,6 +2212,24 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", "AuditId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyApproval", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationKeyAuditDetail", "AuditId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2110,6 +2266,15 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", null)
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationRetirement", "GrantJobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

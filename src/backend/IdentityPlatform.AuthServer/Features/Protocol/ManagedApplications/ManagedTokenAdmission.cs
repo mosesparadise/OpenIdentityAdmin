@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -55,7 +56,7 @@ internal sealed class ManagedTokenAdmission
                 await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
                 NativeErrorOrigin.RecordPhase(context.Transaction, scope.Owner);
                 await ManagedRegistration.LockAsync(scope, token);
-                var grant = await MachineGrant.ReadAsync(scope, context.Request, token);
+                var grant = await ReadMachineAsync(scope, context.Transaction, token);
                 await transaction.CommitAsync(token);
                 return grant;
             });
@@ -67,6 +68,18 @@ internal sealed class ManagedTokenAdmission
             }
         }
         context.Transaction.SetProperty(typeof(ManagedTokenAdmission).FullName!, admission);
+    }
+
+    /// <summary>Admits the original Basic request or its current native signed assertion under the same registration lock.</summary>
+    internal static ValueTask<(MachineGrant? Grant, string? Error)> ReadMachineAsync(ProtocolStorageScope scope, OpenIddictServerTransaction transaction, CancellationToken token)
+    {
+        var assertion = ManagedAssertionReceipt.Find(transaction);
+        if (transaction.Request is not { } request || (request.ClientAssertion is not null || assertion is not null) &&
+            (assertion is null || !ManagedAssertionTransport.Matches(transaction, request.ClientId) || !assertion.IsCurrent(transaction)))
+        {
+            return ValueTask.FromResult<(MachineGrant?, string?)>((null, OpenIddictConstants.Errors.InvalidClient));
+        }
+        return MachineGrant.ReadAsync(scope, request, token, assertion?.Stored);
     }
 
     /// <summary>Requires normal return from the installed native passthrough; manually setting skipped never satisfies this receipt.</summary>
@@ -88,7 +101,8 @@ internal sealed class ManagedTokenAdmission
     }
 
     /// <summary>Requires original validated request identity and unchanged native parameters through eventual publication.</summary>
-    internal bool Current() => !validation.IsRejected && !validation.IsRequestHandled && !validation.IsRequestSkipped &&
+    internal bool Current() => (validation.Request.ClientAssertion is null || ManagedAssertionReceipt.Find(validation.Transaction)?.IsCurrent(validation.Transaction) == true) &&
+        !validation.IsRejected && !validation.IsRequestHandled && !validation.IsRequestSkipped &&
         handoff is { IsRequestSkipped: true, IsRejected: false, IsRequestHandled: false } &&
         ReferenceEquals(validation.Request, handoff.Request) && binding == ManagedConsumption.Parameters(validation.Request) &&
         ReferenceEquals(validation, validation.Transaction.GetProperty<OpenIddictServerEvents.ValidateTokenRequestContext>(typeof(OpenIddictServerEvents.ValidateTokenRequestContext).FullName!));

@@ -187,6 +187,16 @@ browser. CI655 did not record when its deferred script ran.
 The browser profile has local PostgreSQL and SQL Server HTTPS and schema evidence, generated contracts and editor coverage. T002 remains open pending the required acceptance checks. [Verification](verification.md#public-browser-registration) · [Integration guide](quickstart.md#public-browser-client)
 
 
+### Device polling and managed client key storage under T004 and T005
+
+Both Platform migrations add retained device polling intervals, per-application
+public RSA key approvals, and a per-client assertion replay key. A device poll
+is bound to a live public device policy and its original revision. The RSA
+approval binds both descriptor metadata and the underlying public key material.
+Changing the key identifier alone cannot count as a rotation. The replay key
+persists across credential revisions. The API registration, verification page
+and issuer handlers for these profiles still require integration.
+
 ### Confidential machine registration in T003 and T006
 
 The protected registration editor, versioned BFF/API contracts, client-credentials
@@ -202,3 +212,23 @@ secret returned HTTP 401 and the new secret worked. Removing the scope assignmen
 left the original scope referenced in the protected catalogue details. Restoring
 the assignment before disabling the service isolated the disablement check.
 Both PostgreSQL and SQL Server passed. Original TRX SHA-256 was `736c4eea29668b386f6fe1c1fa183f46d64bd606b1d09736f6f9f8869052e357`.
+
+### Managed client assertion authentication in T005
+
+The native authentication dispatcher validates signed assertions against a locally
+registered public RSA key. The receipt binds the original request, signature,
+permanent application, approval and credential revision. The ledger has a global
+10,000-row limit. Each successful submission can reclaim up to 100 expired
+entries, advancing the affected registrations' observation times before deletion.
+Both real database providers accepted exactly one of two concurrent requests
+carrying the same valid assertion.
+
+Registration and rotation now pass the internal management operation on both
+providers. Credential revisions and fingerprints are persisted with the
+administrator audit. The versioned bearer API now registers machine clients
+with their own public key and replaces keys using the strong ETag. The real HTTPS
+token endpoint accepts signed machine requests and reaches the sample resource
+server. The editor and cookie-authenticated BFF also support machine key
+registration and replacement. Keyed web code exchange remains open. [Provider and management verification](verification.md#native-managed-client-assertion-consumption)
+
+T004 now verifies the installed OpenIddict device and user code generators on PostgreSQL and SQL Server, including the native verification URI, early polling, paced pending responses, human-code resolution and refusal on the next poll. A synthetic account decision now drives actual native approval, an access token and rejection on a second exchange. Both databases preserve the original expiry after approval. Public device registration, user verification with password/MFA and explicit consent, and the complete HTTP journey remain open. [Device generation evidence](verification.md#device-authorization-code-generation)

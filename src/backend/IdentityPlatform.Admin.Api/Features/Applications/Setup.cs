@@ -31,6 +31,7 @@ internal static class Setup
     /// <summary>Attaches authoritative typed metadata to the actual independently authenticated endpoint.</summary>
     internal static IEndpointRouteBuilder MapApplications(this IEndpointRouteBuilder app)
     {
+        app.MapApplicationKeys();
         app.MapManagementGroup().MapGet(CollectionPath, (Func<HttpContext, Task>)ApplicationListEndpoint.HandleAsync)
             .WithName(Operation).WithSummary(Summary)
             .Produces<ApplicationPage>().ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status503ServiceUnavailable);

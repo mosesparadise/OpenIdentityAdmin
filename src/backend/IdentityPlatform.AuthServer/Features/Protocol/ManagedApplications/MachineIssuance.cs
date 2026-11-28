@@ -161,7 +161,7 @@ internal sealed class MachineIssuance(OpenIddictServerEvents.ProcessSignInContex
     /// <summary>Rechecks the authenticated native identity, credential revision and exact catalogue binding under the same transaction.</summary>
     private async ValueTask RequireAuthorityAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        if (!await grant.MatchesAsync(scope, (await MachineGrant.ReadAsync(scope, context.Request, token)).Grant, token))
+        if (!await grant.MatchesAsync(scope, (await ManagedTokenAdmission.ReadMachineAsync(scope, context.Transaction, token)).Grant, token))
         {
             throw ProtocolStorageOwner.Unavailable();
         }

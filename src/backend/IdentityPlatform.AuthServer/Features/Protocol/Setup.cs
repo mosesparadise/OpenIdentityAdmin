@@ -62,7 +62,7 @@ internal static class Setup
                 if (profiles.Managed)
                 {
                     options.AllowClientCredentialsFlow();
-                    options.AddManagedApplications().AddManagedUserInfo();
+                    options.AddManagedAssertions().AddManagedApplications().AddManagedUserInfo();
                 }
             }
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();

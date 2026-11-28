@@ -44,15 +44,15 @@ internal sealed class NativeAssertionMaterial : IDisposable
     }
 
     /// <summary>Signs a fresh intentional proof with real RSA; native server validation must verify it against persisted public registration.</summary>
-    internal string Sign(long now, string? identifier = null, int lifetime = ProofSeconds, string? audience = null)
+    internal string Sign(long now, string? identifier = null, int lifetime = ProofSeconds, string? audience = null, string clientId = AdministratorProtocolIdentity.ClientId)
     {
         var descriptor = new SecurityTokenDescriptor
         {
-            Issuer = AdministratorProtocolIdentity.ClientId,
+            Issuer = clientId,
             Audience = audience ?? Issuer,
             Claims = new Dictionary<string, object>
             {
-                [JwtRegisteredClaimNames.Sub] = AdministratorProtocolIdentity.ClientId,
+                [JwtRegisteredClaimNames.Sub] = clientId,
                 [JwtRegisteredClaimNames.Jti] = identifier ?? Guid.NewGuid().ToString()
             },
             IssuedAt = DateTimeOffset.FromUnixTimeSeconds(now).UtcDateTime,

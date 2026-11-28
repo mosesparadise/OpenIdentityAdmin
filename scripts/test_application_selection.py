@@ -38,7 +38,7 @@ class ApplicationSelectionTests(unittest.TestCase):
 
     def test_Given_DefaultAndExplicitStory_When_Grouped_Then_AllOldAndRetirementCasesRunExactlyOnce(self):
         """Check both default and explicit execution preserve every original and retirement identity."""
-        for provider, total in (('PostgreSql', 1432), ('SqlServer', 1537)):
+        for provider, total in (('PostgreSql', 1433), ('SqlServer', 1538)):
             self.verify(provider)
             expected = [(STORY, group, count) for group, count in EXPECTED]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))

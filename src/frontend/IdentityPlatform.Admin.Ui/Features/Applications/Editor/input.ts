@@ -2,9 +2,14 @@ import type { components } from "../../../../IdentityPlatform.Admin.Contracts/ge
 export type CloneInput = components["schemas"]["ApplicationClone"];
 export type CloneDraft = { confirmed: boolean; clientId: string; displayName: string; credentialExpiresAt: string };
 export type CreateInput = components["schemas"]["ApplicationCreate"];
-export type RegistrationType = "web" | "native" | "browser" | "machine";
+export type RegistrationType = "web" | "native" | "browser" | "machine" | "keyed-machine";
 export type MachineInput = components["schemas"]["ApplicationMachineCreate"];
+export const keyedMachineProfile = "managed-machine-key-v1";
 export const machineProfile = "managed-machine-v1";
+export type PublicKey = components["schemas"]["ApplicationPublicKey"];
+export type KeyRegistration = components["schemas"]["ApplicationKeyMachineCreate"];
+export type KeyReplacement = components["schemas"]["ApplicationKeyReplacement"];
+export type KeyFields = { kid?: string; modulus?: string; exponent?: string };
 export type BrowserInput = components["schemas"]["ApplicationBrowserCreate"];
 export const browserProfile = "managed-browser-v1";
 export const nativeProfile = "managed-native-v1";
@@ -14,8 +19,8 @@ export type LifecycleDraft = { reason: string; confirm: boolean };
 export type LifecycleInput = components["schemas"]["ApplicationLifecycle"];
 export type ReplacementInput = components["schemas"]["ApplicationSecretReplacement"];
 export type EditDraft = Pick<Draft, "displayName" | "redirectUris">;
-export type ReplacementDraft = { confirmed: boolean; credentialExpiresAt: string };
-export type Draft = { origins?: string; clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
+export type ReplacementDraft = KeyFields & { confirmed: boolean; credentialExpiresAt: string };
+export type Draft = KeyFields & { origins?: string; clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
 export type Errors = Partial<Record<keyof Draft | "confirmed" | "reason", string>>;
 export const emptyDraft: Draft = { origins: "", clientId: "", displayName: "", redirectUris: "", credentialExpiresAt: "" };
 const whitespace = /[\s\u0085]/u;
@@ -98,6 +103,24 @@ export function validateMachine(draft: Draft, now: number): { input?: MachineInp
   const input = { clientId: draft.clientId, displayName: draft.displayName, credentialExpiresAt: draft.credentialExpiresAt };
   return Object.keys(errors).length ? { errors } : { input, errors };
 }
+/** Accepts only public JWK parameters, retaining their exact unpadded unsigned encoding. */
+export function validatePublicKey(fields: KeyFields): { key?: PublicKey; errors: Errors } {
+  const errors: Errors = {};
+  const { kid = "", modulus = "", exponent = "" } = fields;
+  if (!/^[\x20-\x7e]{1,128}$/.test(kid)) errors.kid = "Enter a public key ID of 1–128 ASCII characters.";
+  const unsigned = (value: string) => {
+    if (!/^[A-Za-z0-9_-]{1,8192}$/.test(value)) return null;
+    try {
+      const bytes = atob(value.replace(/-/g, "+").replace(/_/g, "/"));
+      return bytes.charCodeAt(0) !== 0 && btoa(bytes).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_") === value ? bytes : null;
+    } catch { return null; }
+  };
+  const bytes = unsigned(modulus);
+  if (!bytes || bytes.length * 8 - Math.clz32(bytes.charCodeAt(0)) + 24 < 3072) errors.modulus = "Enter the public modulus of an RSA key of at least 3072 bits.";
+  if (!unsigned(exponent)) errors.exponent = "Enter the unpadded base64url public exponent.";
+  return Object.keys(errors).length ? { errors } : { errors, key: { kty: "RSA", kid, alg: "RS256", use: "sig", n: modulus, e: exponent } };
+}
+
 /** Matches the canonical Origin header sent by the browser for a credential-free HTTPS fetch. */
 export function browserOrigin(value: unknown): value is string {
   if (!text(value, 300) || /[^!-~]|[*%]/.test(value)) return false;

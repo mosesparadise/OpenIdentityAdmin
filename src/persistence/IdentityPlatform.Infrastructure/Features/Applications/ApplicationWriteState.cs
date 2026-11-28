@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 internal sealed class ApplicationWriteState
 {
     private readonly object application;
+    private readonly AdministratorPublicKey? approvedKey;
     private readonly string clientId;
     private readonly string displayName;
     private readonly ImmutableArray<string> redirects;
@@ -33,13 +35,16 @@ internal sealed class ApplicationWriteState
     {
         get;
     }
+    internal long CredentialRevision => credentialRevision;
     internal string Version => ApplicationVersion.Create(Id, revision);
 
     /// <summary>Copies native presentation and lifecycle values so later entity mutation cannot alter the expected commit.</summary>
     internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret,
-        ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null, ImmutableArray<string> origins = default)
+        ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null, ImmutableArray<string> origins = default, AdministratorPublicKey? approvedKey = null)
     {
         this.application = application;
+        this.approvedKey = approvedKey ?? (policy.Profile is ApplicationKeyApproval.MachineProfile or ApplicationKeyApproval.WebProfile
+            ? AdministratorPublicKey.FromNative(descriptor.JsonWebKeySet) ?? throw ProtocolStorageOwner.Unavailable() : null);
         this.selection = selection;
         this.cloneSource = cloneSource;
         this.origins = origins;
@@ -70,7 +75,7 @@ internal sealed class ApplicationWriteState
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
-        if (await manager.GetIdAsync(application, token) != Id || !ManagedApplicationProfile.MatchesProfile(profile, descriptor) ||
+        if (await manager.GetIdAsync(application, token) != Id || !await MatchesProfileAsync(scope, descriptor, token) ||
             !descriptor.Permissions.Order(StringComparer.Ordinal).SequenceEqual(permissions, StringComparer.Ordinal) ||
             descriptor.ClientId != clientId || descriptor.DisplayName != displayName ||
             !descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).SequenceEqual(redirects) ||
@@ -99,6 +104,21 @@ internal sealed class ApplicationWriteState
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+    }
+
+    /// <summary>Verifies the pinned public material and approval revision again after the administrator's audit save.</summary>
+    private async ValueTask<bool> MatchesProfileAsync(ProtocolStorageScope scope, OpenIddictApplicationDescriptor descriptor, CancellationToken token)
+    {
+        if (approvedKey is null)
+        {
+            return ManagedApplicationProfile.MatchesProfile(profile, descriptor);
+        }
+        var approval = await scope.Owner.RunAsync(async current => await scope.Owner.Database.Set<ApplicationKeyApproval>().AsNoTracking()
+            .SingleOrDefaultAsync(row => row.ApplicationId == Id, current), token);
+        return ManagedApplicationProfile.MatchesKeyProfile(profile, descriptor) &&
+            AdministratorPublicKey.FromNative(descriptor.JsonWebKeySet)?.Fingerprint == approvedKey.Fingerprint &&
+            approval?.ApplicationId == Id && approval.CredentialRevision == credentialRevision && approval.Fingerprint == approvedKey.Fingerprint &&
+            approval.Thumbprint == ApplicationKeyApproval.Material(approvedKey);
     }
 
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>

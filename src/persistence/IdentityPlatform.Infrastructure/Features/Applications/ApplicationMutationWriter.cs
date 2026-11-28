@@ -21,8 +21,12 @@ internal static class ApplicationMutationWriter
     /// <summary>Uses real managers for all native writes and leaves version/policy persistence inside the same original transaction.</summary>
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
+        if (command.Kind == ApplicationMutationKind.ReplaceKey)
+        {
+            return await ManagedKeyReplacement.StageAsync(scope, command, token);
+        }
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateMachine or ApplicationMutationKind.CreateWebKey or ApplicationMutationKind.CreateMachineKey)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
@@ -37,7 +41,9 @@ internal static class ApplicationMutationWriter
         await RequireMutableAsync(scope, command.ApplicationId!, descriptor.ClientId!, token);
         var policy = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .SingleOrDefaultAsync(row => row.ApplicationId == command.ApplicationId, current), token);
-        if (policy is null || policy.ApplicationId != command.ApplicationId || !ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor))
+        if (policy is null || policy.ApplicationId != command.ApplicationId || !(ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) ||
+            command.Kind is ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable &&
+            ManagedApplicationProfile.MatchesKeyProfile(policy.Profile, descriptor)))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
@@ -123,7 +129,7 @@ internal static class ApplicationMutationWriter
         OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, ImmutableArray<string> origins, CancellationToken token)
     {
         var selection = await ApplicationScopeSelection.ReadAsync(scope, command.Scopes, token);
-        if (policy.Profile == MachineClientRules.Profile)
+        if (policy.Profile is MachineClientRules.Profile or ApplicationKeyApproval.MachineProfile)
         {
             _ = selection.MachineResources();
         }

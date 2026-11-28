@@ -151,7 +151,7 @@ public sealed class MachineClientJourneyTests(BootstrapFixture fixture)
     }
 
     /// <summary>Verifies the signature with the issuer's discovered public keys, expected audience, lifetime and nonhuman subject.</summary>
-    private static async Task VerifyAsync(ApplicationHttpFixture http, string token, string id, string audience = Audience, string scope = Scope)
+    internal static async Task VerifyAsync(ApplicationHttpFixture http, string token, string id, string audience = Audience, string scope = Scope)
     {
         var issuer = http.IssuerClient.BaseAddress!;
         using var discovery = await http.IssuerClient.GetFromJsonAsync<JsonDocument>(Discovery, TestContext.Current.CancellationToken);

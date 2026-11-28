@@ -113,7 +113,7 @@ class AppHostSelectionTests(unittest.TestCase):
         from test_selection import select_projects
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual({'Persistence': 43}, select_projects(self.matrix, provider, partition='foundation'))
+            self.assertEqual({'Persistence': 44}, select_projects(self.matrix, provider, partition='foundation'))
             self.assertEqual({'AppHost': 25}, select_projects(self.matrix, provider, partition='apphost'))
             self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3), ('SampleChromium', 2), ('SampleWebKit', 2)], apphost_invocations(self.matrix, provider))
             for group, count in (('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3), ('SampleChromium', 2), ('SampleWebKit', 2)):

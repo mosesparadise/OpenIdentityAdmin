@@ -17,7 +17,7 @@ internal static class ApplicationCreation
         await ApplicationMutationWriter.RequireNewIdentityAsync(manager, command.ClientId!, token);
         var now = ApplicationMutationWriter.Now(scope, command);
         var publicClient = command.Kind is ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser;
-        var secret = publicClient ? null : Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
+        var secret = publicClient || command.PublicKey is not null ? null : Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
         var descriptor = ManagedApplicationProfile.Create(command, secret);
         source?.Apply(descriptor);
         var application = await manager.CreateAsync(descriptor, token);
@@ -33,6 +33,8 @@ internal static class ApplicationCreation
             Profile = command.Kind switch
             {
                 ApplicationMutationKind.CreateMachine => MachineClientRules.Profile,
+                ApplicationMutationKind.CreateMachineKey => ApplicationKeyApproval.MachineProfile,
+                ApplicationMutationKind.CreateWebKey => ApplicationKeyApproval.WebProfile,
                 ApplicationMutationKind.CreateNative => ApplicationEditorRules.NativeProfile,
                 ApplicationMutationKind.CreateBrowser => ApplicationEditorRules.BrowserProfile,
                 _ => ApplicationEditorRules.Profile
@@ -44,10 +46,14 @@ internal static class ApplicationCreation
             CredentialExpiresAt = command.CredentialExpiry?.ToUnixTimeSeconds(),
             ObservedAt = now
         };
-        var expected = new ApplicationWriteState(application, descriptor, policy, secret, cloneSource: source, origins: command.Origins);
+        var expected = new ApplicationWriteState(application, descriptor, policy, secret, cloneSource: source, origins: command.Origins, approvedKey: command.PublicKey);
         await scope.Owner.RunAsync(async current =>
         {
             scope.Owner.Database.Add(policy);
+            if (command.PublicKey is { } approved)
+            {
+                scope.Owner.Database.Add(ApplicationKeyApproval.Create(policy, approved));
+            }
             scope.Owner.Database.AddRange(command.Origins.Select((origin, slot) =>
                 new ApplicationBrowserOrigin { ApplicationId = id, Origin = origin, Slot = slot }));
             await scope.Owner.Database.SaveChangesAsync(current);

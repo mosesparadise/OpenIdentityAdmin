@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 
 namespace IdentityPlatform.Infrastructure.Features.Applications;
 
@@ -40,8 +41,20 @@ internal sealed class ApplicationMutationCommand
         get;
     }
 
+    internal AdministratorPublicKey? PublicKey
+    {
+        get; private init;
+    }
     internal ImmutableArray<string> Origins { get; private init; } = [];
     internal ImmutableArray<string> Scopes { get; private init; } = [];
+
+    /// <summary>Freezes one explicitly confirmed public JWK, exact target version and future credential expiry.</summary>
+    internal static ApplicationMutationCommand? ReplaceKey(string id, string version, string publicKeyJson, string expires, bool confirmed, DateTimeOffset now) =>
+        confirmed && Target(id, version) && ApplicationEditorRules.TryReadExpiry(expires, now, out var expiry) &&
+        AdministratorPublicKey.Parse(publicKeyJson) is { } key ? new(ApplicationMutationKind.ReplaceKey, id, version, null, null, [], expiry)
+        {
+            PublicKey = key
+        } : null;
 
     /// <summary>Captures only already validated immutable values; no caller-supplied permissions or plaintext credentials are accepted.</summary>
     private ApplicationMutationCommand(ApplicationMutationKind kind, string? id, string? version, string? clientId,
@@ -72,6 +85,22 @@ internal sealed class ApplicationMutationCommand
     internal static ApplicationMutationCommand? CreateMachine(ApplicationMachineCreate input, DateTimeOffset now) =>
         MachineClientRules.IsValid(input, now) && ApplicationEditorRules.TryReadExpiry(input.CredentialExpiresAt, now, out var expiry)
             ? new(ApplicationMutationKind.CreateMachine, null, null, input.ClientId, input.DisplayName, [], expiry) : null;
+
+    /// <summary>Freezes a confidential machine registration with a local public key and a bounded credential lifetime.</summary>
+    internal static ApplicationMutationCommand? CreateWithKey(ApplicationMachineCreate input, string publicKeyJson, DateTimeOffset now) =>
+        Keyed(CreateMachine(input, now), publicKeyJson, ApplicationMutationKind.CreateMachineKey);
+
+    /// <summary>Freezes a confidential code client with exact S256 callbacks and a local public authentication key.</summary>
+    internal static ApplicationMutationCommand? CreateWithKey(ApplicationCreate input, string publicKeyJson, DateTimeOffset now) =>
+        Keyed(Create(input, now), publicKeyJson, ApplicationMutationKind.CreateWebKey);
+
+    /// <summary>Uses only the validated original registration and the parsed public key for a new keyed application.</summary>
+    private static ApplicationMutationCommand? Keyed(ApplicationMutationCommand? original, string json, ApplicationMutationKind kind) =>
+        original is not null && AdministratorPublicKey.Parse(json) is { } key
+            ? new(kind, null, null, original.ClientId, original.DisplayName, original.Redirects, original.CredentialExpiry)
+            {
+                PublicKey = key
+            } : null;
 
     /// <summary>Snapshots a public client without accepting a credential or arbitrary protocol settings.</summary>
     internal static ApplicationMutationCommand? CreateNative(ApplicationNativeCreate input)
@@ -143,7 +172,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser, CreateMachine
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser, CreateMachine, ReplaceKey, CreateWebKey, CreateMachineKey
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

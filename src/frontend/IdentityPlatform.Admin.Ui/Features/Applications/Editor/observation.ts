@@ -1,5 +1,5 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { callback, nativeCallback, nativeProfile, browserProfile, browserOrigin, type NativeInput, type BrowserInput, type MachineInput, machineProfile, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
+import { callback, nativeCallback, nativeProfile, browserProfile, browserOrigin, type NativeInput, type BrowserInput, type MachineInput, machineProfile, keyedMachineProfile, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 export type Details = components["schemas"]["ApplicationDetails"];
 export type Result = { status: number; value?: unknown; etag?: string | null; location?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
@@ -23,7 +23,7 @@ export async function version(value: string | null | undefined, id: string, crea
   return value === `"${hex}-${revision}"`;
 }
 /** Validates managed or explicitly read-only details and original server observation expiry; credentials never enter this projection. */
-export async function observe(result: Result, id: string | null, now: number, input?: CreateInput | NativeInput | BrowserInput | MachineInput): Promise<Observed | null> {
+export async function observe(result: Result, id: string | null, now: number, input?: CreateInput | NativeInput | BrowserInput | MachineInput, keyedMachine = false): Promise<Observed | null> {
   const dto = result.value;
   const browser = !!dto && typeof dto === "object" && "profile" in dto && dto.profile === browserProfile;
   if (!object(dto, browser ? [...fields, "origins"] : fields) || !text(dto.id, 400) || id !== null && dto.id !== id || !text(dto.clientId, 100) ||
@@ -36,7 +36,7 @@ export async function observe(result: Result, id: string | null, now: number, in
   let credential: Details["credential"] = null;
   if (dto.editable || dto.retired) {
     if (dto.retired ? dto.editable || dto.enabled !== false || input || !retirementReference(dto.retirement, dto.credential, expires, now) : dto.retirement !== null) return null;
-    const machine = dto.profile === machineProfile;
+    const machine = dto.profile === machineProfile || dto.profile === keyedMachineProfile;
     const native = dto.profile === nativeProfile;
     if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || (!native && !browser && !machine && dto.profile !== "managed-web-v1") ||
         (machine ? dto.redirectUris.length !== 0 : dto.redirectUris.length < 1) || dto.redirectUris.length > 10 || !dto.redirectUris.every(native ? nativeCallback : callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
@@ -51,7 +51,7 @@ export async function observe(result: Result, id: string | null, now: number, in
   if (input && (dto.enabled !== true || dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
       JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...("redirectUris" in input ? input.redirectUris : [])].sort()))) return null;
   if (input && ("credentialExpiresAt" in input
-      ? !credential || dto.profile !== ("redirectUris" in input ? "managed-web-v1" : machineProfile) || utc(credential.expiresAt) !== utc(input.credentialExpiresAt, true) || utc(credential.expiresAt) <= now
+      ? !credential || dto.profile !== ("redirectUris" in input ? "managed-web-v1" : keyedMachine ? keyedMachineProfile : machineProfile) || utc(credential.expiresAt) !== utc(input.credentialExpiresAt, true) || utc(credential.expiresAt) <= now
       : "origins" in input ? !browser || JSON.stringify(origins) !== JSON.stringify([...input.origins].sort()) : dto.profile !== nativeProfile)) return null;
   return { details: { id: dto.id, clientId: dto.clientId, displayName: dto.displayName as string | null,
     redirectUris: [...dto.redirectUris] as string[], profile: dto.profile as string | null, editable: dto.editable,
@@ -104,6 +104,15 @@ export async function replaced(result: Result, base: Observed, input: Replacemen
     utc(next.details.credential!.issuedAt) >= utc(base.details.credential!.issuedAt)
     ? { ...next, secret } : null;
 }
+/** Requires the original machine profile, fresh current ETag and the exact newly authorized key lifetime. */
+export async function keyReplaced(result: Result, base: Observed, expiry: string, now: number): Promise<Observed | null> {
+  const next = await successor(result, base, now);
+  return next && next.details.profile === keyedMachineProfile && next.details.enabled === base.details.enabled &&
+    next.details.displayName === base.details.displayName && next.details.credential && base.details.credential &&
+    utc(next.details.credential.expiresAt) === utc(expiry, true) && utc(expiry, true) > now &&
+    utc(next.details.credential.issuedAt) >= utc(base.details.credential.issuedAt) ? next : null;
+}
+
 /** Callback ordering is not authority; exact membership is preserved without normalization. */
 function sameCallbacks(left: readonly string[], right: readonly string[]): boolean { return JSON.stringify([...left].sort()) === JSON.stringify([...right].sort()); }
 

@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Http.Features;
@@ -32,8 +33,24 @@ internal sealed class NativeTokenTransport(string clientId)
             return false;
         }
         if (!request.IsHttps || request.PathBase.HasValue || request.Path != ProtocolOptions.TokenPath || request.QueryString.HasValue ||
-            request.HttpContext.Features.Get<IHttpRequestFeature>()?.RawTarget != ProtocolOptions.TokenPath || request.Headers.ContentEncoding.Count != 0 ||
-            form.Count != FieldCount || form.Files.Count != 0 || form.Any(pair => !Allowed(pair.Key) || pair.Value.Count != 1 ||
+            request.HttpContext.Features.Get<IHttpRequestFeature>()?.RawTarget != ProtocolOptions.TokenPath || request.Headers.ContentEncoding.Count != 0)
+        {
+            context.Reject(OpenIddictConstants.Errors.InvalidRequest);
+            return true;
+        }
+        if (form.ContainsKey(OpenIddictConstants.Parameters.ClientAssertion))
+        {
+            if (request.Headers.Origin.Count != 0 || !ManagedAssertionTransport.Valid(form))
+            {
+                context.Reject(OpenIddictConstants.Errors.InvalidRequest);
+            }
+            else
+            {
+                context.Transaction.SetProperty(typeof(ManagedAssertionTransport).FullName!, new ManagedAssertionTransport(client[0]!));
+            }
+            return true;
+        }
+        if (form.Count != FieldCount || form.Files.Count != 0 || form.Any(pair => !Allowed(pair.Key) || pair.Value.Count != 1 ||
                 pair.Value[0] is not { Length: > 0 and <= MaximumFieldLength }) ||
             form[OpenIddictConstants.Parameters.GrantType] != OpenIddictConstants.GrantTypes.AuthorizationCode ||
             !(request.Headers.Origin.Count == 0 ? ApplicationEditorRules.IsNativeRedirect(form[OpenIddictConstants.Parameters.RedirectUri]) :

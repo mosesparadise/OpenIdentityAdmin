@@ -92,3 +92,53 @@ registrations share the existing 20,000-row token budget, including expired rows
 At the limit the issuer refuses new issuance. Services should reuse a token for
 its authorized audience and scopes during its advertised lifetime. This increment
 provides no scheduled cleanup of expired machine tokens.
+
+## Machine client with a public authentication key
+
+In **Applications**, choose **Create application** and **Machine client with a
+public key**. Enter the public JWK's key ID, modulus and exponent. Choose a UTC
+expiry. The details page shows the service's `private_key_jwt` integration settings.
+**Replace public key** accepts the new public parameters and requires explicit
+confirmation. Publish the new key before switching the service to it.
+
+Keep the private RSA signing key in the service's key store. To automate registration, submit its public
+JWK at `POST /api/v1/applications/machine-key-registrations` using a current
+administrator bearer with both `applications.write` and
+`applications.credentials` and MFA completed within the preceding five minutes.
+
+```json
+{
+  "application": {
+    "clientId": "orders-indexer",
+    "displayName": "Order indexing service",
+    "credentialExpiresAt": "2030-01-01T00:00:00Z"
+  },
+  "publicKey": {
+    "kty": "RSA",
+    "kid": "orders-signing-key",
+    "alg": "RS256",
+    "use": "sig",
+    "n": "<base64url public modulus>",
+    "e": "AQAB"
+  }
+}
+```
+
+Choose a future expiry and use the actual public parameters from an RSA key of
+at least 3072 bits. Assign the service an enabled API scope. Configure its OAuth
+library for `client_credentials` with `private_key_jwt` at the discovered token
+endpoint. Sign each assertion with RS256, the registered `kid`, and
+`typ=client-authentication+jwt`. Set `iss` and `sub` to the exact client ID,
+`aud` to the canonical discovery issuer, and `iat` and `exp` to integer Unix
+seconds at most 60 seconds apart. Supply a fresh URL-safe `jti` of 16–128
+characters. Send the form fields `grant_type`, `client_id`, `scope`,
+`client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer`,
+and `client_assertion`. Use the resulting bearer token at the assigned API.
+
+To rotate, retrieve the ETag from `GET /api/v1/applications/{id}`. POST to
+`/api/v1/applications/{id}/key-replacements` with that value in `If-Match`,
+a new `publicKey`, a future `credentialExpiresAt`, and `confirm` set to
+`true`. Rotation requires current credential permission and fresh MFA. The
+old key stops authenticating at commit. Use a fresh assertion identifier after
+rotation. Previously issued access tokens may remain usable at offline APIs
+until their expiry.

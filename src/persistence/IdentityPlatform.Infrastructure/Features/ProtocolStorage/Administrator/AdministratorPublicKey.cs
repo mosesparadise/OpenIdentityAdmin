@@ -74,6 +74,19 @@ internal sealed class AdministratorPublicKey
     /// <summary>Returns an independent native descriptor key so callers cannot mutate this expected profile.</summary>
     internal JsonWebKey CreateNativeKey() => new(json);
 
+    /// <summary>Reconstructs the approved public shape only if the whole native JWKS consists of one suitable local verification key.</summary>
+    internal static AdministratorPublicKey? FromNative(JsonWebKeySet? keys)
+    {
+        if (keys is not { Keys.Count: 1, AdditionalData.Count: 0 })
+        {
+            return null;
+        }
+        var native = keys.Keys[0];
+        var candidate = new AdministratorPublicKey(native);
+        var parsed = Parse(candidate.json);
+        return parsed is not null && parsed.Matches(native) ? parsed : null;
+    }
+
     /// <summary>Requires exactly the approved public metadata, rejecting extra private, embedded or remotely referenced key fields.</summary>
     internal bool Matches(JsonWebKey key)
     {
