@@ -210,3 +210,5 @@ A fresh database scope read each committed device entry and independently checke
 The PostgreSQL and SQL Server component cases passed with zero skips. The test boundary begins with a synthetic authenticated subject and ends at the native response. Public device enrollment, a human verification screen and an HTTPS password/MFA/consent-to-token journey remain outstanding. Original local TRX SHA-256 `b9de9cdb9e9435ffe79f916ea0671bbe8337f2408a7f4c425fb662222363d68b`.
 
 Both cases passed again with the native end-user-verification filter on each approval handler. Other endpoint types do not instantiate the device handlers. Original local TRX SHA-256 `436ce34c5fe3ba9414c5e02cadf127ea37451e992fda48408f1b826e88dc4b3c`.
+
+The integrated key and device provider suite also passed with both native handlers on the same issuer. Both databases completed the owned native requests, key assertion checks, approval, single redemption, expiry and migration checks. Original combined TRX SHA-256 `95c86db003a89cff771e5409fd2d8b9bfecf9a52126b747b67f1b4dc119d772b`.
