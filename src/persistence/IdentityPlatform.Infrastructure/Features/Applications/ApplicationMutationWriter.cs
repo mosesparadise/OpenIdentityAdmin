@@ -1,5 +1,5 @@
-using System.Security.Cryptography;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ApplicationGrants;

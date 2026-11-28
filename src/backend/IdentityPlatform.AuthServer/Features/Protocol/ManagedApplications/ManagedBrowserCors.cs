@@ -2,10 +2,10 @@ using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using OpenIddict.Server;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
+using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 
