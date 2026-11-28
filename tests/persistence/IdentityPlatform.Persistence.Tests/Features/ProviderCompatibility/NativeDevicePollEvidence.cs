@@ -1,13 +1,13 @@
-using Microsoft.Extensions.Options;
-using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
-using OpenIddict.Server;
 using System.Security.Claims;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
+using OpenIddict.Server;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 
@@ -57,8 +57,11 @@ internal static class NativeDevicePollEvidence
     internal static async Task RequireAsync(ManagedSchemaFixture fixture)
     {
         var factory = fixture.Services.GetRequiredService<IServiceScopeFactory>();
-        var request = new ProtocolStorageRequest(fixture.Services.GetRequiredService<TimeProvider>(), fixture.Token);
-        var (id, external, user) = await request.RunAsync(factory, SeedAsync);
+        // A real issuer initializes its signing and encryption options at startup, before handling a device request.
+        _ = fixture.Services.GetRequiredService<IOptionsMonitor<OpenIddictServerOptions>>().CurrentValue;
+        var clock = fixture.Services.GetRequiredService<TimeProvider>();
+        var id = await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, RegisterClientAsync);
+        var (external, user) = await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, IssuePairAsync);
         await using (var polling = await ProtocolStorageScope.OpenAsync(factory, fixture.Token))
         {
             Assert.Equal(DevicePollResult.SlowDown, await DevicePollAdmission.PollAsync(polling, Client, external, fixture.Token));
@@ -78,8 +81,8 @@ internal static class NativeDevicePollEvidence
         Assert.Equal(DevicePollResult.Unavailable, await DevicePollAdmission.PollAsync(disabled, Client, external, fixture.Token));
     }
 
-    /// <summary>Seeds the library's real public application, inactive device entry and cadence row in one committed native transaction.</summary>
-    private static async ValueTask<(string Id, string Code, string User)> SeedAsync(ProtocolStorageScope scope, CancellationToken token)
+    /// <summary>Commits the public application and its policy before a device can initiate an independent request.</summary>
+    private static async ValueTask<string> RegisterClientAsync(ProtocolStorageScope scope, CancellationToken token)
     {
         await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
         var apps = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
@@ -91,9 +94,17 @@ internal static class NativeDevicePollEvidence
             scope.Owner.Database.Add(policy);
             await scope.Owner.Database.SaveChangesAsync(current);
         }, token, write: true);
-        var (code, user) = await CreatePairAsync(scope, token);
         await transaction.CommitAsync(token);
-        return (id, code, user);
+        return id;
+    }
+
+    /// <summary>Issues a native code pair and records its cadence within the original request and transaction deadlines.</summary>
+    internal static async ValueTask<(string Code, string User)> IssuePairAsync(ProtocolStorageScope scope, CancellationToken token)
+    {
+        await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+        var pair = await CreatePairAsync(scope, token);
+        await transaction.CommitAsync(token);
+        return pair;
     }
 
     /// <summary>Uses the original generated principal to bind both native code entries; the client receives the native opaque reference.</summary>
