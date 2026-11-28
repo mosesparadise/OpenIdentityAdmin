@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 /// <summary>Freezes current catalogue eligibility under governance and verifies it after native writes without duplicating authoritative assignments.</summary>
 internal sealed class ApplicationScopeSelection(ImmutableArray<ApplicationScopeSelection.Entry> entries)
 {
+    internal MachineTokenReferences MachineReferences => new(entries);
+
     /// <summary>Resolves exact ordinal names through native managers and independently reads current managed scope and audience policy.</summary>
     internal static async Task<ApplicationScopeSelection> ReadAsync(ProtocolStorageScope scope, ImmutableArray<string> names, CancellationToken token)
     {
@@ -35,6 +38,17 @@ internal sealed class ApplicationScopeSelection(ImmutableArray<ApplicationScopeS
         }
         catch (CatalogueRejected) { throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported); }
         return new(entries.ToImmutable());
+    }
+
+    /// <summary>Resolves machine resources only from enabled API scopes without identity disclosures or an administrator audience.</summary>
+    internal string[] MachineResources()
+    {
+        if (entries.Any(entry => entry.Scope.Kind != CatalogueRules.Api || entry.Scope.Disclosure != CatalogueRules.None ||
+            entry.Audience is not { Enabled: true } || entry.Scope.Resource != entry.Audience.Resource || !CatalogueRules.IsResource(entry.Audience.Resource)))
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
+        }
+        return entries.Select(entry => entry.Audience!.Resource).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
     }
 
     /// <summary>Rejects scope or audience substitution, disablement and revision changes after saves before the owning transaction may commit.</summary>

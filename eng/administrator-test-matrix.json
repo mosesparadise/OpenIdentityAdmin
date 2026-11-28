@@ -165,7 +165,7 @@
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"[AspNetUserStore]\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"[aspnetuserstore]\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"unsafe provider\")",
-    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"\uff3bAspNetUserStore\uff3d\")",
+    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"［AspNetUserStore］\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_SelectedMaterial_When_TrackedBindingsMutate_Then_NativeAccessIsDeniedAndLeaseClears(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_VerifiedStaging_When_BindingChanges_Then_InstallationIsDenied(provider: \"PostgreSql\", change: \"browser\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_VerifiedStaging_When_BindingChanges_Then_InstallationIsDenied(provider: \"PostgreSql\", change: \"deleted\")",
@@ -1509,7 +1509,8 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.MachineClientJourneyTests.Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1676,7 +1677,7 @@
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"[AspNetUserStore]\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"[aspnetuserstore]\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"unsafe provider\")",
-    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"\uff3bAspNetUserStore\uff3d\")",
+    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"［AspNetUserStore］\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_SelectedMaterial_When_TrackedBindingsMutate_Then_NativeAccessIsDeniedAndLeaseClears(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_VerifiedStaging_When_BindingChanges_Then_InstallationIsDenied(provider: \"SqlServer\", change: \"browser\")",
     "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_VerifiedStaging_When_BindingChanges_Then_InstallationIsDenied(provider: \"SqlServer\", change: \"deleted\")",
@@ -3125,7 +3126,8 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.MachineClientJourneyTests.Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -9672,7 +9674,7 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"\uff3bAspNetUserStore\uff3d\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"PostgreSql\", alias: \"［AspNetUserStore］\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Factors",
@@ -9792,7 +9794,7 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"\uff3bAspNetUserStore\uff3d\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Factors.DenialTests.Given_ReservedProviderAlias_When_GenericTokenApisRun_Then_PlaintextFallbackIsDenied(provider: \"SqlServer\", alias: \"［AspNetUserStore］\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Factors",
@@ -67221,6 +67223,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
         "typeName": "BrowserClientJourneyTests",
         "methodName": "Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.MachineClientJourneyTests.Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "MachineClientJourneyTests",
+        "methodName": "Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.MachineClientJourneyTests.Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "MachineClientJourneyTests",
+        "methodName": "Given_ConfidentialMachine_When_ExchangingAssignedScope_Then_OnlyItsApiAcceptsTheServiceIdentity",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

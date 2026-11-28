@@ -927,6 +927,14 @@
           "IdentityPlatform.Migrations.SqlServer": "[1.0.0, )"
         }
       },
+      "identityplatform.sample.api": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
+          "OpenIddict.Validation.AspNetCore": "[7.7.2, )",
+          "OpenIddict.Validation.SystemNetHttp": "[7.7.2, )"
+        }
+      },
       "identityplatform.servicedefaults": {
         "type": "Project",
         "dependencies": {

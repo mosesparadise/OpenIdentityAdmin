@@ -185,3 +185,20 @@ browser. CI655 did not record when its deferred script ran.
 ### Browser portion of T002 in verification
 
 The browser profile has local PostgreSQL and SQL Server HTTPS and schema evidence, generated contracts and editor coverage. T002 remains open pending the required acceptance checks. [Verification](verification.md#public-browser-registration) · [Integration guide](quickstart.md#public-browser-client)
+
+
+### Confidential machine registration in T003 and T006
+
+The protected registration editor, versioned BFF/API contracts, client-credentials
+exchange and service integration example are in verification. Both provider
+journeys exercise a signed access token against the shipped orders API. The local
+sample substitutes the test issuer address and its discovered public keys.
+[Service integration guide](quickstart.md#confidential-machine-client)
+
+The service exchanged its credential separately for signed orders and invoices
+tokens. Each token carried exactly its expected audience and scope. A combined
+request returned HTTP 400 with `invalid_scope`. After secret rotation, the old
+secret returned HTTP 401 and the new secret worked. Removing the scope assignment
+left the original scope referenced in the protected catalogue details. Restoring
+the assignment before disabling the service isolated the disablement check.
+Both PostgreSQL and SQL Server passed. Original TRX SHA-256 was `736c4eea29668b386f6fe1c1fa183f46d64bd606b1d09736f6f9f8869052e357`.

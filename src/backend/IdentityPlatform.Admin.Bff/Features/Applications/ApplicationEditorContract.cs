@@ -39,6 +39,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string PreconditionDescription = "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.";
     private const int VersionMinimum = 68;
     private const int VersionMaximum = 86;
+    internal const string MachineOperation = "RegisterBrowserMachineApplication";
+    internal const string MachineSummary = "Register a confidential machine client for assigned API scopes";
     internal const string BrowserOperation = "RegisterPublicBrowserApplication";
     internal const string BrowserSummary = "Register a public browser client with separate HTTPS origins, exact callbacks and S256";
     internal const string NativeOperation = "CreateBrowserNativeApplication";
@@ -69,6 +71,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, NativeOperation);
         Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, BrowserOperation);
+        Apply(document, Collection + MachineClientRules.Suffix, HttpMethod.Post, MachineOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -118,7 +121,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + MachineClientRules.Suffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

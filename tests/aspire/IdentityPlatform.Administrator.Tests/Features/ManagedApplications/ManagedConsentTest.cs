@@ -33,31 +33,50 @@ internal static class ManagedConsentTest
     private const string Scopes = "/api/v1/scopes";
     private const string Audiences = "/api/v1/audiences";
     private const string Audience = "{\"resource\":\"orders-api\",\"displayName\":\"Orders API\",\"owner\":\"Orders team\",\"enabled\":true}";
+    internal const string OtherApiScope = "invoices.read";
+    private const string MachineAssignment = """{"scopes":["invoices.read","orders.read"]}""";
+    private const string Invoices = """{"resource":"invoices-api","displayName":"Invoices","owner":"Billing","enabled":true}""";
     private const string Assign = "{\"scopes\":[\"email\",\"orders.read\"]}";
 
     /// <summary>Assigns email and one API scope using genuine permission, fresh MFA and optimistic concurrency checks.</summary>
-    internal static async Task SeedAsync(ManagedCacheTestContext test)
+    internal static async Task<string> SeedAsync(ManagedCacheTestContext test, bool machine = false)
     {
         using var email = await test.Http.CatalogueAsync(HttpMethod.Post, Scopes, ApplicationScopeHttpTests.Scope);
         Assert.Equal(HttpStatusCode.Created, email.StatusCode);
-        using var audience = await test.Http.CatalogueAsync(HttpMethod.Post, Audiences, Audience);
+        var scopeId = await AddApiScopeAsync(test, Audience, ApiScope, OrdersDisplay, OrdersDescription);
+        if (machine)
+        {
+            await AddApiScopeAsync(test, Invoices, OtherApiScope, InvoicesDisplay, InvoicesDescription);
+        }
+        using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), machine ? MachineAssignment : Assign,
+            ApplicationVersion.Create(test.Id, 1), direct: false, csrf: await test.Http.TokenAsync());
+        Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
+        return scopeId;
+    }
+
+    private const string InvoicesDisplay = "Read invoices";
+    private const string InvoicesDescription = "Read your invoices";
+
+    /// <summary>Creates an independent enabled catalogue audience and its API scope through the actual protected management endpoint.</summary>
+    private static async Task<string> AddApiScopeAsync(ManagedCacheTestContext test, string audienceBody, string name, string displayName, string consentText)
+    {
+        using var audience = await test.Http.CatalogueAsync(HttpMethod.Post, Audiences, audienceBody);
         Assert.Equal(HttpStatusCode.Created, audience.StatusCode);
         using var body = JsonDocument.Parse(await audience.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
         var scope = JsonSerializer.Serialize(new
         {
-            name = ApiScope,
-            displayName = OrdersDisplay,
+            name,
+            displayName,
             kind = ApiKind,
             enabled = true,
-            consentText = OrdersDescription,
+            consentText,
             audienceId = body.RootElement.GetProperty(IdentifierField).GetString(),
             disclosure = NoDisclosure
         });
         using var api = await test.Http.CatalogueAsync(HttpMethod.Post, Scopes, scope);
         Assert.Equal(HttpStatusCode.Created, api.StatusCode);
-        using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), Assign,
-            ApplicationVersion.Create(test.Id, 1), direct: false, csrf: await test.Http.TokenAsync());
-        Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
+        using var created = JsonDocument.Parse(await api.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        return created.RootElement.GetProperty(IdentifierField).GetString()!;
     }
 
     /// <summary>Sets the login account’s synthetic email independently of consent and returns its persisted subject.</summary>

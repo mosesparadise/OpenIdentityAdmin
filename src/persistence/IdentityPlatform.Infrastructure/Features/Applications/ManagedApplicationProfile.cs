@@ -11,6 +11,7 @@ internal static class ManagedApplicationProfile
     private static readonly string[] Permissions = [OpenIddictConstants.Permissions.Endpoints.Authorization,
         OpenIddictConstants.Permissions.Endpoints.Token, OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
         OpenIddictConstants.Permissions.ResponseTypes.Code];
+    private static readonly string[] MachinePermissions = [OpenIddictConstants.Permissions.Endpoints.Token, OpenIddictConstants.Permissions.GrantTypes.ClientCredentials];
     private static readonly string[] Requirements = [OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange];
     internal static string OpenIdPermissionsDigest => FactorBinding.Digest(Permissions.Order(StringComparer.Ordinal).ToArray());
 
@@ -27,6 +28,11 @@ internal static class ManagedApplicationProfile
             ClientSecret = secret,
             DisplayName = command.DisplayName
         };
+        if (command.Kind == ApplicationMutationKind.CreateMachine)
+        {
+            result.Permissions.UnionWith(MachinePermissions);
+            return result;
+        }
         result.Permissions.UnionWith(Permissions);
         result.Requirements.UnionWith(Requirements);
         result.RedirectUris.UnionWith(command.Redirects.Select(value => new Uri(value)));
@@ -45,12 +51,22 @@ internal static class ManagedApplicationProfile
     /// <summary>Requires an exact association between persisted profile and the native authentication and grant configuration.</summary>
     internal static bool MatchesProfile(string profile, OpenIddictApplicationDescriptor value) => profile switch
     {
+        MachineClientRules.Profile => MatchesMachine(value) && !string.IsNullOrEmpty(value.ClientSecret),
         ApplicationEditorRules.BrowserProfile => value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web &&
             value.ClientType == OpenIddictConstants.ClientTypes.Public && value.ClientSecret is null && MatchesCodeProfile(value, ApplicationEditorRules.IsRedirect),
         ApplicationEditorRules.NativeProfile => MatchesNative(value),
         ApplicationEditorRules.Profile => MatchesManagement(value) && !string.IsNullOrEmpty(value.ClientSecret),
         _ => false
     };
+
+    /// <summary>Allows exactly a confidential machine grant plus finite catalogue permissions, with no redirect or interactive capabilities.</summary>
+    internal static bool MatchesMachine(OpenIddictApplicationDescriptor value) =>
+        value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web && value.ClientType == OpenIddictConstants.ClientTypes.Confidential &&
+        value.ConsentType == OpenIddictConstants.ConsentTypes.Explicit && ApplicationEditorRules.IsClientId(value.ClientId) &&
+        ApplicationEditorRules.IsText(value.DisplayName, ApplicationProjection.DisplayNameLength) && value.RedirectUris.Count == 0 &&
+        value.Permissions.IsSupersetOf(MachinePermissions) && AdditionalPermissions(value.Permissions, MachinePermissions) &&
+        value.Requirements.Count == 0 && value.PostLogoutRedirectUris.Count == 0 && value.JsonWebKeySet is null &&
+        value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
 
     /// <summary>Requires native public S256 with an OS-associated HTTPS callback and no client credential.</summary>
     internal static bool MatchesNative(OpenIddictApplicationDescriptor value) =>
@@ -62,13 +78,13 @@ internal static class ManagedApplicationProfile
         value.ConsentType == OpenIddictConstants.ConsentTypes.Explicit && ApplicationEditorRules.IsClientId(value.ClientId) &&
         ApplicationEditorRules.IsText(value.DisplayName, ApplicationProjection.DisplayNameLength) &&
         value.RedirectUris.Count is > 0 and <= ApplicationEditorRules.MaximumRedirects && value.RedirectUris.All(uri => callback(uri.OriginalString)) &&
-        value.Permissions.IsSupersetOf(Permissions) && AdditionalPermissions(value.Permissions) && value.Requirements.SetEquals(Requirements) && value.PostLogoutRedirectUris.Count == 0 &&
+        value.Permissions.IsSupersetOf(Permissions) && AdditionalPermissions(value.Permissions, Permissions) && value.Requirements.SetEquals(Requirements) && value.PostLogoutRedirectUris.Count == 0 &&
         value.JsonWebKeySet is null && value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
 
     /// <summary>Rejects extra endpoints/grants and reserved or oversized scope names without requiring disabled assignments to disappear.</summary>
-    private static bool AdditionalPermissions(HashSet<string> permissions)
+    private static bool AdditionalPermissions(HashSet<string> permissions, string[] required)
     {
-        var additional = permissions.Except(Permissions, StringComparer.Ordinal).ToArray();
+        var additional = permissions.Except(required, StringComparer.Ordinal).ToArray();
         var prefix = OpenIddictConstants.Permissions.Prefixes.Scope;
         return additional.All(value => value.StartsWith(prefix, StringComparison.Ordinal)) &&
             CatalogueRules.IsAssignment(additional.Select(value => value[prefix.Length..]).ToArray());

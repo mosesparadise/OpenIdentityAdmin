@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="../../../src/samples/IdentityPlatform.Sample.Api/IdentityPlatform.Sample.Api.csproj" />
     <ProjectReference Include="../../../src/backend/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
   </ItemGroup>
   <ItemGroup>

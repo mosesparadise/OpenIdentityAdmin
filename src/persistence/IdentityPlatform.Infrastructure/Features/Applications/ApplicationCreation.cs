@@ -32,6 +32,7 @@ internal static class ApplicationCreation
             ApplicationId = id,
             Profile = command.Kind switch
             {
+                ApplicationMutationKind.CreateMachine => MachineClientRules.Profile,
                 ApplicationMutationKind.CreateNative => ApplicationEditorRules.NativeProfile,
                 ApplicationMutationKind.CreateBrowser => ApplicationEditorRules.BrowserProfile,
                 _ => ApplicationEditorRules.Profile
