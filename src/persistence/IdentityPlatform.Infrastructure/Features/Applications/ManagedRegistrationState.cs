@@ -11,6 +11,35 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 /// <summary>Shares fresh managed registration validation while keeping extended management policy distinct from public issuer eligibility.</summary>
 internal sealed record ManagedRegistrationState(ManagedRegistration Registration, ImmutableArray<string> Permissions, bool IsOpenId)
 {
+    /// <summary>Checks current product and native browser authority and obtains the independent ordered origin set under the governance lock.</summary>
+    private static async ValueTask<ManagedRegistrationState?> ReadBrowserAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager,
+        object application, ApplicationPolicy policy, string id, string clientId, CancellationToken token)
+    {
+        if (policy.ApplicationId != id || policy.Retired || !policy.Enabled || policy.Revision <= 0 || policy.ObservedAt < 0 ||
+            policy.CredentialRevision != 0 || policy.CredentialIssuedAt is not null || policy.CredentialExpiresAt is not null)
+        {
+            return null;
+        }
+        var descriptor = new OpenIddictApplicationDescriptor();
+        await manager.PopulateAsync(descriptor, application, token);
+        if (descriptor.ClientId != clientId || !ManagedApplicationProfile.MatchesProfile(ApplicationEditorRules.BrowserProfile, descriptor))
+        {
+            return null;
+        }
+        var origins = await ApplicationBrowserOrigin.ReadAsync(scope, id, token);
+        if (!BrowserOriginPolicy.IsValid(origins))
+        {
+            return null;
+        }
+        var registration = new ManagedRegistration(id, clientId, policy.Revision, 0, null, policy.ObservedAt,
+            descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(), policy.Profile)
+        {
+            Origins = origins.ToImmutableArray()
+        };
+        var permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
+        return new(registration, permissions, !permissions.Any(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal)));
+    }
+
     /// <summary>Rejects missing, aliased, system-bound, expired or drifted registrations without auto-adopting native applications.</summary>
     internal static async ValueTask<ManagedRegistrationState?> ReadAsync(ProtocolStorageScope scope, string clientId, CancellationToken token)
     {
@@ -33,6 +62,10 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
         catch (ApplicationMutationRejected) { return null; }
         var policy = await scope.Owner.RunAsync(current => new ValueTask<ApplicationPolicy?>(scope.Owner.Database.Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == id, current)), token);
+        if (policy?.Profile == ApplicationEditorRules.BrowserProfile)
+        {
+            return await ReadBrowserAsync(scope, manager, application, policy, id!, clientId, token);
+        }
         if (policy?.Profile == ApplicationEditorRules.NativeProfile)
         {
             return await ReadNativeAsync(manager, application, policy, id!, clientId, token);

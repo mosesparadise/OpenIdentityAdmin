@@ -63,7 +63,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Checks framing and preconditions before reading finite actual bytes and validating the selected Core contract.</summary>
     internal static async Task<ApplicationMutationRequest> ReadAsync(HttpContext http, ApplicationProxyAction action, string? id, DateTimeOffset now)
     {
-        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
+        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
         {
             throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
         }
@@ -113,7 +113,7 @@ internal sealed class ApplicationMutationRequest
     private static string? ReadVersion(HttpRequest request, ApplicationProxyAction action)
     {
         var values = request.Headers.IfMatch;
-        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative)
+        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser)
         {
             if (values.Count != 0)
             {
@@ -146,6 +146,12 @@ internal sealed class ApplicationMutationRequest
         else if (action == ApplicationProxyAction.CreateNative)
         {
             var input = ApplicationJson.Parse<ApplicationNativeCreate>(bytes);
+            value = input;
+            errors = ApplicationEditorRules.Validate(input);
+        }
+        else if (action == ApplicationProxyAction.CreateBrowser)
+        {
+            var input = ApplicationJson.Parse<ApplicationBrowserCreate>(bytes);
             value = input;
             errors = ApplicationEditorRules.Validate(input);
         }
@@ -190,7 +196,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Binds returned fields and exact successor revision to this immutable parsed action, without trusting response shape alone.</summary>
     internal bool Matches(ApplicationDetails details, long revision)
     {
-        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.Clone))
+        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.Clone))
         {
             var previous = long.Parse(Version!.AsSpan(RevisionOffset, Version!.Length - VersionPunctuation), System.Globalization.CultureInfo.InvariantCulture);
             if (Id != details.Id || previous == long.MaxValue || revision != previous + 1 || !ApplicationVersion.Matches(Version, Id!, previous))
@@ -200,6 +206,9 @@ internal sealed class ApplicationMutationRequest
         }
         return input switch
         {
+            ApplicationBrowserCreate browser => revision == 1 && details.Profile == ApplicationEditorRules.BrowserProfile && details.Credential is null &&
+                details.ClientId == browser.ClientId && details.DisplayName == browser.DisplayName && SameRedirects(details, browser.RedirectUris) &&
+                details.Enabled == true && details.Origins is not null && details.Origins.SequenceEqual(browser.Origins.Order(StringComparer.Ordinal), StringComparer.Ordinal),
             ApplicationNativeCreate native => revision == 1 && details.Profile == ApplicationEditorRules.NativeProfile && details.Credential is null &&
                 details.ClientId == native.ClientId && details.DisplayName == native.DisplayName && SameRedirects(details, native.RedirectUris) && details.Enabled == true,
             ApplicationCreate create => revision == 1 && details.ClientId == create.ClientId && details.DisplayName == create.DisplayName &&
@@ -235,6 +244,7 @@ internal sealed class ApplicationMutationRequest
 
     /// <summary>Encodes one opaque ID as a path segment; operation suffixes are code-owned.</summary>
     private static string ResourcePath(ApplicationProxyAction action, string? id) => action == ApplicationProxyAction.Create ? string.Empty :
+        action == ApplicationProxyAction.CreateBrowser ? ApplicationEditorRules.BrowserRegistrationSuffix :
         action == ApplicationProxyAction.CreateNative ? ApplicationEditorRules.NativeRegistrationSuffix :
         PathSeparator + Uri.EscapeDataString(id!) + (action switch
         {
@@ -252,7 +262,7 @@ internal sealed class ApplicationMutationRequest
 /// <summary>Closes the writable transport surface to reviewed application actions; retirement has its own acceptance response.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative, CreateBrowser
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

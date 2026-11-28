@@ -1,10 +1,12 @@
 using System.Security.Claims;
+using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
+using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -24,6 +26,7 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
     private ManagedIssuanceProof? proof;
     private ManagedNativeBudget budget;
     private long cutoff;
+    private string? browserOrigin;
     private string? selector;
     private ClaimsPrincipal? principal;
     private ManagedEmailProjection? email;
@@ -66,6 +69,12 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
         source = await ManagedIssuanceSource.OpenAsync(scope, row, token);
         if (!Authorization)
         {
+            if (registration.Profile == ApplicationEditorRules.BrowserProfile)
+            {
+                var http = context.Transaction.GetHttpRequest()!.HttpContext;
+                ManagedBrowserCors.Publish(http, registration);
+                browserOrigin = http.Request.Headers.Origin[0];
+            }
             email = source.Email(row);
             ManagedEmailClaims.Attach(principal!, email);
             RequirePrincipal();
@@ -134,6 +143,10 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
         if (transaction is null || row is null || source is null || initial is null || proof is null || consumption is null || registration is null)
         {
             throw ProtocolStorageOwner.Unavailable();
+        }
+        if (browserOrigin is not null)
+        {
+            ManagedBrowserCors.RequireHeaders(context.Transaction.GetHttpRequest()!.HttpContext, browserOrigin);
         }
         await VerifyAsync(initial, token);
         if (!await consumption.VerifyAsync(scope, token))

@@ -1,6 +1,6 @@
 import createClient from "openapi-fetch";
 import type { paths } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { addressable, type CloneInput, type CreateInput, type NativeInput, type EditInput, type ReplacementInput, type LifecycleInput } from "./input";
+import { addressable, type CloneInput, type CreateInput, type NativeInput, type BrowserInput, type EditInput, type ReplacementInput, type LifecycleInput } from "./input";
 import type { Result } from "./observation";
 const collection = "/bff/api/v1/applications";
 /** Bounds successful JSON before parsing and discards all remote error bodies, cookies and exception text. */
@@ -78,6 +78,10 @@ export function editorClient() {
     },
     async createNative(input: NativeInput, token: string, signal: AbortSignal): Promise<Result> {
       const { data, response } = await client.POST("/bff/api/v1/applications/native-registrations", { ...options(signal), params: { header: { "X-CSRF-TOKEN": token } }, body: input });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
+    async createBrowser(input: BrowserInput, token: string, signal: AbortSignal): Promise<Result> {
+      const { data, response } = await client.POST("/bff/api/v1/applications/browser-registrations", { ...options(signal), params: { header: { "X-CSRF-TOKEN": token } }, body: input });
       return { status: response.status, value: data, etag: response.headers.get("etag") };
     },
     async create(input: CreateInput, token: string, signal: AbortSignal): Promise<Result> {

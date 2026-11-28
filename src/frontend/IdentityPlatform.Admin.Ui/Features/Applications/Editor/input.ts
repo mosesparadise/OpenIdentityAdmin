@@ -2,6 +2,9 @@ import type { components } from "../../../../IdentityPlatform.Admin.Contracts/ge
 export type CloneInput = components["schemas"]["ApplicationClone"];
 export type CloneDraft = { confirmed: boolean; clientId: string; displayName: string; credentialExpiresAt: string };
 export type CreateInput = components["schemas"]["ApplicationCreate"];
+export type RegistrationType = "web" | "native" | "browser";
+export type BrowserInput = components["schemas"]["ApplicationBrowserCreate"];
+export const browserProfile = "managed-browser-v1";
 export const nativeProfile = "managed-native-v1";
 export type NativeInput = components["schemas"]["ApplicationNativeCreate"];
 export type EditInput = components["schemas"]["ApplicationEdit"];
@@ -10,9 +13,9 @@ export type LifecycleInput = components["schemas"]["ApplicationLifecycle"];
 export type ReplacementInput = components["schemas"]["ApplicationSecretReplacement"];
 export type EditDraft = Pick<Draft, "displayName" | "redirectUris">;
 export type ReplacementDraft = { confirmed: boolean; credentialExpiresAt: string };
-export type Draft = { clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
+export type Draft = { origins?: string; clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
 export type Errors = Partial<Record<keyof Draft | "confirmed" | "reason", string>>;
-export const emptyDraft: Draft = { clientId: "", displayName: "", redirectUris: "", credentialExpiresAt: "" };
+export const emptyDraft: Draft = { origins: "", clientId: "", displayName: "", redirectUris: "", credentialExpiresAt: "" };
 const whitespace = /[\s\u0085]/u;
 const controls = /[\u0000-\u001f\u007f-\u009f]/u;
 
@@ -81,6 +84,24 @@ export function validateNative(draft: Draft): { input?: NativeInput; errors: Err
   if (!edit || Object.keys(errors).length) return { errors };
   const input = { clientId: draft.clientId, ...edit };
   if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) return { errors: { redirectUris: "The registration exceeds the 32 KiB request limit." } };
+  return { input, errors };
+}
+/** Matches the canonical Origin header sent by the browser for a credential-free HTTPS fetch. */
+export function browserOrigin(value: unknown): value is string {
+  if (!text(value, 300) || /[^!-~]|[*%]/.test(value)) return false;
+  try { const uri = new URL(value); return uri.protocol === "https:" && uri.origin === value; }
+  catch { return false; }
+}
+/** Builds independent callback and origin sets for a public browser application. */
+export function validateBrowser(draft: Draft): { input?: BrowserInput; errors: Errors } {
+  const { errors, input: edit } = validateEdit(draft);
+  if (!text(draft.clientId, 100) || whitespace.test(draft.clientId)) errors.clientId = "Enter 1–100 characters without whitespace or control characters.";
+  const origins = (draft.origins ?? "").split(/\r?\n/);
+  if (origins.length > 10 || !origins.every(browserOrigin) || new Set(origins).size !== origins.length)
+    errors.origins = "Enter 1–10 distinct HTTPS origins, one per line. Omit the path and trailing slash.";
+  if (!edit || Object.keys(errors).length) return { errors };
+  const input = { clientId: draft.clientId, ...edit, origins };
+  if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) return { errors: { origins: "The registration exceeds the 32 KiB request limit." } };
   return { input, errors };
 }
 /** Requires a fresh explicit confirmation and expiry, without accepting a previous or caller-selected secret. */

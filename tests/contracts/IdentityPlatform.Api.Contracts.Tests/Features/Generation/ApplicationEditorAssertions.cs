@@ -5,6 +5,9 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 /// <summary>Checks actual endpoint-generated create/details metadata against independent wire expectations.</summary>
 internal static class ApplicationEditorAssertions
 {
+    private const string PublicBrowserPath = "/browser-registrations";
+    private const string PublicBrowserSchema = "#/components/schemas/ApplicationBrowserCreate";
+
     private const string ApiPath = "/api/v1/applications";
     private const string BrowserPath = "/bff/api/v1/applications";
     private const string NativePath = "/native-registrations";
@@ -48,6 +51,12 @@ internal static class ApplicationEditorAssertions
         ApplicationCloneAssertions.Require(document, browser);
         var path = browser ? BrowserPath : ApiPath;
         var native = document[Paths]![path + NativePath]![Post]!;
+        var spa = document[Paths]![path + PublicBrowserPath]![Post]!;
+        Assert.Equal(PublicBrowserSchema, spa[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(DetailsSchema, spa[Responses]![Created]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(Write, spa[Permission]!.GetValue<string>());
+        Assert.True(spa[Responses]![Created]![Headers]![Version]![Required]!.GetValue<bool>());
+        Assert.Equal(native[Parameters]?.ToJsonString(), spa[Parameters]?.ToJsonString());
         var create = document[Paths]![path]![Post]!;
         var details = document[Paths]![path + Details]![Get]!;
         Assert.Equal(NativeInput, native[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
@@ -57,7 +66,7 @@ internal static class ApplicationEditorAssertions
         Assert.Equal(Write, native[Permission]!.GetValue<string>());
         Assert.Equal(Write, create[Permission]!.GetValue<string>());
         Assert.Equal(Read, details[Permission]!.GetValue<string>());
-        foreach (var operation in new[] { create, native, details })
+        foreach (var operation in new[] { create, native, spa, details })
         {
             Assert.Equal(browser ? BrowserSecurity : ApiSecurity, operation[Security]!.ToJsonString());
             if (browser)

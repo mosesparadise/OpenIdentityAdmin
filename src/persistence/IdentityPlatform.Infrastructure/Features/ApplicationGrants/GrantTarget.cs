@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -30,7 +31,7 @@ internal static class GrantTarget
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
         var retirement = policy.Retired ? await ApplicationRetirementBinding.ReadAsync(scope, policy, token) : null;
-        return new(policy, application, descriptor, retirement);
+        return new(policy, application, descriptor, retirement, await ApplicationBrowserOrigin.SnapshotAsync(scope, policy, token));
     }
 
     /// <summary>Checks the exact original precondition before state conflict, without treating credential age as job authority.</summary>
@@ -49,9 +50,9 @@ internal static class GrantTarget
 
 /// <summary>Retains a detached policy and privately frozen native/credential expectations for the original target.</summary>
 internal sealed class GrantTargetObservation(ApplicationPolicy policy, object application, OpenIddictApplicationDescriptor descriptor,
-    ApplicationRetirementBinding? retirement)
+    ApplicationRetirementBinding? retirement, ImmutableArray<string> origins = default)
 {
-    private readonly ApplicationWriteState expected = new(application, descriptor, policy, null);
+    private readonly ApplicationWriteState expected = new(application, descriptor, policy, null, origins: origins);
     internal ApplicationPolicy Policy => policy;
     internal ApplicationRetirementBinding? Retirement => retirement;
 
@@ -89,6 +90,6 @@ internal sealed class GrantTargetObservation(ApplicationPolicy policy, object ap
         policy.Enabled = false;
         policy.Revision = checked(policy.Revision + 1);
         policy.ObservedAt = now;
-        return new(application, descriptor, policy, null);
+        return new(application, descriptor, policy, null, origins: origins);
     }
 }

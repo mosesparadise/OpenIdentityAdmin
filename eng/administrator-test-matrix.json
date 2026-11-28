@@ -1508,7 +1508,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -3123,7 +3124,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -67181,6 +67183,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
         "typeName": "NativeClientJourneyTests",
         "methodName": "Given_PublicNativeApplication_When_S256AndConsentComplete_Then_SecretlessExchangeReturnsBoundTokens",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "BrowserClientJourneyTests",
+        "methodName": "Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.BrowserClientJourneyTests.Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "BrowserClientJourneyTests",
+        "methodName": "Given_SeparateCallbacksAndOrigins_When_RedeemingAndReadingUserInfo_Then_OnlyTheAuthorizedBrowserCanRead",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

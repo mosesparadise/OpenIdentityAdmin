@@ -2,13 +2,13 @@ import { retired } from "./retirement";
 import { assignment } from "./Scopes/observation";
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
-import { validate, validateNative, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
+import { validate, validateNative, validateBrowser, type BrowserInput, type RegistrationType, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
 import { created, cloned, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
 export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone" | "retire";
-export type Outcome = "native-created" | "native-unknown" | "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
+export type Outcome = "browser-created" | "browser-unknown" | "native-created" | "native-unknown" | "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
 export type EditorState =
   | { kind: "list" | "form" }
-  | { kind: "working"; operation: "read" | "create" | "create-native" | EditorAction }
+  | { kind: "working"; operation: "read" | "create" | "create-native" | "create-browser" | EditorAction }
   | ({ kind: "details" | "edit-form" | "replacement-form" | "disable-form" | "enable-form" | "retire-form" | "updated" } & Observed)
   | ({ kind: "clone-form"; scopes: string[] } & Observed)
   | ({ kind: "created" | "replaced" | "cloned"; secret: string } & Observed)
@@ -69,14 +69,14 @@ export class EditorController {
     } catch { if (this.live(operation.version)) this.fail("unavailable", this.outcome()); }
   }
   /** Sets the single-send fence before token acquisition; any post-dispatch non-success remains potentially committed. */
-  async create(draft: Draft, native = false): Promise<Errors> {
+  async create(draft: Draft, profile: RegistrationType = "web"): Promise<Errors> {
     if (this.stopped || this.state.kind !== "form") return {};
-    const checked = native ? validateNative(draft) : validate(draft, this.now());
+    const checked = profile === "browser" ? validateBrowser(draft) : profile === "native" ? validateNative(draft) : validate(draft, this.now());
     if (!checked.input) return checked.errors;
     if (!this.currentSession()) { this.fail("expired", "not-sent"); return {}; }
     const input = checked.input;
     const confidential = (value: typeof input): value is CreateInput => "credentialExpiresAt" in value;
-    const operation = this.begin(native ? "create-native" : "create");
+    const operation = this.begin(profile === "browser" ? "create-browser" : profile === "native" ? "create-native" : "create");
     try {
       const proof = await this.client.token(operation.signal);
       if (!this.live(operation.version)) return {};
@@ -86,6 +86,7 @@ export class EditorController {
       if (confidential(input) && !(utc(input.credentialExpiresAt, true) > this.now())) { this.fail("invalid", "not-sent"); return {}; }
       this.dispatched = true;
       const result = confidential(input) ? await this.client.create(input, proof.value.requestToken, operation.signal) :
+        "origins" in input ? await this.client.createBrowser(input as BrowserInput, proof.value.requestToken, operation.signal) :
         await this.client.createNative(input, proof.value.requestToken, operation.signal);
       if (!this.live(operation.version)) return {};
       if (result.status !== 201) { this.fail(reason(result.status), "unknown"); return {}; }
@@ -94,7 +95,7 @@ export class EditorController {
       if (!value) { this.fail("unavailable", "unknown"); return {}; }
       const expires = Math.min(value.expires, this.session!.expires, value.details.credential ? utc(value.details.credential.expiresAt) : value.expires);
       if (expires <= this.now()) { this.fail("display-expired", "unknown"); return {}; }
-      this.dispatched = false; this.completed = native ? "native-created" : "created";
+      this.dispatched = false; this.completed = profile === "browser" ? "browser-created" : profile === "native" ? "native-created" : "created";
       this.emit("secret" in value && typeof value.secret === "string" ? { ...value, expires, kind: "created", secret: value.secret } : { ...value, expires, kind: "details" }); this.arm(expires);
     } catch { if (this.live(operation.version)) this.fail("unavailable", this.dispatched ? "unknown" : "not-sent"); }
     return {};
@@ -235,7 +236,7 @@ export class EditorController {
   /** Ends ownership permanently and drops all references without a network request. */
   dispose(): void { this.cancel(); this.session = undefined; this.target = undefined; this.completed = undefined; this.state = { kind: "list" }; this.stopped = true; }
   /** Captures the original authority deadline before any awaited operation. */
-  private begin(operation: "read" | "create" | "create-native" | EditorAction, deadline = this.session!.expires) {
+  private begin(operation: "read" | "create" | "create-native" | "create-browser" | EditorAction, deadline = this.session!.expires) {
     this.cancel(); this.deadline = deadline; this.abort = new AbortController(); this.emit({ kind: "working", operation }); this.arm(deadline);
     return { version: this.generation, signal: this.abort.signal };
   }
@@ -246,7 +247,7 @@ export class EditorController {
   }
   private currentSession(): boolean { return !!this.session && this.session.expires > this.now(); }
   private outcome(): Outcome { return this.dispatched ? this.unknownOutcome() : ["created", "updated", "replaced", "cloned"].includes(this.state.kind) ? this.state.kind as Outcome : this.state.kind === "problem" ? this.state.outcome : this.completed ?? "not-sent"; }
-  private unknownOutcome(): Outcome { return this.state.kind === "working" && this.state.operation === "create-native" ? "native-unknown" : "unknown"; }
+  private unknownOutcome(): Outcome { return this.state.kind === "working" && this.state.operation === "create-browser" ? "browser-unknown" : this.state.kind === "working" && this.state.operation === "create-native" ? "native-unknown" : "unknown"; }
   private fail(reason: Reason, outcome: Outcome): void { if (outcome === "unknown") outcome = this.unknownOutcome(); this.cancel(); this.emit({ kind: "problem", reason, outcome, ...(this.target ? { target: this.target } : {}) }); }
   private cancel(): void { ++this.generation; this.abort?.abort(); clearTimeout(this.timer); this.dispatched = false; this.deadline = undefined; }
   private emit(value: EditorState): void { this.state = value; this.publish(value); }

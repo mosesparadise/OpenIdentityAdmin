@@ -26,6 +26,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         builder.HasDefaultSchema(PlatformSchema);
         CatalogueModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
+        ApplicationBrowserOrigin.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationCloneAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationGrantModel.Configure(builder, ProviderOptions.Provider(options).Model);

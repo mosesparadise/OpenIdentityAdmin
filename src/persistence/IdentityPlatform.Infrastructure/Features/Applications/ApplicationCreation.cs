@@ -16,8 +16,8 @@ internal static class ApplicationCreation
     {
         await ApplicationMutationWriter.RequireNewIdentityAsync(manager, command.ClientId!, token);
         var now = ApplicationMutationWriter.Now(scope, command);
-        var native = command.Kind == ApplicationMutationKind.CreateNative;
-        var secret = native ? null : Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
+        var publicClient = command.Kind is ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser;
+        var secret = publicClient ? null : Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
         var descriptor = ManagedApplicationProfile.Create(command, secret);
         source?.Apply(descriptor);
         var application = await manager.CreateAsync(descriptor, token);
@@ -30,18 +30,25 @@ internal static class ApplicationCreation
         var policy = new ApplicationPolicy
         {
             ApplicationId = id,
-            Profile = native ? ApplicationEditorRules.NativeProfile : ApplicationEditorRules.Profile,
+            Profile = command.Kind switch
+            {
+                ApplicationMutationKind.CreateNative => ApplicationEditorRules.NativeProfile,
+                ApplicationMutationKind.CreateBrowser => ApplicationEditorRules.BrowserProfile,
+                _ => ApplicationEditorRules.Profile
+            },
             Enabled = source is null,
             Revision = 1,
-            CredentialRevision = native ? 0 : 1,
-            CredentialIssuedAt = native ? null : now,
+            CredentialRevision = publicClient ? 0 : 1,
+            CredentialIssuedAt = publicClient ? null : now,
             CredentialExpiresAt = command.CredentialExpiry?.ToUnixTimeSeconds(),
             ObservedAt = now
         };
-        var expected = new ApplicationWriteState(application, descriptor, policy, secret, cloneSource: source);
+        var expected = new ApplicationWriteState(application, descriptor, policy, secret, cloneSource: source, origins: command.Origins);
         await scope.Owner.RunAsync(async current =>
         {
             scope.Owner.Database.Add(policy);
+            scope.Owner.Database.AddRange(command.Origins.Select((origin, slot) =>
+                new ApplicationBrowserOrigin { ApplicationId = id, Origin = origin, Slot = slot }));
             await scope.Owner.Database.SaveChangesAsync(current);
         }, token, write: true);
         return expected;

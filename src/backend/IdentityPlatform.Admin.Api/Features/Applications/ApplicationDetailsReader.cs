@@ -54,11 +54,21 @@ internal static class ApplicationDetailsReader
             throw new InvalidDataException();
         }
         var descriptor = Descriptor(row);
+        string[]? origins = null;
+        if (policy.Profile == ApplicationEditorRules.BrowserProfile)
+        {
+            origins = await database.Set<ApplicationBrowserOrigin>().AsNoTracking().Where(value => value.ApplicationId == id)
+                .OrderBy(value => value.Slot).Select(value => value.Origin).Take(BrowserOriginPolicy.MaximumOrigins + 1).ToArrayAsync(token);
+            if (!BrowserOriginPolicy.IsValid(origins))
+            {
+                throw new InvalidDataException();
+            }
+        }
         var credential = Credential(policy, row, descriptor);
         var retirement = await ApplicationRetirementReader.ReadAsync(database, policy, token);
         return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
             policy.Profile, !policy.Retired, credential, expiry, policy.Enabled,
-            policy.Retired, retirement),
+            policy.Retired, retirement, origins),
             ApplicationVersion.Create(row.Id, policy.Revision), descriptor.Permissions
                 .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))
                 .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).Order(StringComparer.Ordinal).ToArray());
@@ -67,7 +77,7 @@ internal static class ApplicationDetailsReader
     /// <summary>Requires matching profile, credential kind and native capabilities without retrieving a stored secret.</summary>
     private static ApplicationCredentialMetadata? Credential(ApplicationPolicy policy, Row row, OpenIddictApplicationDescriptor descriptor)
     {
-        if (policy.Profile == ApplicationEditorRules.NativeProfile && row.NoSecret && ManagedApplicationProfile.MatchesNative(descriptor) &&
+        if (policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile && row.NoSecret && ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) &&
             policy.CredentialRevision == 0 && policy.CredentialIssuedAt is null && policy.CredentialExpiresAt is null)
         {
             return null;

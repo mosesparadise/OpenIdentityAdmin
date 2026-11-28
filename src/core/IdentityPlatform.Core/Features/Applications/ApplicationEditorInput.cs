@@ -17,6 +17,14 @@ public sealed record ApplicationNativeCreate(
     [property: Required, MinLength(1), MaxLength(ApplicationProjection.DisplayNameLength)] string DisplayName,
     [property: Required, MinLength(1), MaxLength(ApplicationEditorRules.MaximumRedirects)] IReadOnlyList<string> RedirectUris);
 
+/// <summary>Registers a credential-free browser client with separate callback and cross-origin permissions.</summary>
+/// <example><code>var input = new ApplicationBrowserCreate("portal", "Portal", ["https://signin.example/callback"], ["https://portal.example"]);</code></example>
+public sealed record ApplicationBrowserCreate(
+    [property: Required, MinLength(1), MaxLength(ApplicationProjection.ClientIdentifierLength)] string ClientId,
+    [property: Required, MinLength(1), MaxLength(ApplicationProjection.DisplayNameLength)] string DisplayName,
+    [property: Required, MinLength(1), MaxLength(ApplicationEditorRules.MaximumRedirects)] IReadOnlyList<string> RedirectUris,
+    [property: Required, MinLength(1), MaxLength(BrowserOriginPolicy.MaximumOrigins)] IReadOnlyList<string> Origins);
+
 /// <summary>Updates only presentation and exact callbacks; credential lifecycle and client identity are deliberately absent.</summary>
 /// <example><code>var edit = new ApplicationEdit("Updated example", ["https://client.example/new-callback"]);</code></example>
 public sealed record ApplicationEdit(

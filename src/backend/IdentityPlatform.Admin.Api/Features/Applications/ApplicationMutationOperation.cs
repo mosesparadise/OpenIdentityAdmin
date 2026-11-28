@@ -20,7 +20,7 @@ internal static class ApplicationMutationOperation
             var completed = await request.RunAsync(factory, (scope, token) => ExecuteOwnedAsync(scope, identity, command, profile, budget, correlation, token));
             completed.Authority.RequirePublication(clock, budget);
             var details = completed.State.Details(completed.Authority.Deadline);
-            return new(command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.Clone ? StatusCodes.Status201Created : StatusCodes.Status200OK,
+            return new(command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.Clone ? StatusCodes.Status201Created : StatusCodes.Status200OK,
                 details, completed.State.Version, completed.State.Credential(details),
                 command.Kind == ApplicationMutationKind.AssignScopes ? completed.State.Scopes(completed.Authority.Deadline) : null);
         }

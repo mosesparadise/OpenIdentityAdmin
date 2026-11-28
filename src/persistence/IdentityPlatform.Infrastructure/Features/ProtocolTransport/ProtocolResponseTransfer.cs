@@ -24,7 +24,10 @@ internal static class ProtocolResponseTransfer
         }
         await body.StartAsync(token);
         require();
-        await body.Stream.WriteAsync(capture.Bytes, token);
+        if (!capture.Bytes.IsEmpty)
+        {
+            await body.Stream.WriteAsync(capture.Bytes, token);
+        }
         await body.Stream.FlushAsync(token);
         await body.CompleteAsync();
         require();

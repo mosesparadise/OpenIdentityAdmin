@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
@@ -21,7 +22,7 @@ internal static class ApplicationMutationWriter
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
@@ -40,8 +41,9 @@ internal static class ApplicationMutationWriter
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
-        if (policy.Profile == ApplicationEditorRules.NativeProfile && (command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Clone ||
-            command.Kind == ApplicationMutationKind.Edit && !command.Redirects.All(ApplicationEditorRules.IsNativeRedirect)))
+        if ((policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile &&
+            command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Clone) ||
+            (policy.Profile == ApplicationEditorRules.NativeProfile && command.Kind == ApplicationMutationKind.Edit && !command.Redirects.All(ApplicationEditorRules.IsNativeRedirect)))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
@@ -58,12 +60,13 @@ internal static class ApplicationMutationWriter
             var source = await ApplicationCloneSource.ReadAsync(scope, application, descriptor, policy, command, token);
             return await ApplicationCreation.StageAsync(scope, manager, command, source, token);
         }
-        return await UpdateAsync(scope, manager, application, descriptor, policy, command, token);
+        var origins = await ApplicationBrowserOrigin.SnapshotAsync(scope, policy, token);
+        return await UpdateAsync(scope, manager, application, descriptor, policy, command, origins, token);
     }
 
     /// <summary>Advances one aggregate revision; only explicit replacement changes the secret and credential lifecycle.</summary>
     private static async Task<ApplicationWriteState> UpdateAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager, object application,
-        OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, CancellationToken token)
+        OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, ImmutableArray<string> origins, CancellationToken token)
     {
         var now = Now(scope, command);
         if (now < policy.ObservedAt)
@@ -78,11 +81,11 @@ internal static class ApplicationMutationWriter
             {
                 throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
             }
-            return ChangeLifecycle(application, descriptor, policy, command, now);
+            return ChangeLifecycle(application, descriptor, policy, command, now, origins);
         }
         if (command.Kind == ApplicationMutationKind.AssignScopes)
         {
-            return await AssignScopesAsync(scope, manager, application, descriptor, policy, command, now, token);
+            return await AssignScopesAsync(scope, manager, application, descriptor, policy, command, now, origins, token);
         }
         string? secret = null;
         policy.Revision = checked(policy.Revision + 1);
@@ -105,14 +108,14 @@ internal static class ApplicationMutationWriter
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        var expected = new ApplicationWriteState(application, descriptor, policy, secret);
+        var expected = new ApplicationWriteState(application, descriptor, policy, secret, origins: origins);
         await manager.UpdateAsync(application, descriptor, token);
         return expected;
     }
 
     /// <summary>Replaces only additional scope permissions after resolving current catalogue eligibility under the existing governance transaction.</summary>
     private static async Task<ApplicationWriteState> AssignScopesAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager, object application,
-        OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, CancellationToken token)
+        OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, ImmutableArray<string> origins, CancellationToken token)
     {
         var selection = await ApplicationScopeSelection.ReadAsync(scope, command.Scopes, token);
         var prefix = OpenIddictConstants.Permissions.Prefixes.Scope;
@@ -120,14 +123,14 @@ internal static class ApplicationMutationWriter
         descriptor.Permissions.UnionWith(command.Scopes.Select(name => prefix + name));
         policy.Revision = checked(policy.Revision + 1);
         policy.ObservedAt = now;
-        var expected = new ApplicationWriteState(application, descriptor, policy, null, selection);
+        var expected = new ApplicationWriteState(application, descriptor, policy, null, selection, origins: origins);
         await manager.UpdateAsync(application, descriptor, token);
         return expected;
     }
 
     /// <summary>Advances product authority without touching any native credential/configuration; same-state requests never create audit noise.</summary>
     private static ApplicationWriteState ChangeLifecycle(object application, OpenIddictApplicationDescriptor descriptor,
-        ApplicationPolicy policy, ApplicationMutationCommand command, long now)
+        ApplicationPolicy policy, ApplicationMutationCommand command, long now, ImmutableArray<string> origins)
     {
         var enabled = command.Kind == ApplicationMutationKind.Enable;
         if (command.Reason is not { } reason || !Enum.IsDefined(reason))
@@ -141,7 +144,7 @@ internal static class ApplicationMutationWriter
         policy.Enabled = enabled;
         policy.Revision = checked(policy.Revision + 1);
         policy.ObservedAt = now;
-        return new(application, descriptor, policy, null);
+        return new(application, descriptor, policy, null, origins: origins);
     }
 
     /// <summary>Rechecks the exact operator-provided expiry under locks; no default or retry can silently extend it.</summary>

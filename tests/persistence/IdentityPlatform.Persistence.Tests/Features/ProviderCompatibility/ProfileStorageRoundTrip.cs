@@ -28,6 +28,9 @@ internal static class ProfileStorageRoundTrip
         RequireEqual(predecessor, ProfileStorageWitness.Predecessor(provider, restored));
         await fixture.MigrateAsync(null);
         RequireEqual(restored, await fixture.SnapshotAsync(provider));
+        var profile = provider == PostgreSql ? ProfileStorageWitness.PostgresMigration : ProfileStorageWitness.SqlMigration;
+        await fixture.MigrateAsync(profile);
+        RequireEqual(BrowserOriginUpgradeTests.Predecessor(provider, restored), await fixture.SnapshotAsync(provider));
         await using (var scope = fixture.Scope())
         {
             var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();

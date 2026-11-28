@@ -60,6 +60,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     {
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, ApplicationNativeCreateEndpoint.Operation);
+        Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, ApplicationNativeCreateEndpoint.BrowserOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -109,7 +110,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

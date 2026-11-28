@@ -40,6 +40,7 @@ internal sealed class ApplicationMutationCommand
         get;
     }
 
+    internal ImmutableArray<string> Origins { get; private init; } = [];
     internal ImmutableArray<string> Scopes { get; private init; } = [];
 
     /// <summary>Captures only already validated immutable values; no caller-supplied permissions or plaintext credentials are accepted.</summary>
@@ -76,6 +77,21 @@ internal sealed class ApplicationMutationCommand
         };
         return ApplicationEditorRules.Validate(frozen).Count == 0
             ? new(ApplicationMutationKind.CreateNative, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, null) : null;
+    }
+
+    /// <summary>Snapshots callback and origin sets independently before acquiring database ownership.</summary>
+    internal static ApplicationMutationCommand? CreateBrowser(ApplicationBrowserCreate input)
+    {
+        var frozen = input with
+        {
+            RedirectUris = input.RedirectUris?.ToArray()!,
+            Origins = input.Origins?.ToArray()!
+        };
+        return ApplicationEditorRules.Validate(frozen).Count == 0
+            ? new(ApplicationMutationKind.CreateBrowser, null, null, frozen.ClientId, frozen.DisplayName, frozen.RedirectUris, null)
+            {
+                Origins = frozen.Origins.Order(StringComparer.Ordinal).ToImmutableArray()
+            } : null;
     }
 
     /// <summary>Binds confirmed new identity and expiry to an exact source version; reusable configuration is observed only under ownership.</summary>
@@ -122,7 +138,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

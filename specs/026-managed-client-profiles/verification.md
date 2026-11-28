@@ -65,3 +65,51 @@ and compact and desktop widths. The password and MFA error checks observed
 actual focus after the deferred page scripts ran. CI655 did not record its
 script timing. Its package-feed HTTP 403 and CI648's unclassified navigation
 error remain in the run history. [CI655](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46075190867) · [CI648](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/44905368642)
+
+
+## Public browser registration
+
+The hosted run on `e8630f6` reached the coverage merge. GitHub reset the connection while the job fetched a coverage artifact. On attempt 2 the download succeeded, but the coverage verifier rejected inputs produced on attempt 1. All coverage producers and the verifier must run in the same attempt for this evidence to be accepted. [Original coverage job](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46092831013/job/140843557372) · [Retry](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46092831013/job/141007762632)
+
+Two real provider upgrade and rollback cases passed. Original TRX SHA-256 was `490e11c67dfb3611c80e259d8ee983bcf6888daf933bc54a59d6db4e72c35105`.
+
+Two provider HTTPS journeys passed. Each registered two public clients through the protected BFF, exercised preflight and discovery, completed human consent and a credential-free S256 exchange, verified user-bound UserInfo, refused a different registered origin, and disabled the client. Original TRX SHA-256 was `95f1f4c8aae712d6fa3cf8ee7dabeea339b7ad8d1d11a0cf420c6696e9585c44`.
+
+All 44 non-browser API contract cases passed. Original TRX SHA-256 was `6d3755245f3b06869815285583983d67b721510c915d072b96e0c7881798cb0e`.
+
+The HTTP journey sends browser Origin headers with cookies disabled. Both cases in the first run ended on the first HTTP 204 when the buffered transport attempted an empty body write. The passing run omits the write for an empty capture. Interactive browser, CI and independent acceptance evidence are recorded separately when available.
+
+CI660 stopped in test selection, mutation source prechecks, static import ordering and the Node contract inventory. The revised matrix accounts for one new HTTPS journey and one new persistence case per provider. Locally, all 93 selection cases and 47 contract tooling cases passed. The revised browser and native journeys passed all four cases on PostgreSQL and SQL Server. Original TRX SHA-256 was `8f075f4a3beadfa46079b91da5846e8736e87b8dfb8fd4c11518015963848aaa`. The broader upgrade suite passed all 16 cases, including guarded downgrade from each immediate predecessor. [CI660](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46086256328)
+
+
+CI662 identified a PostgreSQL/WebKit timeout during the sample application
+clone journey. The ordinary sample journey passed in that job. The clone
+journey also passed on SQL Server/WebKit and PostgreSQL/Chromium at the same
+head. The original timeout identifies the clone phase, which includes several
+browser actions, without an individual failing call. The safe failure report
+now includes both clone source filenames and line numbers. The existing
+timeouts and assertions still apply.
+[Original job](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/46088920210/job/140805139307)
+
+A separate local Chromium 151.0.7922.173 run used distinct trusted HTTPS origins
+for the client and issuer with Playwright 1.63.0. On PostgreSQL and SQL Server,
+the browser read discovery and JWKS, completed password, MFA and explicit consent,
+exchanged its S256 code and verified the ID token with WebCrypto. The signed
+subject and the bearer UserInfo subject matched the independently read account ID.
+PostgreSQL passed the first run. SQL Server initially stopped while reading JWKS.
+A fresh SQL Server run passed with HTTP 200 for discovery, JWKS, token and UserInfo
+and 204 for the UserInfo preflight. The first JWKS failure remains unexplained.
+Original TRX SHA-256 was `8c47b17f30ca2b26ac08b0bc55c739c6b46d7276fafca4f3cc6a1ad495b5cb69`.
+The observed SQL Server TRX SHA-256 was `511226d7ce85ce2bd77f26a07acedbf39ad3745cf1f1b3d7331e580c69f5fc53`.
+
+CI662's SQL Server confidential lifecycle case ended at 62.184 seconds. The final
+fresh token failed strict lifetime validation. Native issuance in this test used a
+frozen fixture clock, while the independent validator used real elapsed time with
+zero skew. The issued tokens inherit the authorization code's original 60-second
+deadline. The PostgreSQL run of the same case passed at 38.672 seconds.
+
+The long lifecycle scenario now uses the existing system-backed fixture clock.
+Both provider cases passed locally, including strict lifetime validation, after
+this change. Their TRX SHA-256 was `6d2bc492b07461dbb48fc66dea4bf79413aabd5c947af6510d4f555772dd4a36`.
+The four local navigation diagnostic controls also passed with system Chromium
+151. Their TRX SHA-256 was `b9f021b80adff04ef0883858ace93e76da490b99f726e577557801b86e099b7a`.

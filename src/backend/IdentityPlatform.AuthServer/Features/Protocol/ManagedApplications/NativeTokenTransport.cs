@@ -36,7 +36,9 @@ internal sealed class NativeTokenTransport(string clientId)
             form.Count != FieldCount || form.Files.Count != 0 || form.Any(pair => !Allowed(pair.Key) || pair.Value.Count != 1 ||
                 pair.Value[0] is not { Length: > 0 and <= MaximumFieldLength }) ||
             form[OpenIddictConstants.Parameters.GrantType] != OpenIddictConstants.GrantTypes.AuthorizationCode ||
-            !ApplicationEditorRules.IsNativeRedirect(form[OpenIddictConstants.Parameters.RedirectUri]))
+            !(request.Headers.Origin.Count == 0 ? ApplicationEditorRules.IsNativeRedirect(form[OpenIddictConstants.Parameters.RedirectUri]) :
+                request.Headers.Origin.Count == 1 && BrowserOriginPolicy.IsOrigin(request.Headers.Origin[0]) &&
+                ApplicationEditorRules.IsRedirect(form[OpenIddictConstants.Parameters.RedirectUri])))
         {
             context.Reject(OpenIddictConstants.Errors.InvalidRequest);
             return true;
@@ -48,6 +50,18 @@ internal sealed class NativeTokenTransport(string clientId)
     /// <summary>Requires the same client as the bounded original form after native extraction.</summary>
     internal static bool Matches(OpenIddictServerTransaction transaction, string? client) =>
         transaction.GetProperty<NativeTokenTransport>(typeof(NativeTokenTransport).FullName!) is { } receipt && receipt.MatchesClient(client);
+
+    /// <summary>Binds the public code transport to the current registration and any supplied cross-origin authority before redemption.</summary>
+    internal static bool MatchesRegistration(OpenIddictServerTransaction transaction, IdentityPlatform.Infrastructure.Features.Applications.ManagedRegistration registration)
+    {
+        var publicCode = Matches(transaction, registration.ClientId);
+        var request = transaction.GetHttpRequest();
+        if (registration.Profile == ApplicationEditorRules.BrowserProfile)
+        {
+            return publicCode && request is not null && ManagedBrowserCors.Allowed(request, registration);
+        }
+        return publicCode == (registration.Profile == ApplicationEditorRules.NativeProfile) && request?.Headers.Origin.Count is null or 0;
+    }
 
     /// <summary>Uses an ordinal client identifier comparison across extraction and registration validation.</summary>
     private bool MatchesClient(string? client) => clientId == client;

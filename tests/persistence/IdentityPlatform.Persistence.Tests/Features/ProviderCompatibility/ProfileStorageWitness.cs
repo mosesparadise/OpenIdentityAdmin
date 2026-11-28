@@ -21,6 +21,7 @@ internal static class ProfileStorageWitness
     /// <summary>Restores only independently captured metadata rows and the single added migration, preserving all other physical observations.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        after = BrowserOriginUpgradeTests.Predecessor(provider, after);
         using var stream = typeof(ProfileStorageWitness).Assembly.GetManifestResourceStream(Resource) ?? throw new InvalidDataException();
         var changes = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, Change>>>(stream)![provider];
         var postgres = provider == PostgreSql;

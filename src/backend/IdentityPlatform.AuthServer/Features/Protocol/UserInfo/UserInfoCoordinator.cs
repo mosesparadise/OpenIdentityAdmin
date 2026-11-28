@@ -1,4 +1,6 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
+using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.AspNetCore.Authentication;
@@ -50,11 +52,16 @@ internal static class UserInfoCoordinator
         var phase = scope.Owner.Capture(write: true);
         NativeErrorOrigin.RecordPhase(native, scope.Owner);
         var authority = await UserInfoAuthority.ReadAsync(scope, admission.Principal, token);
-        if (authority is null)
+        if (authority is null || (authority.Registration.Profile == ApplicationEditorRules.BrowserProfile || http.Request.Headers.Origin.Count > 0) &&
+            !ManagedBrowserCors.Allowed(http.Request, authority.Registration))
         {
             return new(false, phase);
         }
         ProtocolStorageAmbient.Current!.Request.RestrictPublication(authority.Expires);
+        if (authority.Registration.Profile == ApplicationEditorRules.BrowserProfile)
+        {
+            ManagedBrowserCors.Publish(http, authority.Registration);
+        }
         var projection = new UserInfoResponse(http, authority.Subject, authority.Email);
         await projection.FormatAsync(http);
         await response.SealAsync();

@@ -21,7 +21,7 @@ internal static class ManagedApplicationProfile
         var result = new OpenIddictApplicationDescriptor
         {
             ApplicationType = native ? OpenIddictConstants.ApplicationTypes.Native : OpenIddictConstants.ApplicationTypes.Web,
-            ClientType = native ? OpenIddictConstants.ClientTypes.Public : OpenIddictConstants.ClientTypes.Confidential,
+            ClientType = command.Kind is ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser ? OpenIddictConstants.ClientTypes.Public : OpenIddictConstants.ClientTypes.Confidential,
             ConsentType = OpenIddictConstants.ConsentTypes.Explicit,
             ClientId = command.ClientId,
             ClientSecret = secret,
@@ -45,6 +45,8 @@ internal static class ManagedApplicationProfile
     /// <summary>Requires an exact association between persisted profile and the native authentication and grant configuration.</summary>
     internal static bool MatchesProfile(string profile, OpenIddictApplicationDescriptor value) => profile switch
     {
+        ApplicationEditorRules.BrowserProfile => value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web &&
+            value.ClientType == OpenIddictConstants.ClientTypes.Public && value.ClientSecret is null && MatchesCodeProfile(value, ApplicationEditorRules.IsRedirect),
         ApplicationEditorRules.NativeProfile => MatchesNative(value),
         ApplicationEditorRules.Profile => MatchesManagement(value) && !string.IsNullOrEmpty(value.ClientSecret),
         _ => false

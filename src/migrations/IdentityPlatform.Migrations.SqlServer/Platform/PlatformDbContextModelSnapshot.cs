@@ -205,6 +205,33 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<int>("Slot")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("ApplicationId", "Slot");
+
+                    b.HasIndex("Origin", "ApplicationId")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationBrowserOrigin", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationBrowserOrigin_Slot", "[Slot] >= 0 AND [Slot] < 10");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationCloneAuditDetail", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -2136,6 +2163,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationBrowserOrigin", b =>
                 {
                     b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
                         .WithMany()

@@ -12,7 +12,9 @@ public sealed record ApplicationDetails(
     string? Profile, bool Editable, ApplicationCredentialMetadata? Credential, DateTimeOffset ExpiresAt,
     [property: System.Text.Json.Serialization.JsonRequired] bool? Enabled = null,
     [property: System.Text.Json.Serialization.JsonRequired] bool Retired = false,
-    [property: System.Text.Json.Serialization.JsonRequired] ApplicationRetirementReference? Retirement = null);
+    [property: System.Text.Json.Serialization.JsonRequired] ApplicationRetirementReference? Retirement = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull),
+        MaxLength(BrowserOriginPolicy.MaximumOrigins)] IReadOnlyList<string>? Origins = null);
 
 /// <summary>Exposes credential lifecycle metadata without the native hash, generated plaintext or arbitrary native properties.</summary>
 /// <example><code>var metadata = new ApplicationCredentialMetadata(issuedAt, expiresAt);</code></example>

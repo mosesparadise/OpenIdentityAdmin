@@ -1,8 +1,14 @@
 # Delivery roadmap and task register
 
-## Active batch — managed client profiles, credentials and documentation, 27 November 2026
+## Active batch — managed client profiles, credentials and documentation, 28 November 2026
 
 The user selected M04-B, M04-C and M04-D. The [feature specification](../specs/026-managed-client-profiles/spec.md) and [task register](../specs/026-managed-client-profiles/tasks.md) track protocol prerequisites, credential management, integration examples and protected documentation.
+
+The public browser increment is in review. The BFF, editor and issuer register
+origins independently of callback URLs. Real HTTPS journeys on PostgreSQL and SQL
+Server verified discovery, signing keys, preflight, public code exchange, UserInfo,
+denial from a second registered application's origin and withdrawal on disablement.
+See the [feature verification record](../specs/026-managed-client-profiles/verification.md#public-browser-registration).
 
 Managed web integration settings are available on main. The authorized application details view shows the client ID, exact callbacks and S256 configuration with a server-side secret placeholder. Both providers now store the public and key-backed profile forms and check the upgraded schema at startup. PR143 delivered public native registration on main. Asymmetric authentication remains open. [PR142](https://github.com/mosesparadise/OpenIdentityAdmin/pull/142) [PR141](https://github.com/mosesparadise/OpenIdentityAdmin/pull/141) · [Verification](../specs/026-managed-client-profiles/verification.md)
 

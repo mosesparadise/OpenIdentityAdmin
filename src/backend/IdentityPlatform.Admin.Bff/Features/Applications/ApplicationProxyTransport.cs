@@ -96,7 +96,7 @@ internal sealed class ApplicationProxyTransport : IDisposable
         {
             return new((int)response.StatusCode, null, null, null);
         }
-        var expected = mutation.Action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.Clone ? HttpStatusCode.Created : HttpStatusCode.OK;
+        var expected = mutation.Action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.Clone ? HttpStatusCode.Created : HttpStatusCode.OK;
         if (response.StatusCode != expected || response.Content.Headers.ContentType?.MediaType != JsonType || response.Content.Headers.ContentEncoding.Count != 0 ||
             response.Content.Headers.ContentLength > ApplicationProjection.MaximumResponseBytes || response.Headers.ETag?.ToString() is not { } tag || !ApplicationVersion.IsCanonical(tag))
         {
