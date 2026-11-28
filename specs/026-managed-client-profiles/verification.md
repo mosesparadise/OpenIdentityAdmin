@@ -152,3 +152,7 @@ Original local reports
 - `keyed-machine-retirement.trx` — SHA-256 `5ed6b3e346a213ffb7ef2500c65640fb9e509585e897d47fd812216373c3cb0d`.
 - `keyed-machine-browser-lifecycle.trx` — SHA-256 `010129ee70b83853994f02371982b15b89a451c85305a3584c373b8850f60c62`.
 - `key-browser-contracts.trx` — SHA-256 `88c8c1ad5bf67762d5e67481da6cadba0d13faef74354ce2886cb67babe2d602`.
+
+### Device authorization code generation
+
+OpenIddict 7.7.2 generated the anonymous device and user codes, their shared authorization, the opaque client references and the verification URI using its installed sign-in dispatcher. PostgreSQL and SQL Server both persisted the original pair under the same transaction as the polling window. The first early poll used the actual returned device code and the committed slow-down was observed through a fresh database scope. Disabling the registration then refused another poll. The fixture captures the native response before HTTP formatting. Human approval and single redemption remain open. Both provider cases passed. Original local TRX SHA-256 `75da3741e1629c664e7bef0af012507bcfb5123e22b2f4521a803c261211e939`.

@@ -49,7 +49,11 @@ public sealed class DeviceKeyUpgradeTests
         var previous = provider == Postgres ? BrowserOriginUpgradeTests.PostgresMigration : BrowserOriginUpgradeTests.SqlMigration;
         var protocolClock = new NativeConsumptionClock();
         protocolClock.Freeze();
-        await using var fixture = await ManagedSchemaFixture.CreateAsync(provider, target: previous, protocolClock: protocolClock, configure: ManagedKeyAssertionEvidence.Configure);
+        await using var fixture = await ManagedSchemaFixture.CreateAsync(provider, target: previous, protocolClock: protocolClock, configure: services =>
+        {
+            NativeDevicePollEvidence.Configure(services);
+            ManagedKeyAssertionEvidence.Configure(services);
+        });
         var before = await fixture.SnapshotAsync(provider);
         await fixture.MigrateAsync(null);
         RequireEqual(before, Predecessor(provider, await fixture.SnapshotAsync(provider)));
