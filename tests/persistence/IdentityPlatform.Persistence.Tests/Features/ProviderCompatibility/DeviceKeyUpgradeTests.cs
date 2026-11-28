@@ -56,6 +56,7 @@ public sealed class DeviceKeyUpgradeTests
         await RequirePollingAsync(fixture);
         await RequireKeysAsync(fixture);
         await ManagedKeyAssertionEvidence.RequireAsync(fixture);
+        await NativeDevicePollEvidence.RequireAsync(fixture);
         var bound = await fixture.SnapshotAsync(provider);
         await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(previous));
         await fixture.MigrateAsync(null);
