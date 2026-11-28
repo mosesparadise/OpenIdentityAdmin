@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../../Components/Button";
 import { CreateFields } from "./CreateForm";
-import { emptyDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft } from "./input";
+import { deviceProfile, emptyDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft } from "./input";
 import type { Details } from "./observation";
 /** Separates presentation editing from explicit credential replacement; identity remains immutable. */
 export function UpdateForm({ details, action, edit, replace, cancel }: { details: Details; action: "edit" | "replace";
@@ -16,7 +16,7 @@ export function UpdateForm({ details, action, edit, replace, cancel }: { details
       : replace({ confirmed, credentialExpiresAt: draft.credentialExpiresAt })));
   }}>
     <p>Client ID (cannot be changed): <strong className="application-client-id">{details.clientId}</strong></p>
-    <CreateFields draft={draft} errors={errors} setDraft={setDraft} summary={summary} mode={action} />
+    <CreateFields device={details.profile === deviceProfile} draft={draft} errors={errors} setDraft={setDraft} summary={summary} mode={action} />
     {action === "replace" && <div className="editor-notice"><h3>The current secret will stop working immediately</h3>
       <p>Replacement requires current credential permission and a recent MFA sign-in. Save the replacement secret when shown and update your application’s secret store. A lost secret cannot be retrieved. Pending sign-ins must start again.</p>
       <label className="editor-confirmation" htmlFor="editor-confirmed"><input id="editor-confirmed" type="checkbox" checked={confirmed}

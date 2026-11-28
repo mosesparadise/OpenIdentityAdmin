@@ -33,19 +33,19 @@ class BrowserProtectionSelectionTests(unittest.TestCase):
         return result
 
     def test_Given_OriginalStory_When_DefaultOrExplicitExecutionExpands_Then_AllGroupsAreMandatory(self):
-        """Preserve all38 cases per provider, their old traits and the complete78-case browser inventory."""
+        """Preserve all 39 cases per provider, their reviewed traits and the complete 79-case browser inventory."""
         require_native_inventory(json.dumps(self.raw), self.inventory, complete=True)
         for provider in ('PostgreSql', 'SqlServer'):
-            expected = [(STORY, 'Sessions', 15), (STORY, 'Applications', 21), (STORY, 'Retirement', 2)]
+            expected = [(STORY, 'Sessions', 15), (STORY, 'Applications', 22), (STORY, 'Retirement', 2)]
             self.assertEqual(expected, browser_execution_invocations(self.matrix, provider, STORY))
             all_groups = browser_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [row for row in all_groups if row[0] == STORY])
-            self.assertEqual(78, sum(row[2] for row in all_groups))
+            self.assertEqual(79, sum(row[2] for row in all_groups))
             selections = self.selections(provider)
             require_group_selections(self.tests, selections, provider, STORY, self.matrix, self.inventory)
             self.assertFalse(selections['Sessions'].keys() & selections['Applications'].keys())
-            self.assertEqual(38, sum(map(len, selections.values())))
-            for group, count in [('Sessions',15),('Applications',21),('Retirement',2)]:
+            self.assertEqual(39, sum(map(len, selections.values())))
+            for group, count in [('Sessions',15),('Applications',22),('Retirement',2)]:
                 self.assertEqual([(STORY,group,count)], browser_execution_invocations(self.matrix, provider, STORY, group))
                 expression = group_filter(self.matrix, provider, STORY, group)
                 self.assertTrue(expression.startswith(f'Provider={provider}&Category=Browser&BrowserStory=BrowserProtection&('))

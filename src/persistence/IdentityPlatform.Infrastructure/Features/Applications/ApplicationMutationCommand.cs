@@ -94,6 +94,10 @@ internal sealed class ApplicationMutationCommand
             } : null;
     }
 
+    /// <summary>Admits only public device identity and consent presentation before selecting the fixed native descriptor.</summary>
+    internal static ApplicationMutationCommand? CreateDevice(ApplicationDeviceCreate input) =>
+        ApplicationEditorRules.Validate(input).Count == 0 ? new(ApplicationMutationKind.CreateDevice, null, null, input.ClientId, input.DisplayName, [], null) : null;
+
     /// <summary>Binds confirmed new identity and expiry to an exact source version; reusable configuration is observed only under ownership.</summary>
     internal static ApplicationMutationCommand? Clone(string id, string version, ApplicationClone input, DateTimeOffset now) =>
         Target(id, version) && ApplicationCloneRules.IsValid(input, now) &&
@@ -107,7 +111,7 @@ internal sealed class ApplicationMutationCommand
         {
             RedirectUris = input.RedirectUris?.ToArray()!
         };
-        return Target(id, version) && ApplicationEditorRules.Validate(frozen).Count == 0
+        return Target(id, version) && (ApplicationEditorRules.IsDisplayOnlyEdit(frozen) || ApplicationEditorRules.Validate(frozen).Count == 0)
             ? new(ApplicationMutationKind.Edit, id, version, null, frozen.DisplayName, frozen.RedirectUris, null) : null;
     }
 
@@ -138,7 +142,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, CreateNative, CreateBrowser, CreateDevice
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>
@@ -149,5 +153,5 @@ internal sealed class ApplicationMutationRejected(ApplicationMutationFailure fai
 
 internal enum ApplicationMutationFailure
 {
-    Forbidden, Missing, Duplicate, Stale, Expired, Unsupported, SameState
+    Forbidden, Missing, Duplicate, Stale, Expired, Unsupported, SameState, InvalidEdit
 }

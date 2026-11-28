@@ -5,6 +5,15 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 /// <summary>Checks actual endpoint-generated create/details metadata against independent wire expectations.</summary>
 internal static class ApplicationEditorAssertions
 {
+    private const string DevicePath = "/device-registrations";
+    private const string DeviceSchema = "#/components/schemas/ApplicationDeviceCreate";
+    private const string Components = "components";
+    private const string Schemas = "schemas";
+    private const string DeviceInput = "ApplicationDeviceCreate";
+    private const string AdditionalProperties = "additionalProperties";
+    private const string Properties = "properties";
+    private const string ClientId = "clientId";
+    private const string DisplayName = "displayName";
     private const string PublicBrowserPath = "/browser-registrations";
     private const string PublicBrowserSchema = "#/components/schemas/ApplicationBrowserCreate";
 
@@ -52,11 +61,14 @@ internal static class ApplicationEditorAssertions
         var path = browser ? BrowserPath : ApiPath;
         var native = document[Paths]![path + NativePath]![Post]!;
         var spa = document[Paths]![path + PublicBrowserPath]![Post]!;
-        Assert.Equal(PublicBrowserSchema, spa[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
-        Assert.Equal(DetailsSchema, spa[Responses]![Created]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
-        Assert.Equal(Write, spa[Permission]!.GetValue<string>());
-        Assert.True(spa[Responses]![Created]![Headers]![Version]![Required]!.GetValue<bool>());
-        Assert.Equal(native[Parameters]?.ToJsonString(), spa[Parameters]?.ToJsonString());
+        var device = document[Paths]![path + DevicePath]![Post]!;
+        RequirePublic(spa, native, PublicBrowserSchema);
+        RequirePublic(device, native, DeviceSchema);
+        var fields = document[Components]![Schemas]![DeviceInput]!;
+        Assert.False(fields[AdditionalProperties]!.GetValue<bool>());
+        var expected = new[] { ClientId, DisplayName };
+        Assert.Equal(expected, fields[Properties]!.AsObject().Select(pair => pair.Key).Order());
+        Assert.Equal(expected, fields[Required]!.AsArray().Select(value => value!.GetValue<string>()).Order());
         var create = document[Paths]![path]![Post]!;
         var details = document[Paths]![path + Details]![Get]!;
         Assert.Equal(NativeInput, native[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
@@ -66,7 +78,7 @@ internal static class ApplicationEditorAssertions
         Assert.Equal(Write, native[Permission]!.GetValue<string>());
         Assert.Equal(Write, create[Permission]!.GetValue<string>());
         Assert.Equal(Read, details[Permission]!.GetValue<string>());
-        foreach (var operation in new[] { create, native, spa, details })
+        foreach (var operation in new[] { create, native, spa, device, details })
         {
             Assert.Equal(browser ? BrowserSecurity : ApiSecurity, operation[Security]!.ToJsonString());
             if (browser)
@@ -89,5 +101,15 @@ internal static class ApplicationEditorAssertions
             var csrf = Assert.Single(create[Parameters]!.AsArray(), value => value![Name]!.GetValue<string>() == Csrf)!;
             Assert.True(csrf[Required]!.GetValue<bool>());
         }
+    }
+
+    /// <summary>Checks the public creation response, required permission and browser session preconditions.</summary>
+    private static void RequirePublic(JsonNode operation, JsonNode native, string schema)
+    {
+        Assert.Equal(schema, operation[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(DetailsSchema, operation[Responses]![Created]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(Write, operation[Permission]!.GetValue<string>());
+        Assert.True(operation[Responses]![Created]![Headers]![Version]![Required]!.GetValue<bool>());
+        Assert.Equal(native[Parameters]?.ToJsonString(), operation[Parameters]?.ToJsonString());
     }
 }

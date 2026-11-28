@@ -54,6 +54,11 @@ internal static class Setup
             .Produces<ApplicationDetails>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        endpoints.MapManagementGroup().MapPost(CollectionPath + ApplicationEditorRules.DeviceRegistrationSuffix, (Func<HttpContext, Task>)(context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.CreateDevice)))
+            .WithName(ApplicationEditorContract.DeviceOperation).WithSummary(ApplicationEditorContract.DeviceSummary).Accepts<ApplicationDeviceCreate>(JsonType)
+            .Produces<ApplicationDetails>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status409Conflict)
+            .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
         endpoints.MapManagementGroup().MapPost(CollectionPath, (Func<HttpContext, Task>)(context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Create)))
             .WithName(CreateOperation).WithSummary(CreateSummary).Accepts<ApplicationCreate>(JsonType)
             .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)

@@ -2,7 +2,9 @@ import type { components } from "../../../../IdentityPlatform.Admin.Contracts/ge
 export type CloneInput = components["schemas"]["ApplicationClone"];
 export type CloneDraft = { confirmed: boolean; clientId: string; displayName: string; credentialExpiresAt: string };
 export type CreateInput = components["schemas"]["ApplicationCreate"];
-export type RegistrationType = "web" | "native" | "browser";
+export type RegistrationType = "web" | "native" | "browser" | "device";
+export const deviceProfile = "managed-device-v1";
+export type DeviceInput = components["schemas"]["ApplicationDeviceCreate"];
 export type BrowserInput = components["schemas"]["ApplicationBrowserCreate"];
 export const browserProfile = "managed-browser-v1";
 export const nativeProfile = "managed-native-v1";
@@ -66,9 +68,10 @@ export function validate(draft: Draft, now: number): { input?: CreateInput; erro
 export function addressable(id: string): boolean { return text(id, 400) && id !== "." && id !== ".." && id.toLowerCase() !== "antiforgery"; }
 
 /** Validates only mutable presentation fields; neither identity nor credential lifecycle can enter PUT input. */
-export function validateEdit(draft: EditDraft, native = false): { input?: EditInput; errors: Errors } {
+export function validateEdit(draft: EditDraft, native = false, device = false): { input?: EditInput; errors: Errors } {
   const errors: Errors = {};
   if (!text(draft.displayName, 200)) errors.displayName = "Enter a name of 1–200 characters without control characters.";
+  if (device) return Object.keys(errors).length ? { errors } : { errors, input: { displayName: draft.displayName, redirectUris: [] } };
   const redirectUris = draft.redirectUris.split(/\r?\n/);
   if (redirectUris.length > 10 || redirectUris.some(value => !callback(value)) || new Set(redirectUris).size !== redirectUris.length)
     errors.redirectUris = "Enter 1–10 different, exact HTTPS callbacks, one per line, without spaces, credentials or fragments.";
@@ -76,6 +79,12 @@ export function validateEdit(draft: EditDraft, native = false): { input?: EditIn
   const input = { displayName: draft.displayName, redirectUris };
   if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) errors.redirectUris = "The change exceeds the 32 KiB request limit.";
   return Object.keys(errors).length ? { errors } : { errors, input };
+}
+/** Sends the permanent device ID and the name a user will recognize at consent. */
+export function validateDevice(draft: Draft): { input?: DeviceInput; errors: Errors } {
+  const { errors } = validateEdit(draft, false, true);
+  if (!text(draft.clientId, 100) || whitespace.test(draft.clientId)) errors.clientId = "Enter 1–100 characters without whitespace or control characters.";
+  return Object.keys(errors).length ? { errors } : { errors, input: { clientId: draft.clientId, displayName: draft.displayName } };
 }
 /** Constructs the secretless registration body without an expiry or any credential fields. */
 export function validateNative(draft: Draft): { input?: NativeInput; errors: Errors } {

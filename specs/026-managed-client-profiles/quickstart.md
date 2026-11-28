@@ -67,9 +67,19 @@ endpoint through top-level navigation. For cross-origin fetches, omit cookies.
 Send the access token to the discovered UserInfo endpoint in the Authorization
 bearer header. Disabling or retiring the registration withdraws its access.
 
-## Verify a device with an existing public registration
+## Register and verify a public device
 
-The managed issuer advertises its device authorization endpoint in discovery. A device with an enabled public device registration starts the flow by posting a URL-encoded form to `/connect/device` with its `client_id` and a space-separated `scope` that includes `openid`. It may request the email and API scopes assigned to that registration. The application editor’s device enrollment option is still under development.
+In **Applications**, choose **Create application**, select **Public device application** and enter a permanent client ID and a display name users will recognize at consent. Open **Client integration settings** on the saved registration to see the device grant and client ID. Assign any additional scopes the device needs before asking users to approve them.
+
+An API client acting for an administrator with fresh MFA and `applications.write` can send the same registration to `POST /api/v1/applications/device-registrations` with the following JSON.
+
+```json
+{"clientId":"meeting-room-display","displayName":"Meeting room display"}
+```
+
+The response is `201 Created` with application details and an `ETag`. Use the current version for subsequent edits. To rename a device, send the new `displayName` and an empty `redirectUris` array to `PUT /api/v1/applications/{id}` with `If-Match`. The device authenticates at the token endpoint with method `none`. Disabling the registration stops issuance. Permanent retirement also reserves its client ID and retains the revocation job and application history.
+
+The managed issuer advertises its device authorization endpoint in discovery. A device with an enabled public device registration starts the flow by posting a URL-encoded form to `/connect/device` with its `client_id` and a space-separated `scope` that includes `openid`. It may request the email and API scopes assigned to that registration.
 
 1. Display the returned `verification_uri` and `user_code`. Keep the separate `device_code` on the device.
 2. The user opens the verification address, enters the displayed code, and signs in with their password and a fresh authenticator code. The consent page shows the registered application name, client ID, matching code and requested access. Approval and cancellation both finish on the issuer.

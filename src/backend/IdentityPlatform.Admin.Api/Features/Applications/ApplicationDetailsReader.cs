@@ -48,12 +48,13 @@ internal static class ApplicationDetailsReader
         {
             return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
-        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects is null || row.Redirects.Length > NativeJsonBytes ||
-            row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements is null || row.Requirements.Length > NativeNamesLength)
+        var device = policy.Profile == ApplicationEditorRules.DeviceProfile;
+        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || (!device && row.Redirects is null) || row.Redirects?.Length > NativeJsonBytes ||
+            row.Permissions is null || row.Permissions.Length > NativeNamesLength || (!device && row.Requirements is null) || row.Requirements?.Length > NativeNamesLength)
         {
             throw new InvalidDataException();
         }
-        var descriptor = Descriptor(row);
+        var descriptor = Descriptor(row, device);
         string[]? origins = null;
         if (policy.Profile == ApplicationEditorRules.BrowserProfile)
         {
@@ -77,7 +78,7 @@ internal static class ApplicationDetailsReader
     /// <summary>Requires matching profile, credential kind and native capabilities without retrieving a stored secret.</summary>
     private static ApplicationCredentialMetadata? Credential(ApplicationPolicy policy, Row row, OpenIddictApplicationDescriptor descriptor)
     {
-        if (policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile && row.NoSecret && ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) &&
+        if (policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile or ApplicationEditorRules.DeviceProfile && row.NoSecret && ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) &&
             policy.CredentialRevision == 0 && policy.CredentialIssuedAt is null && policy.CredentialExpiresAt is null)
         {
             return null;
@@ -108,12 +109,12 @@ internal static class ApplicationDetailsReader
         (row.DisplayNames == null || row.DisplayNames == EmptyObject)));
 
     /// <summary>Reconstructs only finite public profile fields and rejects duplicate native array entries or invalid callback text.</summary>
-    private static OpenIddictApplicationDescriptor Descriptor(Row row)
+    private static OpenIddictApplicationDescriptor Descriptor(Row row, bool device)
     {
-        var redirects = JsonSerializer.Deserialize<string[]>(row.Redirects!, ApplicationJson.Options) ?? throw new InvalidDataException();
+        var redirects = JsonSerializer.Deserialize<string[]>(row.Redirects ?? EmptyArray, ApplicationJson.Options) ?? throw new InvalidDataException();
         var permissions = JsonSerializer.Deserialize<string[]>(row.Permissions!, ApplicationJson.Options) ?? throw new InvalidDataException();
-        var requirements = JsonSerializer.Deserialize<string[]>(row.Requirements!, ApplicationJson.Options) ?? throw new InvalidDataException();
-        if (redirects.Length is < 1 or > ApplicationEditorRules.MaximumRedirects || redirects.Any(value => !ApplicationEditorRules.IsRedirect(value)) ||
+        var requirements = JsonSerializer.Deserialize<string[]>(row.Requirements ?? EmptyArray, ApplicationJson.Options) ?? throw new InvalidDataException();
+        if ((device ? redirects.Length != 0 : redirects.Length is < 1 or > ApplicationEditorRules.MaximumRedirects) || redirects.Any(value => !ApplicationEditorRules.IsRedirect(value)) ||
             redirects.Distinct(StringComparer.Ordinal).Count() != redirects.Length || permissions.Distinct(StringComparer.Ordinal).Count() != permissions.Length ||
             requirements.Distinct(StringComparer.Ordinal).Count() != requirements.Length)
         {

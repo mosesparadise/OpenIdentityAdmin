@@ -14,4 +14,11 @@ public sealed class ApplicationEditorBrowserTests(BootstrapFixture fixture)
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public Task Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved(string provider) =>
         ApplicationBrowserDiagnostics.RunAsync(() => ApplicationManagedBrowserEvidence.RunAsync(fixture, provider, approve: true));
+
+    /// <summary>Requires keyboard registration of a public device and an exact callback-free, credential-free BFF request.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public Task Given_AuthenticatedAdministrator_When_RegisteringPublicDevice_Then_EditorSendsOnlyIdentityAndDisplaysDeviceIntegration(string provider) =>
+        AdministratorBrowserEvidence.RunAsync(() => ApplicationDeviceEditorJourney.RunAsync(fixture, provider));
 }

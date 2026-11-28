@@ -8,6 +8,8 @@ namespace IdentityPlatform.Core.Features.Applications;
 public static class ApplicationEditorRules
 {
     public const string Profile = "managed-web-v1";
+    public const string DeviceProfile = "managed-device-v1";
+    public const string DeviceRegistrationSuffix = "/device-registrations";
     public const string NativeRegistrationSuffix = "/native-registrations";
     public const string BrowserProfile = "managed-browser-v1";
     public const string BrowserRegistrationSuffix = "/browser-registrations";
@@ -42,6 +44,26 @@ public static class ApplicationEditorRules
         return errors;
     }
 
+    /// <summary>Requires the permanent public device identity and the display name presented during consent.</summary>
+    /// <example><code>var errors = ApplicationEditorRules.Validate(new ApplicationDeviceCreate("display", "Meeting room display"));</code></example>
+    public static IReadOnlyDictionary<string, string[]> Validate(ApplicationDeviceCreate input)
+    {
+        var errors = new Dictionary<string, string[]>(StringComparer.Ordinal);
+        if (!IsClientId(input.ClientId))
+        {
+            errors.Add(ClientIdField, [InvalidValue]);
+        }
+        if (!IsText(input.DisplayName, ApplicationProjection.DisplayNameLength))
+        {
+            errors.Add(DisplayNameField, [InvalidValue]);
+        }
+        return errors;
+    }
+
+    /// <summary>Identifies the display-only edit shape which the writer may apply only to a callback-free registration.</summary>
+    /// <example><code>var rename = ApplicationEditorRules.IsDisplayOnlyEdit(new ApplicationEdit("Boardroom", []));</code></example>
+    public static bool IsDisplayOnlyEdit(ApplicationEdit input) => input.RedirectUris is { Count: 0 } && IsText(input.DisplayName, ApplicationProjection.DisplayNameLength);
+
     /// <summary>Requires a bounded public client identity and only exact app-linked HTTPS callbacks.</summary>
     /// <example><code>var errors = ApplicationEditorRules.Validate(new ApplicationNativeCreate("mobile", "Mobile", ["https://mobile.example/signin"]));</code></example>
     public static IReadOnlyDictionary<string, string[]> Validate(ApplicationNativeCreate input)
@@ -74,7 +96,7 @@ public static class ApplicationEditorRules
         return errors;
     }
 
-    /// <summary>Validates only mutable noncredential fields; callers separately require current authority and version.</summary>
+    /// <summary>Validates display and callback edits for code-flow clients. Device clients use <see cref="IsDisplayOnlyEdit"/>.</summary>
     /// <example><code>var errors = ApplicationEditorRules.Validate(new ApplicationEdit("Example", ["https://client.example/callback"]));</code></example>
     public static IReadOnlyDictionary<string, string[]> Validate(ApplicationEdit input) => ValidateFields(input.DisplayName, input.RedirectUris);
 

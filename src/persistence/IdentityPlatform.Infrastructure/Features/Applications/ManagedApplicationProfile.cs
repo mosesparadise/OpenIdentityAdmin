@@ -17,6 +17,10 @@ internal static class ManagedApplicationProfile
     /// <summary>Builds a native descriptor from immutable validated intent without allowing arbitrary grants, scopes or settings.</summary>
     internal static OpenIddictApplicationDescriptor Create(ApplicationMutationCommand command, string? secret)
     {
+        if (command.Kind == ApplicationMutationKind.CreateDevice)
+        {
+            return DeviceClientRegistration.Descriptor(command.ClientId!, command.DisplayName!);
+        }
         var native = command.Kind == ApplicationMutationKind.CreateNative;
         var result = new OpenIddictApplicationDescriptor
         {
@@ -45,6 +49,7 @@ internal static class ManagedApplicationProfile
     /// <summary>Requires an exact association between persisted profile and the native authentication and grant configuration.</summary>
     internal static bool MatchesProfile(string profile, OpenIddictApplicationDescriptor value) => profile switch
     {
+        ApplicationEditorRules.DeviceProfile => DeviceClientRegistration.Matches(value),
         ApplicationEditorRules.BrowserProfile => value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web &&
             value.ClientType == OpenIddictConstants.ClientTypes.Public && value.ClientSecret is null && MatchesCodeProfile(value, ApplicationEditorRules.IsRedirect),
         ApplicationEditorRules.NativeProfile => MatchesNative(value),

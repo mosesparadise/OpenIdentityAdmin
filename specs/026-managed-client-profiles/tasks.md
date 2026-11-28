@@ -3,7 +3,7 @@
 - [x] T001 Provide managed web integration settings from the authorized registration with a credential placeholder. Verify rendering, callback binding and read-only/terminal exclusions.
 - [ ] T002 Add browser and native registration and authorization-code journeys, including exact redirect, separate browser origin policy, S256, and lifecycle regression tests.
 - [ ] T003 Deliver the client-credentials protocol and registration together, including a machine-only identity and bounded assigned API scopes.
-- [ ] T004 Deliver device registration with verification, approval, polling, throttling, expiry and single redemption on both providers.
+- [x] T004 Deliver device registration with verification, approval, polling, throttling, expiry and single redemption on both providers.
 - [ ] T005 Implement asymmetric public-key registration, replacement and replay-resistant native client authentication with provider upgrade, concurrency and audit coverage.
 - [ ] T006 Extend application integration settings, examples and generated versioned contracts for each delivered profile. Implement permission-aware documentation after resolving viewer activation dependencies.
 - [ ] T007 Run required provider, browser, contract, mutation, coverage and supply-chain checks. Independently review the original evidence and record accepted scope in the roadmap.
@@ -201,4 +201,9 @@ T004 now verifies the installed OpenIddict device and user code generators on Po
 
 ### Public device verification under T004
 
-The issuer now accepts the displayed user code, checks the registered device, and runs the existing password, fresh MFA and scope-consent forms. A cookie-free device can poll and redeem after approval. UserInfo checks the current account and native grant. Both provider migrations retain the original authorization and polling window, and guard downgrades containing verification history. T004 remains open for administrator device registration and lifecycle integration, followed by the remaining T007 delivery checks. [Verification](verification.md#public-device-verification)
+The issuer now accepts the displayed user code, checks the registered device, and runs the existing password, fresh MFA and scope-consent forms. A cookie-free device can poll and redeem after approval. UserInfo checks the current account and native grant. Both provider migrations retain the original authorization and polling window, and guard downgrades containing verification history. This checkpoint preceded the administrator enrollment and lifecycle work below. [Verification](verification.md#public-device-verification)
+
+
+### Administrator device enrollment under T004 and T006
+
+The versioned API and browser editor now register a public device from its client ID and display name. The same registration drives scope assignment, password/MFA consent and token exchange. Administrators can rename, disable, enable and permanently retire it. Retirement preserves its ID, history and revocation job. The generated BFF contract and integration settings cover the device profile. T007 tracks hosted acceptance and the remaining verification across profiles. [Integration guide](quickstart.md#register-and-verify-a-public-device) · [Verification](verification.md#administrator-device-enrollment)

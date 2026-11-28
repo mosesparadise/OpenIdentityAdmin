@@ -20,7 +20,7 @@ internal static class ApplicationMutationOperation
             var completed = await request.RunAsync(factory, (scope, token) => ExecuteOwnedAsync(scope, identity, command, profile, budget, correlation, token));
             completed.Authority.RequirePublication(clock, budget);
             var details = completed.State.Details(completed.Authority.Deadline);
-            return new(command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.Clone ? StatusCodes.Status201Created : StatusCodes.Status200OK,
+            return new(command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateDevice or ApplicationMutationKind.Clone ? StatusCodes.Status201Created : StatusCodes.Status200OK,
                 details, completed.State.Version, completed.State.Credential(details),
                 command.Kind == ApplicationMutationKind.AssignScopes ? completed.State.Scopes(completed.Authority.Deadline) : null);
         }
@@ -58,7 +58,7 @@ internal static class ApplicationMutationOperation
         ApplicationMutationFailure.Missing => StatusCodes.Status404NotFound,
         ApplicationMutationFailure.Duplicate => StatusCodes.Status409Conflict,
         ApplicationMutationFailure.Stale => StatusCodes.Status412PreconditionFailed,
-        ApplicationMutationFailure.Expired => StatusCodes.Status400BadRequest,
+        ApplicationMutationFailure.Expired or ApplicationMutationFailure.InvalidEdit => StatusCodes.Status400BadRequest,
         ApplicationMutationFailure.Unsupported => StatusCodes.Status409Conflict,
         ApplicationMutationFailure.SameState => StatusCodes.Status409Conflict,
         _ => throw ProtocolStorageOwner.Unavailable()
