@@ -56,9 +56,13 @@ internal sealed class ApplicationKeyApproval
 
     /// <summary>Binds native signature validation to the current approved public bytes, descriptor and credential lifetime.</summary>
     internal bool Matches(ApplicationPolicy policy, AdministratorPublicKey current, SecurityKey validatedKey, long now) =>
+        validatedKey.CanComputeJwkThumbprint() && Matches(policy, current, validatedKey.KeyId, Convert.ToHexStringLower(validatedKey.ComputeJwkThumbprint()), now);
+
+    /// <summary>Checks the immutable public-key evidence captured when the native validator completed.</summary>
+    internal bool Matches(ApplicationPolicy policy, AdministratorPublicKey current, string? keyId, string thumbprint, long now) =>
         policy.Profile is MachineProfile or WebProfile && policy.Enabled && !policy.Retired && policy.ApplicationId == ApplicationId &&
         policy.CredentialRevision == CredentialRevision && policy.CredentialIssuedAt <= now && policy.ObservedAt <= now && policy.CredentialExpiresAt > now &&
-        current.Fingerprint == Fingerprint && Material(current) == Thumbprint && current.MatchesValidatedKey(validatedKey);
+        current.Fingerprint == Fingerprint && Material(current) == Thumbprint && current.KeyId == keyId && Thumbprint == thumbprint;
 
     /// <summary>Uses the RFC 7638 RSA public key thumbprint independently of mutable identifier and algorithm labels.</summary>
     private static string Material(AdministratorPublicKey key) => Convert.ToHexStringLower(key.CreateNativeKey().ComputeJwkThumbprint());

@@ -1,4 +1,6 @@
 using System.Text.Json;
+using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -24,9 +26,16 @@ internal static class ClientAssertionShape
     /// <summary>Rejects normalized duplicate claims and key fallback headers without implementing or replacing signature verification.</summary>
     internal static AdministratorAssertion? Read(OpenIddictServerEvents.ValidateTokenContext context, string issuer, string keyId)
     {
-        if (context.IsRejected || context.TokenValidationResult is not { IsValid: true, SecurityToken: JsonWebToken token } ||
+        var proof = ReadClient(context, issuer, keyId, AdministratorProtocolIdentity.ClientId);
+        return proof is null ? null : AdministratorAssertion.Create(proof.Identifier, proof.Issued, proof.Expires, proof.NotBefore);
+    }
+
+    /// <summary>Checks the native signature result and exact raw claims for the client selected by the issuer.</summary>
+    internal static SignedClientAssertion? ReadClient(OpenIddictServerEvents.ValidateTokenContext context, string issuer, string keyId, string clientId)
+    {
+        if (!ApplicationEditorRules.IsClientId(clientId) || context.IsRequestHandled || context.IsRequestSkipped || context.IsRejected || context.TokenValidationResult is not { IsValid: true, SecurityToken: JsonWebToken token } ||
             token.InnerToken is not null || !string.Equals(token.EncodedToken, context.Token, StringComparison.Ordinal) ||
-            token.SigningKey is not { } key || key.KeySize < MinimumRsaBits || !key.IsSupportedAlgorithm(SecurityAlgorithms.RsaSha256) ||
+            token.SigningKey is not { } key || !key.CanComputeJwkThumbprint() || key.KeySize < MinimumRsaBits || !key.IsSupportedAlgorithm(SecurityAlgorithms.RsaSha256) ||
             !string.Equals(key.KeyId, keyId, StringComparison.Ordinal) ||
             context.Principal is null || !context.Principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.ClientAssertion) ||
             !context.ValidTokenTypes.SetEquals([OpenIddictConstants.TokenTypeIdentifiers.Private.ClientAssertion]) ||
@@ -38,7 +47,7 @@ internal static class ClientAssertionShape
         {
             using var header = JsonDocument.Parse(Base64UrlEncoder.DecodeBytes(token.EncodedHeader), new JsonDocumentOptions { MaxDepth = MaximumJsonDepth });
             using var payload = JsonDocument.Parse(Base64UrlEncoder.DecodeBytes(token.EncodedPayload), new JsonDocumentOptions { MaxDepth = MaximumJsonDepth });
-            return HeaderMatches(header.RootElement, keyId) ? ReadPayload(payload.RootElement, issuer) : null;
+            return HeaderMatches(header.RootElement, keyId) ? ReadPayload(payload.RootElement, issuer, clientId, key) : null;
         }
         catch (JsonException) { return null; }
         catch (FormatException) { return null; }
@@ -52,20 +61,24 @@ internal static class ClientAssertionShape
         !header.EnumerateObject().Any(property => ForbiddenHeaders.Contains(property.Name, StringComparer.OrdinalIgnoreCase));
 
     /// <summary>Preserves scalar integer and audience multiplicity before native claims accessors can normalize them.</summary>
-    private static AdministratorAssertion? ReadPayload(JsonElement payload, string issuer)
+    private static SignedClientAssertion? ReadPayload(JsonElement payload, string issuer, string clientId, SecurityKey key)
     {
         if (!UniqueObject(payload) || payload.EnumerateObject().Any(property => ReservedClaims.Any(name =>
                 string.Equals(name, property.Name, StringComparison.OrdinalIgnoreCase) && name != property.Name)) ||
-            String(payload, OpenIddictConstants.Claims.Issuer) != AdministratorProtocolIdentity.ClientId ||
-            String(payload, OpenIddictConstants.Claims.Subject) != AdministratorProtocolIdentity.ClientId || !AudienceMatches(payload, issuer) ||
+            String(payload, OpenIddictConstants.Claims.Issuer) != clientId ||
+            String(payload, OpenIddictConstants.Claims.Subject) != clientId || !AudienceMatches(payload, issuer) ||
             Integer(payload, OpenIddictConstants.Claims.IssuedAt) is not { } issued || Integer(payload, OpenIddictConstants.Claims.ExpiresAt) is not { } expires ||
             String(payload, OpenIddictConstants.Claims.JwtId) is not { } identifier)
         {
             return null;
         }
         var notBefore = Integer(payload, OpenIddictConstants.Claims.NotBefore);
-        return payload.TryGetProperty(OpenIddictConstants.Claims.NotBefore, out _) && notBefore is null ? null :
-            AdministratorAssertion.Create(identifier, issued, expires, notBefore);
+        if ((payload.TryGetProperty(OpenIddictConstants.Claims.NotBefore, out _) && notBefore is null) ||
+            !ClientAssertionLimits.Valid(identifier, issued, expires, notBefore))
+        {
+            return null;
+        }
+        return new(clientId, identifier, issued, expires, notBefore, key);
     }
 
     /// <summary>Accepts the native single audience string or one-element array, always ordinally equal to the canonical issuer.</summary>

@@ -1,6 +1,7 @@
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,19 +28,24 @@ internal sealed class ApplicationAssertionUse
     internal static ApplicationAssertionUse? FromValidated(ApplicationPolicy policy, ApplicationKeyApproval approval, AdministratorPublicKey approvedKey,
         Microsoft.IdentityModel.Tokens.SecurityKey validatedKey, string jti, long issued, long expires, long? notBefore, long now)
     {
-        var assertion = AdministratorAssertion.Create(jti, issued, expires, notBefore);
-        if (assertion is null || !assertion.Allows(now) || !approval.Matches(policy, approvedKey, validatedKey, now))
-        {
-            return null;
-        }
-        return new()
-        {
-            ApplicationId = policy.ApplicationId,
-            Digest = ManagedLoginRules.Digest(jti),
-            CredentialRevision = approval.CredentialRevision,
-            RetainUntil = expires + AdministratorAssertion.ClockSkewSeconds
-        };
+        return approval.Matches(policy, approvedKey, validatedKey, now) ? Create(policy, approval, jti, issued, expires, notBefore, now) : null;
     }
+
+    /// <summary>Uses the signed claims and key thumbprint captured together during native validation.</summary>
+    internal static ApplicationAssertionUse? FromProof(ApplicationPolicy policy, ApplicationKeyApproval approval, AdministratorPublicKey approvedKey,
+        SignedClientAssertion proof, long now) => approval.Matches(policy, approvedKey, proof.KeyId, proof.KeyThumbprint, now)
+            ? Create(policy, approval, proof.Identifier, proof.Issued, proof.Expires, proof.NotBefore, now) : null;
+
+    /// <summary>Checks the integer lifetime before hashing the original identifier and retaining the replay deadline.</summary>
+    private static ApplicationAssertionUse? Create(ApplicationPolicy policy, ApplicationKeyApproval approval, string jti, long issued, long expires, long? notBefore, long now) =>
+        ClientAssertionLimits.Valid(jti, issued, expires, notBefore) && ClientAssertionLimits.Allows(issued, expires, notBefore, now)
+            ? new()
+            {
+                ApplicationId = policy.ApplicationId,
+                Digest = ManagedLoginRules.Digest(jti),
+                CredentialRevision = approval.CredentialRevision,
+                RetainUntil = expires + ClientAssertionLimits.ClockSkewSeconds
+            } : null;
 
     /// <summary>Uses the application ID and assertion digest as the unique key; key replacement cannot reset accepted assertion IDs.</summary>
     internal static void Configure(ModelBuilder builder, IDatabaseModelDialect dialect)

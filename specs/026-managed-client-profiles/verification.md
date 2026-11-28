@@ -89,3 +89,16 @@ same-key relabeling, and repeated assertion IDs across revisions. SQL Server
 was tested with a 400-character application ID. Both guard a populated
 downgrade and preserve predecessor data across an empty round trip.
 These tests exercise storage directly, outside of public protocol endpoints.
+
+## Native managed client assertion consumption
+
+PostgreSQL and SQL Server each accepted exactly one of two concurrent native
+authentication requests carrying the same signed client assertion. Each test
+created a local RSA public-key registration with the real application manager,
+used its private key only in the test client, and dispatched native token-endpoint
+authentication. The losing request received `invalid_client`. Independent
+operations also verified the signed bytes against the registered public key and
+checked the persisted receipt, fingerprint, time bounds and sequential duplicate.
+Both provider cases passed. Original TRX SHA-256 was `504cdfd8237941a9a256486a04cc55c237639fdb74e1b968dfce6703499e72d4`.
+The composed provider test covers authentication. The key-management HTTP surface
+and authorization of the resulting access-token response remain separate work.

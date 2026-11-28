@@ -60,13 +60,23 @@ internal static class ManagedApplicationProfile
     };
 
     /// <summary>Allows exactly a confidential machine grant plus finite catalogue permissions, with no redirect or interactive capabilities.</summary>
-    internal static bool MatchesMachine(OpenIddictApplicationDescriptor value) =>
+    internal static bool MatchesMachine(OpenIddictApplicationDescriptor value, bool hasKey = false) =>
         value.ApplicationType == OpenIddictConstants.ApplicationTypes.Web && value.ClientType == OpenIddictConstants.ClientTypes.Confidential &&
         value.ConsentType == OpenIddictConstants.ConsentTypes.Explicit && ApplicationEditorRules.IsClientId(value.ClientId) &&
         ApplicationEditorRules.IsText(value.DisplayName, ApplicationProjection.DisplayNameLength) && value.RedirectUris.Count == 0 &&
         value.Permissions.IsSupersetOf(MachinePermissions) && AdditionalPermissions(value.Permissions, MachinePermissions) &&
-        value.Requirements.Count == 0 && value.PostLogoutRedirectUris.Count == 0 && value.JsonWebKeySet is null &&
+        value.Requirements.Count == 0 && value.PostLogoutRedirectUris.Count == 0 && hasKey == (value.JsonWebKeySet is not null) &&
         value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
+
+    /// <summary>Checks the full native profile for a locally keyed confidential registration before consuming its assertion.</summary>
+    internal static bool MatchesKeyProfile(string profile, OpenIddictApplicationDescriptor descriptor) =>
+        descriptor.ClientSecret is null && descriptor.JsonWebKeySet is not null && profile switch
+        {
+            ApplicationKeyApproval.MachineProfile => MatchesMachine(descriptor, hasKey: true),
+            ApplicationKeyApproval.WebProfile => descriptor.ApplicationType == OpenIddictConstants.ApplicationTypes.Web &&
+                descriptor.ClientType == OpenIddictConstants.ClientTypes.Confidential && MatchesCodeProfile(descriptor, ApplicationEditorRules.IsRedirect, hasKey: true),
+            _ => false
+        };
 
     /// <summary>Requires native public S256 with an OS-associated HTTPS callback and no client credential.</summary>
     internal static bool MatchesNative(OpenIddictApplicationDescriptor value) =>
@@ -74,12 +84,12 @@ internal static class ManagedApplicationProfile
         value.ClientSecret is null && MatchesCodeProfile(value, ApplicationEditorRules.IsNativeRedirect);
 
     /// <summary>Validates the exact common code grant before applying a profile-specific callback policy.</summary>
-    private static bool MatchesCodeProfile(OpenIddictApplicationDescriptor value, Func<string?, bool> callback) =>
+    private static bool MatchesCodeProfile(OpenIddictApplicationDescriptor value, Func<string?, bool> callback, bool hasKey = false) =>
         value.ConsentType == OpenIddictConstants.ConsentTypes.Explicit && ApplicationEditorRules.IsClientId(value.ClientId) &&
         ApplicationEditorRules.IsText(value.DisplayName, ApplicationProjection.DisplayNameLength) &&
         value.RedirectUris.Count is > 0 and <= ApplicationEditorRules.MaximumRedirects && value.RedirectUris.All(uri => callback(uri.OriginalString)) &&
         value.Permissions.IsSupersetOf(Permissions) && AdditionalPermissions(value.Permissions, Permissions) && value.Requirements.SetEquals(Requirements) && value.PostLogoutRedirectUris.Count == 0 &&
-        value.JsonWebKeySet is null && value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
+        hasKey == (value.JsonWebKeySet is not null) && value.Properties.Count == 0 && value.Settings.Count == 0 && value.DisplayNames.Count == 0;
 
     /// <summary>Rejects extra endpoints/grants and reserved or oversized scope names without requiring disabled assignments to disappear.</summary>
     private static bool AdditionalPermissions(HashSet<string> permissions, string[] required)

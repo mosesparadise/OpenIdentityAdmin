@@ -204,3 +204,14 @@ exchange and service integration example are in verification. Both provider
 journeys exercise a signed access token against the shipped orders API. The local
 sample substitutes the test issuer address and its discovered public keys.
 [Service integration guide](quickstart.md#confidential-machine-client)
+
+### Managed client assertion authentication in T005
+
+The native authentication dispatcher validates signed assertions against a locally
+registered public RSA key. The receipt binds the original request, signature,
+permanent application, approval and credential revision. The ledger has a global
+10,000-row limit. Each successful submission can reclaim up to 100 expired
+entries, advancing the affected registrations' observation times before deletion.
+Both real database providers accepted exactly one of two concurrent requests
+carrying the same valid assertion. Public registration, administrator key
+replacement and the final token-publication integration are still open.

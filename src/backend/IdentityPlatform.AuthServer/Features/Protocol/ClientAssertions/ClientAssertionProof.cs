@@ -16,20 +16,25 @@ internal sealed class ClientAssertionProof
     private readonly string principalBinding;
     private readonly ClaimsPrincipal principal;
     private int claimed;
-    internal AdministratorAssertion Assertion
+    private readonly AdministratorAssertion? administrator;
+    private readonly string clientId;
+    internal AdministratorAssertion Assertion => administrator ?? throw ProtocolStorageOwner.Unavailable();
+    internal SignedClientAssertion? Managed
     {
         get;
     }
 
     /// <summary>Captures native proof and original lifetime without retaining printable proof values in diagnostics.</summary>
-    private ClientAssertionProof(OpenIddictServerEvents.ValidateTokenContext validation, AdministratorAssertion assertion, ProtocolStorageRequest request)
+    private ClientAssertionProof(OpenIddictServerEvents.ValidateTokenContext validation, AdministratorAssertion? assertion, ProtocolStorageRequest request, SignedClientAssertion? managed = null)
     {
         this.validation = validation;
         this.request = request;
         compact = validation.Token;
         principal = validation.Principal!;
         principalBinding = Binding(principal);
-        Assertion = assertion;
+        administrator = assertion;
+        Managed = managed;
+        clientId = managed?.ClientId ?? AdministratorProtocolIdentity.ClientId;
     }
 
     /// <summary>Creates proof only from the real native crypto result, exact expected key material and bounded original JSON.</summary>
@@ -39,6 +44,20 @@ internal sealed class ClientAssertionProof
         var assertion = context.Options.Issuer is { } issuer ? ClientAssertionShape.Read(context, issuer.AbsoluteUri, policy.Key.KeyId) : null;
         return original is not null && assertion is not null && context.TokenValidationResult?.SecurityToken?.SigningKey is { } key &&
             policy.Key.MatchesValidatedKey(key) ? new(context, assertion, original) : null;
+    }
+
+    /// <summary>Captures a managed client's original native validation and independently checked scalar claims in this request.</summary>
+    internal static ClientAssertionProof? CaptureManaged(OpenIddictServerEvents.ValidateTokenContext context)
+    {
+        var original = ProtocolStorageAmbient.Current?.Request;
+        var client = context.Request?.ClientId;
+        if (original is null || context.Options.Issuer is not { } issuer || !ManagedApplications.ManagedDemand.Candidate(client) ||
+            context.TokenValidationResult?.SecurityToken?.SigningKey?.KeyId is not { } keyId)
+        {
+            return null;
+        }
+        var proof = ClientAssertionShape.ReadClient(context, issuer.AbsoluteUri, keyId, client!);
+        return proof is null ? null : new(context, null, original, proof);
     }
 
     /// <summary>Claims once for the same native transaction and original request; foreign or repeated claims cannot consume or authenticate.</summary>
@@ -52,8 +71,8 @@ internal sealed class ClientAssertionProof
         !context.IsRejected && !context.IsRequestHandled && !context.IsRequestSkipped &&
         ReferenceEquals(principal, validation.Principal) && ReferenceEquals(principal, context.ClientAssertionPrincipal) &&
         principalBinding == Binding(principal) && compact == validation.Token && compact == context.ClientAssertion &&
-        compact == context.Request.ClientAssertion && context.ClientId == AdministratorProtocolIdentity.ClientId &&
-        context.Request.ClientId == AdministratorProtocolIdentity.ClientId &&
+        compact == context.Request.ClientAssertion && context.ClientId == clientId &&
+        context.Request.ClientId == clientId &&
         context.ClientAssertionType == OpenIddictConstants.ClientAssertionTypes.JwtBearer &&
         context.Request.ClientAssertionType == OpenIddictConstants.ClientAssertionTypes.JwtBearer && string.IsNullOrEmpty(context.Request.ClientSecret);
 
