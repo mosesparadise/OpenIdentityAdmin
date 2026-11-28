@@ -16,7 +16,7 @@ internal static class ApplicationCreation
     {
         await ApplicationMutationWriter.RequireNewIdentityAsync(manager, command.ClientId!, token);
         var now = ApplicationMutationWriter.Now(scope, command);
-        var publicClient = command.Kind is ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser;
+        var publicClient = command.Kind is ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateDevice;
         var secret = publicClient ? null : Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
         var descriptor = ManagedApplicationProfile.Create(command, secret);
         source?.Apply(descriptor);
@@ -33,6 +33,7 @@ internal static class ApplicationCreation
             Profile = command.Kind switch
             {
                 ApplicationMutationKind.CreateNative => ApplicationEditorRules.NativeProfile,
+                ApplicationMutationKind.CreateDevice => ApplicationEditorRules.DeviceProfile,
                 ApplicationMutationKind.CreateBrowser => ApplicationEditorRules.BrowserProfile,
                 _ => ApplicationEditorRules.Profile
             },

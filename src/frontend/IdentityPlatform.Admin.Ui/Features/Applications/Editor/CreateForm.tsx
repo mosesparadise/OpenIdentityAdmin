@@ -11,17 +11,22 @@ export function CreateForm({ submit, cancel }: { submit: (draft: Draft, profile:
   useEffect(() => { if (Object.keys(errors).length) summary.current?.focus(); }, [errors]);
   return <form className="application-editor-form" noValidate autoComplete="off" onSubmit={async event => { event.preventDefault(); setErrors(await submit({ ...draft }, profile)); }}>
     <label htmlFor="editor-profile">Application type</label>
-    <select id="editor-profile" value={profile} onChange={event => { setProfile(event.target.value as RegistrationType); setErrors({}); setDraft(previous => ({ ...previous, credentialExpiresAt: "", origins: "" })); }}>
-      <option value="web">Confidential web application</option><option value="browser">Public browser application</option><option value="native">Public native application</option>
+    <select id="editor-profile" value={profile} onChange={event => {
+      const next = event.target.value as RegistrationType;
+      setProfile(next);
+      setErrors({});
+      setDraft(previous => ({ ...previous, credentialExpiresAt: "", origins: "", redirectUris: next === "device" ? "" : previous.redirectUris }));
+    }}>
+      <option value="web">Confidential web application</option><option value="browser">Public browser application</option><option value="native">Public native application</option><option value="device">Public device application</option>
     </select>
-    <CreateFields native={profile !== "web"} browser={profile === "browser"} draft={draft} errors={errors} setDraft={setDraft} summary={summary} />
-    {profile === "browser" ? <p>The browser exchanges its code with PKCE S256. Register each origin that will call the token or UserInfo endpoint.</p> : profile === "native" ? <p>Register an HTTPS callback that your operating system associates with the installed app. The app uses PKCE S256 without a client secret.</p> : <div className="editor-notice"><h3>Save the secret immediately after creation</h3><p>The generated secret is shown once. Hiding it, switching tabs, leaving this page or session expiry removes it from this view. It cannot be retrieved later. You can explicitly replace a lost secret from application details.</p></div>}
+    <CreateFields device={profile === "device"} native={profile !== "web"} browser={profile === "browser"} draft={draft} errors={errors} setDraft={setDraft} summary={summary} />
+    {profile === "device" ? <p>The device displays a code. Users enter it on the issuer’s verification page to sign in and approve access.</p> : profile === "browser" ? <p>The browser exchanges its code with PKCE S256. Register each origin that will call the token or UserInfo endpoint.</p> : profile === "native" ? <p>Register an HTTPS callback that your operating system associates with the installed app. The app uses PKCE S256 without a client secret.</p> : <div className="editor-notice"><h3>Save the secret immediately after creation</h3><p>The generated secret is shown once. Hiding it, switching tabs, leaving this page or session expiry removes it from this view. It cannot be retrieved later. You can explicitly replace a lost secret from application details.</p></div>}
     <div className="actions"><Button type="submit">Create application</Button><Button secondary type="button" onClick={cancel}>Cancel</Button></div>
   </form>;
 }
 
 /** Renders the same linked field/error projection for initial and failed local submissions. */
-export function CreateFields({ draft, errors, setDraft, summary, mode = "create", native = false, browser = false }: { browser?: boolean; native?: boolean; mode?: "create" | "edit" | "replace" | "clone"; draft: Draft; errors: Errors; setDraft: React.Dispatch<React.SetStateAction<Draft>>; summary: React.RefObject<HTMLDivElement | null> }) {
+export function CreateFields({ draft, errors, setDraft, summary, mode = "create", native = false, browser = false, device = false }: { device?: boolean; browser?: boolean; native?: boolean; mode?: "create" | "edit" | "replace" | "clone"; draft: Draft; errors: Errors; setDraft: React.Dispatch<React.SetStateAction<Draft>>; summary: React.RefObject<HTMLDivElement | null> }) {
   const field = (name: keyof Draft) => ({ id: `editor-${name}`, name, value: draft[name],
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setDraft(value => ({ ...value, [name]: event.target.value })),
     "aria-invalid": !!errors[name], "aria-describedby": `editor-${name}-help${errors[name] ? ` editor-${name}-error` : ""}` });
@@ -32,8 +37,8 @@ export function CreateFields({ draft, errors, setDraft, summary, mode = "create"
       <p id="editor-clientId-help">A unique, permanent identifier. Case-sensitive; no spaces. It cannot be renamed.</p>{error("clientId")}</div>}
     {mode !== "replace" && <><div><label htmlFor="editor-displayName">Display name <span>(required)</span></label><input {...field("displayName")} maxLength={200} required />
       <p id="editor-displayName-help">The application name shown during sign-in and consent.</p>{error("displayName")}</div>
-    <div><label htmlFor="editor-redirectUris">HTTPS callbacks <span>(required)</span></label><textarea {...field("redirectUris")} readOnly={mode === "clone"} rows={4} maxLength={20489} required spellCheck={false} placeholder="https://app.example/callback" />
-      <p id="editor-redirectUris-help">One exact HTTPS URL per line, up to 10. No spaces, credentials or fragments. Values are not trimmed or changed.</p>{error("redirectUris")}</div></>}
+    {!device && <div><label htmlFor="editor-redirectUris">HTTPS callbacks <span>(required)</span></label><textarea {...field("redirectUris")} readOnly={mode === "clone"} rows={4} maxLength={20489} required spellCheck={false} placeholder="https://app.example/callback" />
+      <p id="editor-redirectUris-help">One exact HTTPS URL per line, up to 10. No spaces, credentials or fragments. Values are not trimmed or changed.</p>{error("redirectUris")}</div>}</>}
     {browser && <div><label htmlFor="editor-origins">Allowed browser origins <span>(required)</span></label>
       <textarea {...field("origins")} rows={3} maxLength={3009} required spellCheck={false} placeholder="https://portal.example" />
       <p id="editor-origins-help">One HTTPS origin per line, up to 10. Include any non-default port. Omit the path and trailing slash.</p>{error("origins")}</div>}

@@ -8,7 +8,7 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 /// <summary>Tracks the polling cadence of one native device transaction under its original application revision.</summary>
 internal sealed class DevicePollingWindow
 {
-    internal const string Profile = "managed-device-v1";
+    internal const string Profile = IdentityPlatform.Core.Features.Applications.ApplicationEditorRules.DeviceProfile;
     internal const int LifetimeSeconds = 600;
     internal const int IntervalStep = 5;
     private const int DigestLength = 64;

@@ -238,6 +238,26 @@
         ],
         "type": "object"
       },
+      "ApplicationDeviceCreate": {
+        "additionalProperties": false,
+        "properties": {
+          "clientId": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "displayName": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "clientId",
+          "displayName"
+        ],
+        "type": "object"
+      },
       "ApplicationEdit": {
         "properties": {
           "displayName": {
@@ -250,7 +270,6 @@
               "type": "string"
             },
             "maxItems": 10,
-            "minItems": 1,
             "type": "array"
           }
         },
@@ -1633,6 +1652,168 @@
           }
         ],
         "summary": "Register a public browser client with separate HTTPS origins, exact callbacks and S256",
+        "tags": [
+          "IdentityPlatform.Api.Contracts.Tests"
+        ],
+        "x-downstream-api-version": 1,
+        "x-required-permission": "applications.write"
+      }
+    },
+    "/bff/api/v1/applications/device-registrations": {
+      "post": {
+        "operationId": "CreateBrowserDeviceApplication",
+        "parameters": [
+          {
+            "description": "Native token bound to this browser generation and application mutation purpose.",
+            "in": "header",
+            "name": "X-CSRF-TOKEN",
+            "required": true,
+            "schema": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationDeviceCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetails"
+                }
+              }
+            },
+            "description": "Created",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "description": "Exact strong aggregate version; absent for protected or unmanaged registrations.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Conflict",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BrowserSession": []
+          }
+        ],
+        "summary": "Register a public device client through the current administrator session",
         "tags": [
           "IdentityPlatform.Api.Contracts.Tests"
         ],

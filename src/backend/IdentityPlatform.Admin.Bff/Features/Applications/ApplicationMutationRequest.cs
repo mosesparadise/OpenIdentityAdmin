@@ -63,7 +63,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Checks framing and preconditions before reading finite actual bytes and validating the selected Core contract.</summary>
     internal static async Task<ApplicationMutationRequest> ReadAsync(HttpContext http, ApplicationProxyAction action, string? id, DateTimeOffset now)
     {
-        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
+        if (!Enum.IsDefined(action) || (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateDevice ? id is not null : !ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is CurrentSegment or ParentSegment))
         {
             throw new ApplicationProxyRejected(StatusCodes.Status400BadRequest);
         }
@@ -113,7 +113,7 @@ internal sealed class ApplicationMutationRequest
     private static string? ReadVersion(HttpRequest request, ApplicationProxyAction action)
     {
         var values = request.Headers.IfMatch;
-        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser)
+        if (action is ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateDevice)
         {
             if (values.Count != 0)
             {
@@ -133,70 +133,32 @@ internal sealed class ApplicationMutationRequest
     }
 
     /// <summary>Parses only the selected independently validated DTO; unknown, duplicate and null fields cannot reach the API.</summary>
-    private static object Validate(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now)
+    private static object Validate(byte[] bytes, ApplicationProxyAction action, DateTimeOffset now) => action switch
     {
-        object value;
-        IReadOnlyDictionary<string, string[]> errors;
-        if (action == ApplicationProxyAction.Create)
-        {
-            var input = ApplicationJson.Parse<ApplicationCreate>(bytes);
-            value = input;
-            errors = ApplicationEditorRules.Validate(input, now);
-        }
-        else if (action == ApplicationProxyAction.CreateNative)
-        {
-            var input = ApplicationJson.Parse<ApplicationNativeCreate>(bytes);
-            value = input;
-            errors = ApplicationEditorRules.Validate(input);
-        }
-        else if (action == ApplicationProxyAction.CreateBrowser)
-        {
-            var input = ApplicationJson.Parse<ApplicationBrowserCreate>(bytes);
-            value = input;
-            errors = ApplicationEditorRules.Validate(input);
-        }
-        else if (action == ApplicationProxyAction.Clone)
-        {
-            var clone = ApplicationJson.Parse<ApplicationClone>(bytes);
-            return ApplicationCloneRules.IsValid(clone, now) ? clone : throw new InvalidDataException();
-        }
-        else if (action == ApplicationProxyAction.Edit)
-        {
-            var input = ApplicationJson.Parse<ApplicationEdit>(bytes);
-            value = input;
-            errors = ApplicationEditorRules.Validate(input);
-        }
-        else if (action == ApplicationProxyAction.Replace)
-        {
-            var input = ApplicationJson.Parse<ApplicationSecretReplacement>(bytes);
-            value = input;
-            errors = ApplicationEditorRules.Validate(input, now);
-        }
-        else if (action == ApplicationProxyAction.AssignScopes)
-        {
-            var assignment = ApplicationJson.Parse<ApplicationScopeInput>(bytes);
-            return CatalogueRules.IsAssignment(assignment.Scopes) ? assignment : throw new InvalidDataException();
-        }
-        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable or ApplicationProxyAction.Retire)
-        {
-            var input = ApplicationJson.Parse<ApplicationLifecycle>(bytes);
-            return ApplicationLifecycleRules.Reason(input) is not null ? input : throw new InvalidDataException();
-        }
-        else
-        {
-            throw new InvalidDataException();
-        }
-        if (errors.Count != 0)
-        {
-            throw new InvalidDataException();
-        }
-        return value;
+        ApplicationProxyAction.Create => Require<ApplicationCreate>(bytes, input => ApplicationEditorRules.Validate(input, now).Count == 0),
+        ApplicationProxyAction.CreateNative => Require<ApplicationNativeCreate>(bytes, input => ApplicationEditorRules.Validate(input).Count == 0),
+        ApplicationProxyAction.CreateBrowser => Require<ApplicationBrowserCreate>(bytes, input => ApplicationEditorRules.Validate(input).Count == 0),
+        ApplicationProxyAction.CreateDevice => Require<ApplicationDeviceCreate>(bytes, input => ApplicationEditorRules.Validate(input).Count == 0),
+        ApplicationProxyAction.Clone => Require<ApplicationClone>(bytes, input => ApplicationCloneRules.IsValid(input, now)),
+        ApplicationProxyAction.Edit => Require<ApplicationEdit>(bytes, input => ApplicationEditorRules.IsDisplayOnlyEdit(input) || ApplicationEditorRules.Validate(input).Count == 0),
+        ApplicationProxyAction.Replace => Require<ApplicationSecretReplacement>(bytes, input => ApplicationEditorRules.Validate(input, now).Count == 0),
+        ApplicationProxyAction.AssignScopes => Require<ApplicationScopeInput>(bytes, input => CatalogueRules.IsAssignment(input.Scopes)),
+        ApplicationProxyAction.Disable or ApplicationProxyAction.Enable or ApplicationProxyAction.Retire =>
+            Require<ApplicationLifecycle>(bytes, input => ApplicationLifecycleRules.Reason(input) is not null),
+        _ => throw new InvalidDataException()
+    };
+
+    /// <summary>Parses one closed JSON contract and retains only validated input for response binding.</summary>
+    private static T Require<T>(byte[] bytes, Func<T, bool> matches) where T : class
+    {
+        var input = ApplicationJson.Parse<T>(bytes);
+        return matches(input) ? input : throw new InvalidDataException();
     }
 
     /// <summary>Binds returned fields and exact successor revision to this immutable parsed action, without trusting response shape alone.</summary>
     internal bool Matches(ApplicationDetails details, long revision)
     {
-        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.Clone))
+        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.CreateDevice or ApplicationProxyAction.Clone))
         {
             var previous = long.Parse(Version!.AsSpan(RevisionOffset, Version!.Length - VersionPunctuation), System.Globalization.CultureInfo.InvariantCulture);
             if (Id != details.Id || previous == long.MaxValue || revision != previous + 1 || !ApplicationVersion.Matches(Version, Id!, previous))
@@ -206,6 +168,8 @@ internal sealed class ApplicationMutationRequest
         }
         return input switch
         {
+            ApplicationDeviceCreate device => revision == 1 && details.Profile == ApplicationEditorRules.DeviceProfile && details.Credential is null &&
+                details.Enabled == true && details.ClientId == device.ClientId && details.DisplayName == device.DisplayName && details.RedirectUris.Count == 0 && details.Origins is null,
             ApplicationBrowserCreate browser => revision == 1 && details.Profile == ApplicationEditorRules.BrowserProfile && details.Credential is null &&
                 details.ClientId == browser.ClientId && details.DisplayName == browser.DisplayName && SameRedirects(details, browser.RedirectUris) &&
                 details.Enabled == true && details.Origins is not null && details.Origins.SequenceEqual(browser.Origins.Order(StringComparer.Ordinal), StringComparer.Ordinal),
@@ -244,6 +208,7 @@ internal sealed class ApplicationMutationRequest
 
     /// <summary>Encodes one opaque ID as a path segment; operation suffixes are code-owned.</summary>
     private static string ResourcePath(ApplicationProxyAction action, string? id) => action == ApplicationProxyAction.Create ? string.Empty :
+        action == ApplicationProxyAction.CreateDevice ? ApplicationEditorRules.DeviceRegistrationSuffix :
         action == ApplicationProxyAction.CreateBrowser ? ApplicationEditorRules.BrowserRegistrationSuffix :
         action == ApplicationProxyAction.CreateNative ? ApplicationEditorRules.NativeRegistrationSuffix :
         PathSeparator + Uri.EscapeDataString(id!) + (action switch
@@ -262,7 +227,7 @@ internal sealed class ApplicationMutationRequest
 /// <summary>Closes the writable transport surface to reviewed application actions; retirement has its own acceptance response.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative, CreateBrowser
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone, Retire, CreateNative, CreateBrowser, CreateDevice
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

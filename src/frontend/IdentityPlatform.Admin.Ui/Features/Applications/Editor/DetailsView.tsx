@@ -1,12 +1,13 @@
 import type { Ref } from "react";
 import { Button } from "../../../Components/Button";
-import { browserProfile, nativeProfile } from "./input";
+import { deviceProfile, browserProfile, nativeProfile } from "./input";
 import type { Details } from "./observation";
 /** Shows only checked registration metadata; callbacks remain inert text rather than external navigation. */
 export function DetailsView({ details, secret, dismiss, edit, replace, clone, cloneRef, lifecycle, lifecycleRef, retire, retireRef }: { details: Details; retire?: () => void; retireRef?: Ref<HTMLButtonElement>; secret?: string; dismiss: () => void; edit?: () => void; replace?: () => void; clone?: () => void; cloneRef?: Ref<HTMLButtonElement>; lifecycle?: () => void; lifecycleRef?: Ref<HTMLButtonElement> }) {
   const native = details.profile === nativeProfile;
   const browser = details.profile === browserProfile;
-  const publicClient = native || browser;
+  const device = details.profile === deviceProfile;
+  const publicClient = native || browser || device;
   return <>
     {secret !== undefined && <section className="editor-secret" aria-labelledby="secret-heading"><h3 id="secret-heading">Save your client secret now</h3>
       <p>Store it in your application’s secret store. This is the only time it is shown. Switching tabs, hiding this page or session expiry clears this view.</p>
@@ -15,16 +16,20 @@ export function DetailsView({ details, secret, dismiss, edit, replace, clone, cl
       <Button type="button" secondary onClick={dismiss}>I’ve saved it — hide secret</Button></section>}
     <dl className="application-detail-grid"><div><dt>Display name</dt><dd>{details.displayName || "Unnamed application"}</dd></div>
       <div><dt>Client ID</dt><dd className="application-client-id">{details.clientId}</dd></div>
-      <div><dt>Registration</dt><dd>{details.retired ? "Permanently retired managed application" : browser ? "Managed public browser application" : native ? "Managed public native application" : details.editable ? "Managed confidential web application" : "Read-only registration"}</dd></div>
-      {(details.editable || details.retired) && <><div><dt>Application status</dt><dd>{details.retired ? "Permanently retired" : details.enabled ? "Enabled" : "Disabled"}</dd></div><div><dt>Sign-in profile</dt><dd>Authorization code with PKCE S256{browser ? " and registered browser origins" : native ? " and an OS-associated HTTPS callback" : " and a shared client secret"}. OpenID sign-in with explicit consent for assigned scopes.</dd></div>
+      <div><dt>Registration</dt><dd>{details.retired ? "Permanently retired managed application" : device ? "Managed public device application" : browser ? "Managed public browser application" : native ? "Managed public native application" : details.editable ? "Managed confidential web application" : "Read-only registration"}</dd></div>
+      {(details.editable || details.retired) && <><div><dt>Application status</dt><dd>{details.retired ? "Permanently retired" : details.enabled ? "Enabled" : "Disabled"}</dd></div><div><dt>Sign-in profile</dt><dd>{device ? "Device authorization with an issuer verification code and explicit consent." : <>Authorization code with PKCE S256{browser ? " and registered browser origins" : native ? " and an OS-associated HTTPS callback" : " and a shared client secret"}. OpenID sign-in with explicit consent for assigned scopes.</>}</dd></div>
         <div><dt>User authentication</dt><dd>A fresh password, MFA and explicit consent are required. No administrator permissions are granted to this client.</dd></div></>}
-      <div><dt>HTTPS callbacks</dt><dd>{details.redirectUris.length ? <ul>{details.redirectUris.map(uri => <li key={uri}>{uri}</li>)}</ul> : "Not exposed for this read-only registration."}</dd></div>
+      {!device && <div><dt>HTTPS callbacks</dt><dd>{details.redirectUris.length ? <ul>{details.redirectUris.map(uri => <li key={uri}>{uri}</li>)}</ul> : "Not exposed for this read-only registration."}</dd></div>}
       {browser && <div><dt>Allowed browser origins</dt><dd><ul>{details.origins?.map(origin => <li key={origin}>{origin}</li>)}</ul></dd></div>}
       {details.credential && <><div><dt>Secret issued (UTC)</dt><dd><time dateTime={details.credential.issuedAt}>{details.credential.issuedAt}</time></dd></div>
         <div><dt>Secret expires (UTC)</dt><dd><time dateTime={details.credential.expiresAt}>{details.credential.expiresAt}</time>{Date.parse(details.credential.expiresAt) <= Date.now() && " — expired"}</dd></div></>}
     </dl>
     {details.editable && <details className="editor-help"><summary>Client integration settings</summary>
-      <p>Use your deployment’s issuer address for discovery. Configure the {browser ? "browser" : native ? "native" : "server-side"} OIDC client with
+      {device ? <>
+        <p>Use issuer discovery to find the device authorization and token endpoints. Display the verification URI and user code returned for the device.</p>
+        <pre className="integration-example">{JSON.stringify({ client_id: details.clientId, grant_type: "urn:ietf:params:oauth:grant-type:device_code", token_endpoint_auth_method: "none", scope: "openid" }, null, 2)}</pre>
+        <p>Poll the token endpoint at the specified interval until the user approves, cancels or the code expires.</p>
+      </> : <><p>Use your deployment’s issuer address for discovery. Configure the {browser ? "browser" : native ? "native" : "server-side"} OIDC client with
         the following settings and choose one registered callback for each sign-in.</p>
       <pre className="integration-example">{JSON.stringify({
         client_id: details.clientId,
@@ -36,7 +41,7 @@ export function DetailsView({ details, secret, dismiss, edit, replace, clone, cl
         ...(publicClient ? {} : { client_secret: "<read from your server-side secret store>" })
       }, null, 2)}</pre>
       <p>Generate a fresh PKCE verifier and challenge for each request. Request additional scopes only
-        after assignment to this application.</p>
+        after assignment to this application.</p></>}
     </details>}
     {details.retirement && <p>Retired at <time dateTime={details.retirement.retiredAt}>{details.retirement.retiredAt}</time>. History and the client ID are retained. This application cannot be re-enabled. Tokens validated offline may remain valid until expiry, and sessions in other applications may continue.</p>}
     <p className="editor-help">{details.retired ? "Retained details support auditing and grant-revocation recovery." : details.editable ? "Client ID cannot be changed. Details never return a previously issued secret." : "System-owned and unmanaged registrations cannot be changed through this editor."}</p>

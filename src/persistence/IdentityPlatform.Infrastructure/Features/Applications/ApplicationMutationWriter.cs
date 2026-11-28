@@ -22,7 +22,7 @@ internal static class ApplicationMutationWriter
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser)
+        if (command.Kind is ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateDevice)
         {
             return await ApplicationCreation.StageAsync(scope, manager, command, null, token);
         }
@@ -41,7 +41,11 @@ internal static class ApplicationMutationWriter
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
-        if ((policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile &&
+        if (command.Kind == ApplicationMutationKind.Edit && (policy.Profile == ApplicationEditorRules.DeviceProfile) != command.Redirects.IsEmpty)
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.InvalidEdit);
+        }
+        if ((policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile or ApplicationEditorRules.DeviceProfile &&
             command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Clone) ||
             (policy.Profile == ApplicationEditorRules.NativeProfile && command.Kind == ApplicationMutationKind.Edit && !command.Redirects.All(ApplicationEditorRules.IsNativeRedirect)))
         {

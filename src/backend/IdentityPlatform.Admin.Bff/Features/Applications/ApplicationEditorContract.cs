@@ -41,6 +41,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const int VersionMaximum = 86;
     internal const string BrowserOperation = "RegisterPublicBrowserApplication";
     internal const string BrowserSummary = "Register a public browser client with separate HTTPS origins, exact callbacks and S256";
+    internal const string DeviceOperation = "CreateBrowserDeviceApplication";
+    internal const string DeviceSummary = "Register a public device client through the current administrator session";
     internal const string NativeOperation = "CreateBrowserNativeApplication";
     internal const string NativeSummary = "Register a public native application with exact claimed HTTPS callbacks and S256";
     private const string CreateOperation = "CreateBrowserApplication";
@@ -69,6 +71,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Collection, HttpMethod.Post, CreateOperation);
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, NativeOperation);
         Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, BrowserOperation);
+        Apply(document, Collection + ApplicationEditorRules.DeviceRegistrationSuffix, HttpMethod.Post, DeviceOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -118,7 +121,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix;
+        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + ApplicationEditorRules.DeviceRegistrationSuffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();

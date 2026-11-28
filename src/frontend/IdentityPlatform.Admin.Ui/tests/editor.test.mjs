@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { validate, validateDevice, validateBrowser, browserOrigin, validateNative, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
 import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
@@ -160,8 +160,12 @@ test('Given_generated_transport_When_operations_run_Then_paths_proofs_and_creden
   await client.createBrowser(browser, proof.value.requestToken, signal);
   assert.equal(requests[4].url, 'https://bff.example.test/bff/api/v1/applications/browser-registrations');
   assert.deepEqual(await requests[4].json(), browser);
+  const device = validateDevice(draft).input;
+  await client.createDevice(device, proof.value.requestToken, signal);
+  assert.equal(requests[5].url, 'https://bff.example.test/bff/api/v1/applications/device-registrations');
+  assert.deepEqual(await requests[5].json(), { clientId: draft.clientId, displayName: draft.displayName });
   for(const request of requests){assert.equal(request.credentials,'same-origin');assert.equal(request.cache,'no-store');assert.equal(request.redirect,'error');assert.equal(request.headers.has('authorization'),false)}
-  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,5);
+  await assert.rejects(()=>client.details('AnTiFoRgErY',signal));assert.equal(requests.length,6);
  }finally{globalThis.fetch=original;delete globalThis.window;}
 });
 
@@ -705,4 +709,27 @@ test('Given_a_browser_registration_When_created_Then_separate_origins_and_callba
  const different={status:200,value:{...application,displayName:'New',origins:['https://different.example']},etag:read.etag.replace('-1"','-2"')};
  assert.equal(await edited(different,base,{displayName:'New',redirectUris:application.redirectUris},now),null);
  owner.suspend();assert.equal(states.at(-1).outcome,'browser-created');
+});
+
+test('Given_a_public_device_When_registered_and_renamed_Then_only_its_identifier_and_display_name_are_used', async t => {
+ const fields = { clientId: draft.clientId, displayName: draft.displayName };
+ const deviceDraft = { ...draft, origins: 'https://portal.example' };
+ assert.deepEqual(validateDevice(deviceDraft).input, fields);
+ assert.ok(validateDevice({ ...deviceDraft, displayName: '' }).errors.displayName);
+ assert.deepEqual(validateEdit(deviceDraft, false, true).input, { displayName: fields.displayName, redirectUris: [] });
+ const application = { ...details, profile: 'managed-device-v1', credential: null, redirectUris: [] };
+ const result = { status: 201, value: application, etag: read.etag };
+ const { owner, states } = setup(t, { createDevice: async input => { assert.deepEqual(input, fields); return result; } });
+ owner.newForm();
+ await owner.create(deviceDraft, 'device');
+ const saved = states.at(-1);
+ assert.equal(saved.kind, 'details');
+ const html = renderToStaticMarkup(createElement(DetailsView, { details: saved.details, dismiss() {} }));
+ assert.match(html, /urn:ietf:params:oauth:grant-type:device_code/);
+ assert.doesNotMatch(html, /S256|Replace secret|Clone application/);
+ for (const change of [{ credential: details.credential }, { redirectUris: input.redirectUris }, { origins: [] }, { clientSecret: secret }, { profile: 'managed-native-v1' }]) {
+   assert.equal(await observe({ ...result, value: { ...application, ...change } }, null, now, fields), null);
+ }
+ owner.suspend();
+ assert.equal(states.at(-1).outcome, 'device-created');
 });

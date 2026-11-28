@@ -49,7 +49,7 @@
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 78
+    "Administrator": 79
   },
   "lifecycle_stories": {
     "Restart": {
@@ -139,7 +139,7 @@
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 38,
+    "BrowserProtection": 39,
     "BrowserLogin": 9,
     "ApplicationEditor": 1,
     "ApplicationAuthority": 1,
@@ -492,8 +492,8 @@
         "CatalogueBrowserTests"
       ],
       "counts": {
-        "PostgreSql": 21,
-        "SqlServer": 21
+        "PostgreSql": 22,
+        "SqlServer": 22
       }
     },
     "Retirement": {

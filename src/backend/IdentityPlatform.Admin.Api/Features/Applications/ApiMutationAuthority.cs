@@ -158,7 +158,7 @@ internal sealed class ApiMutationAuthority
     /// <summary>Selects only the named action's persisted grant; unknown actions cannot fall through to ordinary write permission.</summary>
     private static string Permission(ApplicationMutationKind kind) => kind switch
     {
-        ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.Edit or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone => WritePermission,
+        ApplicationMutationKind.Create or ApplicationMutationKind.CreateNative or ApplicationMutationKind.CreateBrowser or ApplicationMutationKind.CreateDevice or ApplicationMutationKind.Edit or ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Clone => WritePermission,
         ApplicationMutationKind.Replace => CredentialPermission,
         ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => LifecyclePermission,
         _ => throw ProtocolStorageOwner.Unavailable()
