@@ -29,7 +29,7 @@ public sealed class ManagedProfileTests(AdministratorRegistrationFixture fixture
     private const string Alias = "&Client_Id=managed-client";
     private const long EpochSeconds = 1700000000;
 
-    /// <summary>Managed enablement adds only shared-secret caching prerequisites, preserving administrator scope and disabling pilot scope.</summary>
+    /// <summary>Managed enablement adds public and shared-secret client authentication while preserving the fixed administrator and pilot scope boundaries.</summary>
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -37,7 +37,7 @@ public sealed class ManagedProfileTests(AdministratorRegistrationFixture fixture
     {
         var options = new OpenIddictServerOptions();
         ProtocolOptions.Configure(options, new(false, AdministratorRegistrationPolicy.Create(Callback, fixture.Key), managed));
-        Assert.Equal(managed ? ["client_secret_basic", "private_key_jwt"] : ["private_key_jwt"], options.ClientAuthenticationMethods.Order());
+        Assert.Equal(managed ? ["client_secret_basic", "none", "private_key_jwt"] : ["private_key_jwt"], options.ClientAuthenticationMethods.Order());
         Assert.Equal(["identity.admin", "openid"], options.Scopes.Order());
         Assert.Equal(managed ? ["login", "none"] : ["none"], options.PromptValues.Order());
         Assert.Equal(TimeSpan.FromSeconds(managed ? ManagedLifetimeSeconds : AdministratorLifetimeSeconds), options.RequestTokenLifetime);
