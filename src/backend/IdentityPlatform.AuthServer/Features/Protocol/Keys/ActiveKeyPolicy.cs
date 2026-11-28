@@ -32,10 +32,13 @@ public static class ActiveKeyPolicy
         var maximum = context.TokenType switch
         {
             TokenTypeIdentifiers.Private.AuthorizationCode => CodeLifetimeSeconds,
+            TokenTypeIdentifiers.Private.DeviceCode or TokenTypeIdentifiers.Private.UserCode when Devices.DeviceNative.Owns(context.Transaction)
+                => IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow.LifetimeSeconds,
             TokenTypeIdentifiers.AccessToken or TokenTypeIdentifiers.IdentityToken or TokenTypeIdentifiers.Private.RequestToken => TokenLifetimeSeconds,
             _ => 0
         };
-        var encrypted = context.TokenType is TokenTypeIdentifiers.Private.AuthorizationCode or TokenTypeIdentifiers.Private.RequestToken;
+        var encrypted = context.TokenType is TokenTypeIdentifiers.Private.AuthorizationCode or TokenTypeIdentifiers.Private.RequestToken or
+            TokenTypeIdentifiers.Private.DeviceCode or TokenTypeIdentifiers.Private.UserCode;
         var now = context.Options.TimeProvider!.GetUtcNow();
         var created = context.Principal.GetCreationDate();
         var expires = context.Principal.GetExpirationDate();

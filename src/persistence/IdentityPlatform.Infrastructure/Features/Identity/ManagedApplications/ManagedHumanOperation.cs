@@ -14,7 +14,8 @@ internal static class ManagedHumanOperation
 {
     /// <summary>Acquires current policy/account locks, commits only exact persisted proof and withholds any result until real transaction cleanup.</summary>
     internal static async ValueTask<ManagedHumanResult> RunAsync(ProtocolStorageScope scope, ManagedHumanRequest request,
-        ManagedHumanAction action, string browser, string? username, string? proof, CancellationToken token)
+        ManagedHumanAction action, string browser, string? username, string? proof, CancellationToken token,
+        Func<ManagedLoginInteraction, CancellationToken, ValueTask>? deviceDecision = null)
     {
         ManagedHumanResult result;
         await using (var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner))
@@ -35,6 +36,11 @@ internal static class ManagedHumanOperation
             if (ManagedLoginRules.Observe(scope.Owner.Clock, Math.Max(row.ObservedAt, registration.ObservedAt)) >= Math.Min(row.ExpiresAt, registration.ExpiresAt))
             {
                 throw ProtocolStorageOwner.Unavailable();
+            }
+            if (transition.Accepted && row.DeviceEntryId is not null && action is ManagedHumanAction.Approve or ManagedHumanAction.Deny)
+            {
+                await (deviceDecision ?? throw ProtocolStorageOwner.Unavailable())(row, token);
+                await scope.Owner.RunAsync(current => new ValueTask(transition.Snapshot.VerifyAsync((PlatformDbContext)scope.Owner.Database, scope.Owner.Clock, current)), token);
             }
             await transaction.CommitAsync(token);
             result = new(transition.Accepted, row.State, row.Revision, registration.ClientId, row.ExpiresAt, transition.NeedsDummyWork, disclosure);
@@ -115,7 +121,8 @@ internal static class ManagedHumanOperation
                 throw new FactorUnavailableException();
             }
             authentication.RequireAccount(ceremony, account, row);
-            row.State = action == ManagedHumanAction.Approve ? ManagedLoginState.Approved : ManagedLoginState.Denied;
+            row.State = action == ManagedHumanAction.Deny ? ManagedLoginState.Denied :
+                row.DeviceEntryId is null ? ManagedLoginState.Approved : ManagedLoginState.DeviceApproved;
             row.ConsentVerifiedAt = row.ObservedAt = Math.Max(row.ObservedAt, now);
             return true;
         }

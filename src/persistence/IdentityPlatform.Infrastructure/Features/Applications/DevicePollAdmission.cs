@@ -17,21 +17,23 @@ internal static class DevicePollAdmission
     {
         var pair = await ReadPairLockedAsync(scope, request.ClientId ?? string.Empty, request.GetScopes(), userCode, OpenIddictConstants.Statuses.Valid, token);
         var window = DevicePollingWindow.Start(pair.DeviceId, pair.Policy, pair.CreatedAt);
+        window.NativeAuthorizationId = userCode.GetAuthorizationId();
         await StoreAsync(scope, window, pair.Now, token);
     }
 
     /// <summary>Revalidates the original pair and current registration under the approval transaction before the native code is updated.</summary>
-    internal static async ValueTask<DateTimeOffset> ApprovalDeadlineLockedAsync(ProtocolStorageScope scope, ClaimsPrincipal userCode, ImmutableArray<string> scopes, CancellationToken token)
+    internal static async ValueTask<DateTimeOffset> ApprovalDeadlineLockedAsync(ProtocolStorageScope scope, ClaimsPrincipal userCode, ImmutableArray<string> scopes, CancellationToken token, bool redeemed = true)
     {
         if (scope.Owner.Transaction is null || userCode.GetClaim(OpenIddictConstants.Claims.ClientId) is not { } clientId)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        var pair = await ReadPairLockedAsync(scope, clientId, scopes, userCode, OpenIddictConstants.Statuses.Redeemed, token);
+        var pair = await ReadPairLockedAsync(scope, clientId, scopes, userCode, redeemed ? OpenIddictConstants.Statuses.Redeemed : OpenIddictConstants.Statuses.Valid, token);
         var digest = ManagedLoginRules.Digest(pair.DeviceId);
         var stored = await scope.Owner.RunAsync(async current => await scope.Owner.Database.Set<DevicePollingWindow>().AsNoTracking()
             .SingleOrDefaultAsync(row => row.Digest == digest, current), token);
         if (stored is null || stored.ApplicationId != pair.Policy.ApplicationId || stored.ApplicationRevision != pair.Policy.Revision ||
+            (stored.NativeAuthorizationId is not null && stored.NativeAuthorizationId != userCode.GetAuthorizationId()) ||
             stored.CreatedAt != pair.CreatedAt || stored.ExpiresAt != pair.ExpiresAt || pair.Now < stored.ObservedAt)
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -111,7 +113,7 @@ internal static class DevicePollAdmission
         scope.Owner.RunAsync(async current =>
         {
             var windows = scope.Owner.Database.Set<DevicePollingWindow>();
-            var expired = await windows.Where(row => row.ExpiresAt < now).OrderBy(row => row.ExpiresAt).ThenBy(row => row.Digest)
+            var expired = await windows.Where(row => row.NativeAuthorizationId == null && row.ExpiresAt < now).OrderBy(row => row.ExpiresAt).ThenBy(row => row.Digest)
                 .Select(row => row.Digest).Take(ManagedLoginRules.CleanupLimit).ToArrayAsync(current);
             if (expired.Length != 0)
             {
@@ -126,20 +128,24 @@ internal static class DevicePollAdmission
         }, token, write: true);
 
     /// <summary>Commits each cadence observation under current native registration authority before handing an admitted poll back to OpenIddict.</summary>
-    internal static async ValueTask<DevicePollResult> PollAsync(ProtocolStorageScope scope, string clientId, string externalCode, CancellationToken token)
+    internal static async ValueTask<DevicePollResult> PollAsync(ProtocolStorageScope scope, string clientId, string externalCode, CancellationToken token) =>
+        (await AdmitAsync(scope, clientId, externalCode, token)).Result;
+
+    /// <summary>Carries the metered device entry and current registration across the independent poll and exchange transactions.</summary>
+    internal static async ValueTask<DevicePollReceipt> AdmitAsync(ProtocolStorageScope scope, string clientId, string externalCode, CancellationToken token)
     {
         await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
         await ManagedRegistration.LockAsync(scope, token);
         var current = await DeviceClientRegistration.ReadLockedAsync(scope, clientId, token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var tokenRow = current is null ? null : await manager.FindByReferenceIdAsync(externalCode, token);
-        var result = DevicePollResult.Unavailable;
+        var result = new DevicePollReceipt(DevicePollResult.Unavailable, null, null, 0);
         if (tokenRow is not null && await ProtocolStorageRows.ReloadAsync(scope, tokenRow, token) &&
             await manager.HasTypeAsync(tokenRow, OpenIddictConstants.TokenTypeIdentifiers.Private.DeviceCode, token) &&
             await manager.GetApplicationIdAsync(tokenRow, token) == current!.Value.Policy.ApplicationId &&
             await manager.GetIdAsync(tokenRow, token) is { } id)
         {
-            result = await AdvanceAsync(scope, current.Value.Policy, ManagedLoginRules.Digest(id), token);
+            result = new(await AdvanceAsync(scope, current.Value.Policy, ManagedLoginRules.Digest(id), token), id, current.Value.Policy.ApplicationId, current.Value.Policy.Revision);
         }
         await transaction.CommitAsync(token);
         return result;
@@ -162,3 +168,6 @@ internal static class DevicePollAdmission
             return result;
         }, token, write: true);
 }
+
+/// <summary>Names the exact native device and registration admitted by the committed pacing transaction.</summary>
+internal readonly record struct DevicePollReceipt(DevicePollResult Result, string? EntryId, string? ApplicationId, long ApplicationRevision);

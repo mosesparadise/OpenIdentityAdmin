@@ -42,7 +42,7 @@ internal static class ManagedScopeBinding
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        await ManagedScopePolicy.VerifyAsync(scope, client, decision, token);
+        await ManagedScopePolicy.VerifyAsync(scope, client, decision, token, device: row.DeviceEntryId is not null);
     }
 
     /// <summary>Constructs the original fixed policy for legacy compatibility without inferring consent.</summary>

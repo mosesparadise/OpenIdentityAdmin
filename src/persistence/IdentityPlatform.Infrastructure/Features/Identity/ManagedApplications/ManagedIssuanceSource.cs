@@ -18,7 +18,7 @@ internal sealed class ManagedIssuanceSource(CeremonyAccount account, Administrat
         => await TryOpenAsync(scope, row, observe: true, token) ?? throw ProtocolStorageOwner.Unavailable();
 
     /// <summary>Reads current source for issuance or UserInfo; ordinary revoked account proof returns no authority without swallowing storage faults.</summary>
-    internal static async ValueTask<ManagedIssuanceSource?> TryOpenAsync(ProtocolStorageScope scope, ManagedLoginInteraction row, bool observe, CancellationToken token)
+    internal static async ValueTask<ManagedIssuanceSource?> TryOpenAsync(ProtocolStorageScope scope, ManagedLoginInteraction row, bool observe, CancellationToken token, bool completedDevice = false)
     {
         if (row.UserId is null || row.BrowserBudgetId is null || row.MfaVerifiedAt is null || row.ConsentVerifiedAt is null ||
             row.ConsentVerifiedAt < row.MfaVerifiedAt || row.ConsentVerifiedAt > ManagedLoginRules.Observe(scope.Owner.Clock, row.ObservedAt))
@@ -32,7 +32,7 @@ internal sealed class ManagedIssuanceSource(CeremonyAccount account, Administrat
             var database = (PlatformDbContext)scope.Owner.Database;
             await using var lease = CeremonyTransaction.BorrowManaged(locks, database, scope.Services.GetRequiredService<NativeOperation>(), current);
             var account = await CeremonyAccount.TryLoadAsync(database, lease, row.UserId);
-            if (account is null || !scope.Services.GetRequiredService<ManagedAuthentication>().CanUseAccount(lease, account, row, observe))
+            if (account is null || !scope.Services.GetRequiredService<ManagedAuthentication>().CanUseAccount(lease, account, row, observe, completedDevice))
             {
                 return null;
             }

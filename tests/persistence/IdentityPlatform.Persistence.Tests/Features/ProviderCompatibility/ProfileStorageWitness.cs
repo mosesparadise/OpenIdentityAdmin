@@ -16,7 +16,7 @@ internal static class ProfileStorageWitness
     private const string Columns = "columns";
     private const string Constraints = "table_constraints";
     private const string Checks = "check_constraints";
-    private sealed record Change(string?[][] Old, string?[][] New);
+    internal sealed record Change(string?[][] Old, string?[][] New);
 
     /// <summary>Restores only independently captured metadata rows and the single added migration, preserving all other physical observations.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
@@ -47,7 +47,7 @@ internal static class ProfileStorageWitness
     }
 
     /// <summary>Requires each expected current row exactly once and preserves any extra row for the full predecessor fingerprint comparison.</summary>
-    private static string[] Restore(string[] rows, Change change, string catalog)
+    internal static string[] Restore(string[] rows, Change change, string catalog)
     {
         var result = rows.ToList();
         foreach (var current in change.New)

@@ -6,6 +6,14 @@ internal sealed class ManagedHumanRequest
     public string Selector { get; init; } = string.Empty;
     public string BrowserDigest { get; init; } = string.Empty;
     public string ClientId { get; init; } = string.Empty;
+    public string? DeviceDisplayName
+    {
+        get; init;
+    }
+    public string? DeviceUserCode
+    {
+        get; init;
+    }
     public string Callback { get; init; } = string.Empty;
     public string DemandDigest { get; init; } = string.Empty;
     public string? PolicyDigest

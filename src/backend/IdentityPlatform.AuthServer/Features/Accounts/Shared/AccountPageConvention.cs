@@ -7,6 +7,8 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
 internal sealed class AccountPageConvention(bool pilot, bool administrator, bool browser = false, bool managed = false) : IPageRouteModelConvention
 {
     private const string ManagedPage = "/ManagedApplications/Index";
+    private const string DevicePage = "/Devices/Index";
+    private const string DeviceRoute = "account/device";
     private const string ManagedRoute = "account/application/sign-in";
     private static readonly Dictionary<string, string> PilotPages = new(StringComparer.Ordinal)
     {
@@ -46,7 +48,7 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator, bool
             {
                 model.Selectors.RemoveAt(index);
             }
-            else if (managed && model.ViewEnginePath == ManagedPage)
+            else if (managed && model.ViewEnginePath is ManagedPage or DevicePage)
             {
                 model.Selectors[index].EndpointMetadata.Add(new IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications.ManagedAccountEndpoint());
             }
@@ -60,6 +62,10 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator, bool
     /// <summary>Resolves an explicitly supported page only when its feature was enabled at composition.</summary>
     private string? AllowedRoute(string page)
     {
+        if (administrator && managed && page == DevicePage)
+        {
+            return DeviceRoute;
+        }
         if (administrator && managed && page == ManagedPage)
         {
             return ManagedRoute;

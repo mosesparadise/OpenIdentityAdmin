@@ -43,6 +43,8 @@ internal static class ManagedFormProof
         BrowserDigest = prior.BrowserDigest,
         ClientId = prior.ClientId,
         Callback = prior.Callback,
+        DeviceUserCode = prior.DeviceUserCode,
+        DeviceDisplayName = prior.DeviceDisplayName,
         DemandDigest = prior.DemandDigest,
         PolicyDigest = prior.PolicyDigest,
         RequestId = prior.RequestId,

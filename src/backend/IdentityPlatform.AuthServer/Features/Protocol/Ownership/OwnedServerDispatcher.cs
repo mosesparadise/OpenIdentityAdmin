@@ -50,6 +50,10 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
     /// <summary>Routes only explicitly enabled fixed-client issuance into a fresh child; all other native paths preserve their dispatcher.</summary>
     private ValueTask DispatchNativeAsync<TContext>(TContext context) where TContext : OpenIddictServerEvents.BaseContext
     {
+        if (Devices.DeviceNative.Owns(context.Transaction))
+        {
+            return native.DispatchAsync(context);
+        }
         if (services.GetService<IssuerLogoutEnabled>() is not null)
         {
             if (context is OpenIddictServerEvents.ValidateEndSessionRequestContext endSession)

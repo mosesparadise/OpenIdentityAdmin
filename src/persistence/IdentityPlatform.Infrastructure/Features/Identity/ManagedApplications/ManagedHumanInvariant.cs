@@ -28,7 +28,7 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
         if (original != Immutable(row) || persisted != FactorBinding.Digest(actual) || row.Revision != revision ||
             phase != ManagedLoginState.PendingPassword && password != Password(row) ||
             mfa is not null && row.MfaVerifiedAt != mfa || consent is not null && row.ConsentVerifiedAt != consent ||
-            row.State != (accepted ? Next(phase, action) : phase))
+            row.State != (accepted ? Next(phase, action, row.DeviceEntryId is not null) : phase))
         {
             throw new FactorUnavailableException();
         }
@@ -57,6 +57,7 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
         value.ApplicationId,
         value.ApplicationRevision,
         value.DemandDigest,
+        value.DeviceEntryId,
         value.PolicySnapshot,
         value.PolicyDigest,
         value.RequestId,
@@ -86,11 +87,11 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
     });
 
     /// <summary>Names the only permitted phase delta; all read/failed operations retain their original phase.</summary>
-    private static ManagedLoginState Next(ManagedLoginState phase, ManagedHumanAction action) => action switch
+    private static ManagedLoginState Next(ManagedLoginState phase, ManagedHumanAction action, bool device) => action switch
     {
         ManagedHumanAction.Password => ManagedLoginState.PendingMfa,
         ManagedHumanAction.Mfa => ManagedLoginState.PendingConsent,
-        ManagedHumanAction.Approve => ManagedLoginState.Approved,
+        ManagedHumanAction.Approve => device ? ManagedLoginState.DeviceApproved : ManagedLoginState.Approved,
         ManagedHumanAction.Deny => ManagedLoginState.Denied,
         _ => phase
     };

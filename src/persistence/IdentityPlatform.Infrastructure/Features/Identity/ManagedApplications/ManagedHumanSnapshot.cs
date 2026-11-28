@@ -32,10 +32,10 @@ internal sealed class ManagedHumanSnapshot
     }
 
     /// <summary>Rejects any last-save mutation or expired original human proof; no public aggregate revision is refreshed.</summary>
-    internal async Task VerifyAsync(PlatformDbContext database, TimeProvider clock, CancellationToken token)
+    internal async Task VerifyAsync(PlatformDbContext database, TimeProvider clock, CancellationToken token, bool completedDevice = false)
     {
         await ManagedScopeReferences.VerifyBoundAsync(database, row, token);
-        if (binding != FactorBinding.Digest(row) || ManagedLoginRules.Observe(clock, row.ObservedAt) >= row.ExpiresAt ||
+        if (binding != FactorBinding.Digest(row) || !(completedDevice && row is { DeviceEntryId: not null, State: ManagedLoginState.DeviceApproved }) && ManagedLoginRules.Observe(clock, row.ObservedAt) >= row.ExpiresAt ||
             binding != FactorBinding.Digest(await database.Set<ManagedLoginInteraction>().AsNoTracking().SingleAsync(value => value.SelectorDigest == row.SelectorDigest, token)))
         {
             throw new FactorUnavailableException();

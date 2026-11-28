@@ -14,12 +14,12 @@ internal static class ManagedScopePolicy
 {
     /// <summary>Freezes bounded caller input before awaiting locks and resolves only exact currently assigned, enabled managed scopes.</summary>
     internal static async ValueTask<ManagedScopeDecision> CaptureAsync(ProtocolStorageScope scope, string clientId,
-        IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token)
-        => await TryCaptureAsync(scope, clientId, requested, granted, token) ?? throw ProtocolStorageOwner.Unavailable();
+        IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token, bool device = false)
+        => await TryCaptureAsync(scope, clientId, requested, granted, token, device) ?? throw ProtocolStorageOwner.Unavailable();
 
     /// <summary>Returns no authority for ordinary missing or disabled policy without converting storage failures into protocol denials.</summary>
     internal static async ValueTask<ManagedScopeDecision?> TryCaptureAsync(ProtocolStorageScope scope, string clientId,
-        IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token)
+        IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token, bool device = false)
     {
         var request = Freeze(requested);
         var grant = Freeze(granted);
@@ -28,7 +28,7 @@ internal static class ManagedScopePolicy
             throw ProtocolStorageOwner.Unavailable();
         }
         await ManagedRegistration.LockAsync(scope, token);
-        var application = await ManagedRegistrationState.ReadAsync(scope, clientId, token);
+        var application = device ? (await DeviceClientRegistration.ReadLockedAsync(scope, clientId, token))?.State : await ManagedRegistrationState.ReadAsync(scope, clientId, token);
         if (application is null)
         {
             return null;
@@ -45,10 +45,10 @@ internal static class ManagedScopePolicy
     }
 
     /// <summary>Reconstructs authority from current native/product state; a stored snapshot never authorizes its own continued use.</summary>
-    internal static async ValueTask VerifyAsync(ProtocolStorageScope scope, string clientId, ManagedScopeDecision decision, CancellationToken token)
+    internal static async ValueTask VerifyAsync(ProtocolStorageScope scope, string clientId, ManagedScopeDecision decision, CancellationToken token, bool device = false)
     {
         var expected = ManagedScopeCodec.Encode(decision);
-        var actual = await CaptureAsync(scope, clientId, decision.Requested, decision.Granted, token);
+        var actual = await CaptureAsync(scope, clientId, decision.Requested, decision.Granted, token, device);
         if (expected != ManagedScopeCodec.Encode(actual))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -56,10 +56,10 @@ internal static class ManagedScopePolicy
     }
 
     /// <summary>Distinguishes current policy invalidation from infrastructure faults for a bounded bearer-token denial.</summary>
-    internal static async ValueTask<bool> TryVerifyAsync(ProtocolStorageScope scope, string clientId, ManagedScopeDecision decision, CancellationToken token)
+    internal static async ValueTask<bool> TryVerifyAsync(ProtocolStorageScope scope, string clientId, ManagedScopeDecision decision, CancellationToken token, bool device = false)
     {
         var expected = ManagedScopeCodec.Encode(decision);
-        var actual = await TryCaptureAsync(scope, clientId, decision.Requested, decision.Granted, token);
+        var actual = await TryCaptureAsync(scope, clientId, decision.Requested, decision.Granted, token, device);
         return actual is not null && expected == ManagedScopeCodec.Encode(actual);
     }
 

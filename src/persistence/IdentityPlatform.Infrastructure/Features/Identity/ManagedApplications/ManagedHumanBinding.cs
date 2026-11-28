@@ -36,6 +36,14 @@ internal static class ManagedHumanBinding
     internal static async ValueTask<ManagedRegistration> NativeAsync(ProtocolStorageScope scope, ManagedHumanRequest request, ManagedLoginInteraction row, CancellationToken token)
     {
         await ManagedScopeBinding.RequireAsync(scope, row, request.ClientId, token);
+        if (row.DeviceEntryId is not null)
+        {
+            return await ManagedDeviceInteraction.ReadAsync(scope, request, row, token);
+        }
+        if (request.DeviceUserCode is not null)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
         var registration = await ManagedRegistration.ReadAsync(scope, request.ClientId, token);
         if (registration is null || registration.ApplicationId != row.ApplicationId || registration.Revision != row.ApplicationRevision ||
             !registration.Redirects.Contains(request.Callback, StringComparer.Ordinal))

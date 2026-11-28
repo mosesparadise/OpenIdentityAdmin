@@ -1,19 +1,21 @@
-using Microsoft.Extensions.Options;
-using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
-using OpenIddict.Server;
 using System.Security.Claims;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
+using OpenIddict.Server;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 
 /// <summary>Exercises machine-independent native public registration, native code lookup and committed cadence observations on a real provider.</summary>
 internal static class NativeDevicePollEvidence
 {
+    private const int NativePairSize = 2;
     private const int FirstSlowInterval = 10;
     internal const string Client = "television-one";
     private const string Name = "Television";
@@ -70,6 +72,7 @@ internal static class NativeDevicePollEvidence
         var persisted = await database.Set<DevicePollingWindow>().AsNoTracking().SingleAsync(row => row.ApplicationId == policy.ApplicationId, fixture.Token);
         Assert.Equal(FirstSlowInterval, persisted.IntervalSeconds);
         await NativeDeviceApprovalEvidence.RequireAsync(fixture, id);
+        await RequireRetentionAsync(fixture, id);
         await database.Entry(policy).ReloadAsync(fixture.Token);
         policy.Enabled = false;
         policy.Revision++;
@@ -77,6 +80,72 @@ internal static class NativeDevicePollEvidence
         await using var disabled = await ProtocolStorageScope.OpenAsync(factory, fixture.Token);
         Assert.Equal(DevicePollResult.Unavailable, await DevicePollAdmission.PollAsync(disabled, Client, external, fixture.Token));
     }
+
+    /// <summary>Checks that a new, abandoned native pair survives its retention period, then releases the cadence, both tokens and its grant together.</summary>
+    private static async Task RequireRetentionAsync(ManagedSchemaFixture fixture, string applicationId)
+    {
+        var factory = fixture.Services.GetRequiredService<IServiceScopeFactory>();
+        var clock = Assert.IsType<NativeConsumptionClock>(fixture.Services.GetRequiredService<TimeProvider>());
+        var start = clock.GetUtcNow().AddSeconds(LifetimeSeconds);
+        clock.Set(start);
+        var pair = await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, async (scope, token) =>
+        {
+            await using var tx = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+            var issued = await CreatePairAsync(scope, token);
+            var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
+            var entry = await manager.FindByReferenceIdAsync(issued.Code, token);
+            var id = (await manager.GetIdAsync(entry!, token))!;
+            var authorization = (await manager.GetAuthorizationIdAsync(entry!, token))!;
+            await tx.CommitAsync(token);
+            return (Device: id, Grant: authorization);
+        });
+        foreach (var retained in new[] { true, false })
+        {
+            clock.Set(start.AddDays(ManagedLoginRules.RetentionDays + (retained ? 0 : 1)));
+            if (!retained)
+            {
+                await SeedHeldPageAsync(fixture, applicationId, pair.Grant, start.ToUnixTimeSeconds());
+                await SweepAsync(fixture, clock);
+            }
+            await SweepAsync(fixture, clock);
+            await new ProtocolStorageRequest(clock, fixture.Token).RunAsync(factory, async (scope, token) =>
+            {
+                var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
+                var grants = scope.Services.GetRequiredService<IOpenIddictAuthorizationManager>();
+                Assert.Equal(retained, await grants.FindByIdAsync(pair.Grant, token) is not null);
+                Assert.Equal(retained ? NativePairSize : 0, await manager.FindByAuthorizationIdAsync(pair.Grant, token).CountAsync(token));
+                var digest = ManagedLoginRules.Digest(pair.Device);
+                Assert.Equal(retained, await scope.Owner.RunAsync(current => new ValueTask<bool>(scope.Owner.Database.Set<DevicePollingWindow>().AnyAsync(window => window.Digest == digest, current)), token));
+                return true;
+            });
+        }
+    }
+
+    /// <summary>Places a full older page of mismatched windows ahead of a genuine retained grant to verify progress across held records.</summary>
+    private static async Task SeedHeldPageAsync(ManagedSchemaFixture fixture, string applicationId, string authorization, long start)
+    {
+        await using var service = fixture.Scope();
+        var database = service.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var policy = new ApplicationPolicy { ApplicationId = applicationId, Profile = DevicePollingWindow.Profile, Revision = 1 };
+        for (var index = 0; index < ManagedLoginRules.CleanupLimit; index++)
+        {
+            var held = DevicePollingWindow.Start(ManagedSchemaRows.Digest(), policy, start - LifetimeSeconds);
+            held.NativeAuthorizationId = authorization;
+            database.Add(held);
+        }
+        await database.SaveChangesAsync(fixture.Token);
+    }
+
+    /// <summary>Runs one normal bounded maintenance epoch with independently committed progress.</summary>
+    private static Task<bool> SweepAsync(ManagedSchemaFixture fixture, TimeProvider clock) =>
+        new ProtocolStorageRequest(clock, fixture.Token).RunAsync(fixture.Services.GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
+        {
+            await using var tx = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+            await ManagedRegistration.LockAsync(scope, token);
+            await DeviceGrantCleanup.RunAsync(scope, clock.GetUtcNow().ToUnixTimeSeconds(), TimeSpan.Zero, token);
+            await tx.CommitAsync(token);
+            return true;
+        });
 
     /// <summary>Seeds the library's real public application, inactive device entry and cadence row in one committed native transaction.</summary>
     private static async ValueTask<(string Id, string Code, string User)> SeedAsync(ProtocolStorageScope scope, CancellationToken token)

@@ -103,7 +103,7 @@ internal sealed class ManagedAuthentication(PlatformDbContext database, UserMana
     }
 
     /// <summary>Checks current account authority without throwing for ordinary invalidation; read-only callers do not advance watermarks.</summary>
-    internal bool CanUseAccount(CeremonyTransaction transaction, CeremonyAccount account, ManagedLoginInteraction row, bool observe)
+    internal bool CanUseAccount(CeremonyTransaction transaction, CeremonyAccount account, ManagedLoginInteraction row, bool observe, bool completedDevice = false)
     {
         account.RequireCurrent(transaction);
         long now;
@@ -111,7 +111,7 @@ internal sealed class ManagedAuthentication(PlatformDbContext database, UserMana
         return current && account.IsActive && CeremonyBudget.IsAvailable(account.User, account.Authentication, now) && row.UserId == account.User.Id &&
             row.SecurityStamp == account.User.SecurityStamp && row.AuthenticationGeneration == account.Authentication.Generation &&
             row.FactorGeneration == account.Enrollment.FactorGeneration && row.EnrollmentRevision == account.Enrollment.Revision &&
-            row.PasswordVerifiedAt is { } password && password <= now && now < row.ExpiresAt &&
+            row.PasswordVerifiedAt is { } password && password <= now && (completedDevice && row is { DeviceEntryId: not null, State: ManagedLoginState.DeviceApproved } || now < row.ExpiresAt) &&
             (row.MfaVerifiedAt is not { } mfa || mfa >= password && mfa <= now);
     }
 

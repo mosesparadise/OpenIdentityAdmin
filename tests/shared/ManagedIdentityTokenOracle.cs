@@ -48,7 +48,7 @@ internal static class ManagedIdentityTokenOracle
     }
 
     /// <summary>Reads the trusted issuer's public discovery and same-authority JWKS without owning the supplied HTTPS transport.</summary>
-    private static async Task<JsonWebKeySet> ReadKeysAsync(HttpClient transport, Uri issuer)
+    internal static async Task<JsonWebKeySet> ReadKeysAsync(HttpClient transport, Uri issuer)
     {
         using var discovery = JsonDocument.Parse(await transport.GetStringAsync(new Uri(issuer, DiscoveryPath), TestContext.Current.CancellationToken));
         var uri = new Uri(discovery.RootElement.GetProperty(JwksUri).GetString()!);

@@ -53,7 +53,7 @@ internal static class DeviceClientRegistration
     }
 
     /// <summary>Loads the actual current OpenIddict application and policy under the governance lock shared with lifecycle changes.</summary>
-    internal static async ValueTask<(ManagedRegistrationState State, ApplicationPolicy Policy)?> ReadLockedAsync(ProtocolStorageScope scope, string clientId, CancellationToken token)
+    internal static async ValueTask<(ManagedRegistrationState State, ApplicationPolicy Policy, string DisplayName)?> ReadLockedAsync(ProtocolStorageScope scope, string clientId, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var client = await manager.FindByClientIdAsync(clientId, token);
@@ -81,6 +81,6 @@ internal static class DeviceClientRegistration
         }
         await ApplicationMutationWriter.RequireMutableAsync(scope, id, clientId, token);
         var permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
-        return (new(new(id, clientId, policy.Revision, 0, null, policy.ObservedAt, [], policy.Profile), permissions, false), policy);
+        return (new(new(id, clientId, policy.Revision, 0, null, policy.ObservedAt, [], policy.Profile), permissions, false), policy, descriptor.DisplayName!);
     }
 }

@@ -62,6 +62,11 @@ internal static class Setup
                 if (profiles.Managed)
                 {
                     options.AddManagedApplications().AddManagedUserInfo();
+                    options.SetDeviceAuthorizationEndpointUris(Devices.DeviceNative.AuthorizationPath)
+                        .SetEndUserVerificationEndpointUris(Devices.DeviceNative.VerificationPath).AllowDeviceAuthorizationFlow()
+                        .SetDeviceCodeLifetime(TimeSpan.FromSeconds(IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow.LifetimeSeconds))
+                        .SetUserCodeLifetime(TimeSpan.FromSeconds(IdentityPlatform.Infrastructure.Features.Applications.DevicePollingWindow.LifetimeSeconds));
+                    Devices.DeviceNative.Configure(options);
                 }
             }
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();
