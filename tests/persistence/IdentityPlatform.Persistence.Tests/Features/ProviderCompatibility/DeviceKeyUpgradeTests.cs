@@ -4,6 +4,7 @@ using System.Text.Json;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -43,7 +44,9 @@ public sealed class DeviceKeyUpgradeTests
     public async Task Given_DeviceAndKeyState_When_UpgradingAndRotating_Then_TheCadenceAndUsedAssertionSurvive(string provider)
     {
         var previous = provider == Postgres ? BrowserOriginUpgradeTests.PostgresMigration : BrowserOriginUpgradeTests.SqlMigration;
-        await using var fixture = await ManagedSchemaFixture.CreateAsync(provider, target: previous);
+        var protocolClock = new NativeConsumptionClock();
+        protocolClock.Freeze();
+        await using var fixture = await ManagedSchemaFixture.CreateAsync(provider, target: previous, protocolClock: protocolClock);
         var before = await fixture.SnapshotAsync(provider);
         await fixture.MigrateAsync(null);
         RequireEqual(before, Predecessor(provider, await fixture.SnapshotAsync(provider)));
@@ -52,6 +55,7 @@ public sealed class DeviceKeyUpgradeTests
         await fixture.MigrateAsync(null);
         await RequirePollingAsync(fixture);
         await RequireKeysAsync(fixture);
+        await NativeDevicePollEvidence.RequireAsync(fixture);
         var bound = await fixture.SnapshotAsync(provider);
         await Assert.ThrowsAnyAsync<DbException>(() => fixture.MigrateAsync(previous));
         await fixture.MigrateAsync(null);

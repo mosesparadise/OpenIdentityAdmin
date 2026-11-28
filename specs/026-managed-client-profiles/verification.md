@@ -89,3 +89,12 @@ same-key relabeling, and repeated assertion IDs across revisions. SQL Server
 was tested with a 400-character application ID. Both guard a populated
 downgrade and preserve predecessor data across an empty round trip.
 These tests exercise storage directly, outside of public protocol endpoints.
+
+Two additional provider cases created a real OpenIddict public device application,
+an anonymous native authorization, and linked user and device code entries. The
+polling store matched the managed and native application, the original scope set,
+the two native token types and their common authorization. A poll through the
+native reference ID committed a five-second interval increase. A fresh scope saw
+that increase and refused the disabled registration. The fixture used a fixed
+protocol clock for interval boundaries. Public verification and redemption are
+still pending. PostgreSQL and SQL Server TRX SHA-256 was `8e9ecbf6ff10d90e6e91ed548b5c7166d096fa4bb527ef9865a58642094afd91`.
