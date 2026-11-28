@@ -19,6 +19,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string Security = "security";
     private const string Configuration = "configuration";
     private const string Collection = "/api/v1/applications";
+    private const string Permissions = "x-required-permissions";
     private const string Details = Collection + "/{id}";
     private const string Replacement = Details + "/secret-replacements";
     private const string Disable = Details + ApplicationLifecycleRules.DisableSuffix;
@@ -62,6 +63,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, ApplicationNativeCreateEndpoint.Operation);
         Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, ApplicationNativeCreateEndpoint.BrowserOperation);
         Apply(document, Collection + MachineClientRules.Suffix, HttpMethod.Post, ApplicationCreateEndpoint.MachineOperation);
+        Apply(document, Collection + ApplicationKeyEndpoint.Machines, HttpMethod.Post, ApplicationKeyEndpoint.RegisterMachine);
+        Apply(document, Details + ApplicationKeyEndpoint.Replacements, HttpMethod.Post, ApplicationKeyEndpoint.Replace);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -111,12 +114,17 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + MachineClientRules.Suffix;
+        var registerKey = name == ApplicationKeyEndpoint.RegisterMachine;
+        var create = registerKey || path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + MachineClientRules.Suffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
-        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : path == Replacement ? Credentials : read ? Read : Write));
-        if (path is Replacement or Disable or Enable or Clone || path == ScopePath && !read)
+        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : (path == Replacement || name == ApplicationKeyEndpoint.Replace) ? Credentials : read ? Read : Write));
+        if (registerKey)
+        {
+            operation.Extensions[Permissions] = new JsonNodeExtension(new JsonArray(Write, Credentials));
+        }
+        if (registerKey || name == ApplicationKeyEndpoint.Replace || path is Replacement or Disable or Enable or Clone || path == ScopePath && !read)
         {
             operation.Extensions[FreshMfa] = new JsonNodeExtension(JsonValue.Create(MfaSeconds));
         }

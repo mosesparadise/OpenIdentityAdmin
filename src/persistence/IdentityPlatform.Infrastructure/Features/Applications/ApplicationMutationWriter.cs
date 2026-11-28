@@ -41,7 +41,9 @@ internal static class ApplicationMutationWriter
         await RequireMutableAsync(scope, command.ApplicationId!, descriptor.ClientId!, token);
         var policy = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .SingleOrDefaultAsync(row => row.ApplicationId == command.ApplicationId, current), token);
-        if (policy is null || policy.ApplicationId != command.ApplicationId || !ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor))
+        if (policy is null || policy.ApplicationId != command.ApplicationId || !(ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) ||
+            command.Kind is ApplicationMutationKind.AssignScopes or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable &&
+            ManagedApplicationProfile.MatchesKeyProfile(policy.Profile, descriptor)))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
@@ -127,7 +129,7 @@ internal static class ApplicationMutationWriter
         OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, ImmutableArray<string> origins, CancellationToken token)
     {
         var selection = await ApplicationScopeSelection.ReadAsync(scope, command.Scopes, token);
-        if (policy.Profile == MachineClientRules.Profile)
+        if (policy.Profile is MachineClientRules.Profile or ApplicationKeyApproval.MachineProfile)
         {
             _ = selection.MachineResources();
         }

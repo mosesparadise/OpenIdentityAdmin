@@ -138,3 +138,17 @@ key audit history. Eight provider migration and compatibility cases passed.
 | PostgreSQL and SQL Server API mutation authority | `824ea13fce2f81dd4720c8ec981c02c4ad9ae5f5085e366a56621dea5052fe0e` |
 | Committed rotation history and credential use | `070fc3f19fa4201d418426de6496e1a3ec1116b008f5c80c7c0f2a2cf8f66891` |
 | Provider migration and compatibility cases | `be431df7c76926178979db1937dff94952215ef162f771151a5b4943134e9430` |
+
+### Keyed machine registration and token issuance
+
+Separate real HTTPS runs registered a synthetic service through the versioned bearer API and through the cookie-authenticated BFF. Both PostgreSQL and SQL Server accepted a signed client assertion, issued only the assigned machine token, and served the Orders sample with that token. Both routes recovered the current ETag via GET. Rotation refused the previous key and refused a previously consumed identifier under the replacement. The replacement could sign a fresh request. Permanent retirement accepted the keyed application, retained its native configuration and linked revocation job, and prevented fresh issuance.
+
+A scoped test advanced the clock by 61 seconds while the original HTTP parent disposed, after the native token was committed. Both providers withheld the response at the assertion deadline. The independent token and registration lifetimes still exceeded that deadline. The test used the real dispatcher, credential storage, response transfer and sample API.
+
+All 44 non-browser contract cases, 47 Node contract tooling cases, 152 UI cases and 93 test selection cases passed. The generated browser contract documents cookie authentication, antiforgery and a strong ETag for rotation. Key registration requires both grants and recent persisted MFA. The editor handles only public RSA parameters and uses key-specific integration settings.
+
+Original local reports
+
+- `keyed-machine-retirement.trx` — SHA-256 `5ed6b3e346a213ffb7ef2500c65640fb9e509585e897d47fd812216373c3cb0d`.
+- `keyed-machine-browser-lifecycle.trx` — SHA-256 `010129ee70b83853994f02371982b15b89a451c85305a3584c373b8850f60c62`.
+- `key-browser-contracts.trx` — SHA-256 `88c8c1ad5bf67762d5e67481da6cadba0d13faef74354ce2886cb67babe2d602`.

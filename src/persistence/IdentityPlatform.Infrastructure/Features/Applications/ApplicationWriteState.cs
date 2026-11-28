@@ -43,7 +43,8 @@ internal sealed class ApplicationWriteState
         ApplicationScopeSelection? selection = null, ApplicationCloneSource? cloneSource = null, ImmutableArray<string> origins = default, AdministratorPublicKey? approvedKey = null)
     {
         this.application = application;
-        this.approvedKey = approvedKey;
+        this.approvedKey = approvedKey ?? (policy.Profile is ApplicationKeyApproval.MachineProfile or ApplicationKeyApproval.WebProfile
+            ? AdministratorPublicKey.FromNative(descriptor.JsonWebKeySet) ?? throw ProtocolStorageOwner.Unavailable() : null);
         this.selection = selection;
         this.cloneSource = cloneSource;
         this.origins = origins;

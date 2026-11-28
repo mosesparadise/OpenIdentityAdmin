@@ -40,7 +40,7 @@ internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDig
             audits,
             lifecycle
         }), Hash(fields), Hash(stable), Hash(native.ClientSecret), native.ConcurrencyToken,
-            native.ClientId, native.DisplayName, JsonSerializer.Deserialize<string[]>(native.RedirectUris!)!, policy, audits, lifecycle);
+            native.ClientId, native.DisplayName, native.RedirectUris is { } redirects ? JsonSerializer.Deserialize<string[]>(redirects)! : [], policy, audits, lifecycle);
     }
 
     /// <summary>Hashes canonical in-process observations without logging native hashes or plaintext credentials.</summary>

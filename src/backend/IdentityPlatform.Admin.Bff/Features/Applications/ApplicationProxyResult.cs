@@ -19,7 +19,7 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
     internal static ApplicationProxyResult Parse(byte[] bytes, string tag, ApplicationMutationRequest mutation, int status)
     {
         ApplicationCredentialOutput? credential = null;
-        var details = mutation.Action is ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.Edit or ApplicationProxyAction.Disable or ApplicationProxyAction.Enable ? ApplicationJson.Parse<ApplicationDetails>(bytes) :
+        var details = mutation.Action is ApplicationProxyAction.CreateMachineKey or ApplicationProxyAction.ReplaceKey or ApplicationProxyAction.CreateNative or ApplicationProxyAction.CreateBrowser or ApplicationProxyAction.Edit or ApplicationProxyAction.Disable or ApplicationProxyAction.Enable ? ApplicationJson.Parse<ApplicationDetails>(bytes) :
             (credential = ApplicationJson.Parse<ApplicationCredentialOutput>(bytes)).Application;
         var revision = long.Parse(tag.AsSpan(RevisionStart, tag.Length - RevisionStart - 1), System.Globalization.CultureInfo.InvariantCulture);
         if (!Valid(details) || !ApplicationVersion.Matches(tag, details.Id, revision) || !mutation.Matches(details, revision) ||
@@ -64,13 +64,13 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
 
     /// <summary>Retains managed profile/credential metadata for terminal read-only targets without accepting protected-native shapes.</summary>
     private static bool Managed(ApplicationDetails details) => ApplicationEditorRules.IsText(details.Id, ApplicationProjection.IdentifierLength) &&
-        ApplicationEditorRules.IsClientId(details.ClientId) && (details.Profile == MachineClientRules.Profile
+        ApplicationEditorRules.IsClientId(details.ClientId) && (details.Profile is MachineClientRules.Profile or MachineClientRules.KeyProfile
             ? ApplicationEditorRules.IsText(details.DisplayName, ApplicationProjection.DisplayNameLength) && details.RedirectUris is { Count: 0 }
             : ApplicationEditorRules.Validate(new ApplicationEdit(details.DisplayName!, details.RedirectUris)).Count == 0) &&
         details.Enabled is not null && details.ExpiresAt.Offset == TimeSpan.Zero &&
         (details.Profile == ApplicationEditorRules.BrowserProfile && details.Credential is null && BrowserOriginPolicy.IsValid(details.Origins) ||
         details.Profile == ApplicationEditorRules.NativeProfile && details.Origins is null && details.Credential is null && details.RedirectUris.All(ApplicationEditorRules.IsNativeRedirect) ||
-        details.Profile is ApplicationEditorRules.Profile or MachineClientRules.Profile && details.Origins is null && details.Credential is { } dates && dates.IssuedAt.Offset == TimeSpan.Zero && dates.ExpiresAt.Offset == TimeSpan.Zero &&
+        details.Profile is ApplicationEditorRules.Profile or MachineClientRules.Profile or MachineClientRules.KeyProfile && details.Origins is null && details.Credential is { } dates && dates.IssuedAt.Offset == TimeSpan.Zero && dates.ExpiresAt.Offset == TimeSpan.Zero &&
         dates.IssuedAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt > dates.IssuedAt);
 
     /// <summary>Accepts only a disabled irreversible managed projection and canonical bounded linked-job reference.</summary>

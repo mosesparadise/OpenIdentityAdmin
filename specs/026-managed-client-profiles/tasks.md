@@ -221,10 +221,12 @@ permanent application, approval and credential revision. The ledger has a global
 10,000-row limit. Each successful submission can reclaim up to 100 expired
 entries, advancing the affected registrations' observation times before deletion.
 Both real database providers accepted exactly one of two concurrent requests
-carrying the same valid assertion. Public registration, administrator key
-replacement and the final token-publication integration are still open.
+carrying the same valid assertion.
 
 Registration and rotation now pass the internal management operation on both
 providers. Credential revisions and fingerprints are persisted with the
-administrator audit. The HTTP/BFF/editor paths and final protocol issuance are
-still open. [Provider and management verification](verification.md#native-managed-client-assertion-consumption)
+administrator audit. The versioned bearer API now registers machine clients
+with their own public key and replaces keys using the strong ETag. The real HTTPS
+token endpoint accepts signed machine requests and reaches the sample resource
+server. The editor and cookie-authenticated BFF also support machine key
+registration and replacement. Keyed web code exchange remains open. [Provider and management verification](verification.md#native-managed-client-assertion-consumption)

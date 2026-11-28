@@ -21,7 +21,7 @@ public sealed class BrowserSessionDocumentTests
     private const string TokenField = "requestToken";
     private const string TokenSchema = "ApplicationAntiforgeryToken";
 
-    private const int OperationCount = 25;
+    private const int OperationCount = 27;
     private const string ApplicationsPath = "/bff/api/v1/applications";
     private const string ListOperation = "ListBrowserApplications";
     private const string ReadPermission = "applications.read";

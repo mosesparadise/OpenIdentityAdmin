@@ -1,3 +1,4 @@
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
@@ -9,7 +10,7 @@ namespace IdentityPlatform.Infrastructure.Features.Applications;
 /// <summary>Pins one locally approved public RSA key to a managed application's current credential revision.</summary>
 internal sealed class ApplicationKeyApproval
 {
-    internal const string MachineProfile = "managed-machine-key-v1";
+    internal const string MachineProfile = MachineClientRules.KeyProfile;
     internal const string WebProfile = "managed-web-key-v1";
     private const int FingerprintLength = 64;
     private const string RevisionCheck = "CK_ApplicationKeyApproval_Revision";
@@ -63,6 +64,20 @@ internal sealed class ApplicationKeyApproval
         policy.Profile is MachineProfile or WebProfile && policy.Enabled && !policy.Retired && policy.ApplicationId == ApplicationId &&
         policy.CredentialRevision == CredentialRevision && policy.CredentialIssuedAt <= now && policy.ObservedAt <= now && policy.CredentialExpiresAt > now &&
         current.Fingerprint == Fingerprint && Material(current) == Thumbprint && current.KeyId == keyId && Thumbprint == thumbprint;
+
+    /// <summary>Verifies retained public authority for administration and cleanup even after credential expiry or permanent retirement.</summary>
+    internal static async ValueTask<bool> MatchesStoredAsync(ProtocolStorageScope scope, ApplicationPolicy policy,
+        OpenIddict.Abstractions.OpenIddictApplicationDescriptor descriptor, CancellationToken token)
+    {
+        if (!ManagedApplicationProfile.MatchesKeyProfile(policy.Profile, descriptor) || AdministratorPublicKey.FromNative(descriptor.JsonWebKeySet) is not { } key)
+        {
+            return false;
+        }
+        var approval = await scope.Owner.RunAsync(async current => await scope.Owner.Database.Set<ApplicationKeyApproval>().AsNoTracking()
+            .SingleOrDefaultAsync(row => row.ApplicationId == policy.ApplicationId, current), token);
+        return approval?.ApplicationId == policy.ApplicationId && approval.CredentialRevision == policy.CredentialRevision &&
+            approval.Fingerprint == key.Fingerprint && approval.Thumbprint == Material(key);
+    }
 
     /// <summary>Uses the RFC 7638 RSA public key thumbprint independently of mutable identifier and algorithm labels.</summary>
     internal static string Material(AdministratorPublicKey key) => Convert.ToHexStringLower(key.CreateNativeKey().ComputeJwkThumbprint());

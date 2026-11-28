@@ -44,9 +44,35 @@ internal static class ApplicationEditorAssertions
     private const string BrowserSecurity = "[{\"BrowserSession\":[]}]";
     private const string ApiSecurity = "[{\"AdminBearer\":[]}]";
 
+    /// <summary>Checks both enrolled-key permissions, recent MFA, strong version recovery, strict typed bodies and secret-free results.</summary>
+    private static void RequireKeyOperations(JsonNode document, string path)
+    {
+        const string Register = "/machine-key-registrations";
+        const string Rotate = "/key-replacements";
+        const string Credentials = "applications.credentials";
+        const string Both = "x-required-permissions";
+        const string Fresh = "x-persisted-mfa-max-age-exclusive-seconds";
+        const string RegisterInput = "#/components/schemas/ApplicationKeyMachineCreate";
+        const string ReplaceInput = "#/components/schemas/ApplicationKeyReplacement";
+        const string IfMatch = "If-Match";
+        const int MfaSeconds = 300;
+        var create = document[Paths]![path + Register]![Post]!;
+        var replace = document[Paths]![path + Details + Rotate]![Post]!;
+        Assert.Equal(Write, create[Permission]!.GetValue<string>());
+        Assert.Equal([Write, Credentials], create[Both]!.AsArray().Select(item => item!.GetValue<string>()).ToArray());
+        Assert.Equal(Credentials, replace[Permission]!.GetValue<string>());
+        Assert.Equal(MfaSeconds, create[Fresh]!.GetValue<int>());
+        Assert.Equal(MfaSeconds, replace[Fresh]!.GetValue<int>());
+        Assert.Equal(RegisterInput, create[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(ReplaceInput, replace[Body]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.Equal(DetailsSchema, create[Responses]![Created]![Content]![Json]![Schema]![Reference]!.GetValue<string>());
+        Assert.True(replace[Parameters]!.AsArray().Single(item => item![Name]!.GetValue<string>() == IfMatch)![Required]!.GetValue<bool>());
+    }
+
     /// <summary>Requires exact permission separation, native security, no-store, real DTOs, version semantics and browser CSRF metadata.</summary>
     internal static void Require(JsonNode document, bool browser)
     {
+        RequireKeyOperations(document, browser ? BrowserPath : ApiPath);
         ApplicationUpdateAssertions.Require(document, browser);
         ApplicationCloneAssertions.Require(document, browser);
         var path = browser ? BrowserPath : ApiPath;

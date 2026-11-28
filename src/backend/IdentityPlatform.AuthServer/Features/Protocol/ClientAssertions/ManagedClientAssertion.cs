@@ -55,6 +55,7 @@ internal sealed class ManagedClientAssertion(IServiceScopeFactory factory) : IOp
             context.Reject(OpenIddictConstants.Errors.InvalidClient);
             return;
         }
+        ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(receipt.Stored.AssertionExpiresAt));
         context.Transaction.SetProperty(typeof(ManagedAssertionReceipt).FullName!, receipt);
     }
 }

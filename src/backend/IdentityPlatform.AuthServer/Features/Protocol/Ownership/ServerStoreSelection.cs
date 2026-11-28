@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using System.Text.Json;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
@@ -37,7 +38,7 @@ internal sealed class ServerStoreSelection(ProtocolStorageSelection selection, P
             selection.Select(ProtocolStorageMode.Owned);
             if (context.EndpointType is not (OpenIddictServerEndpointType.Configuration or OpenIddictServerEndpointType.JsonWebKeySet) &&
                 !(profiles.Managed && (context.EndpointType == OpenIddictServerEndpointType.UserInfo || context.EndpointType == OpenIddictServerEndpointType.Authorization && client.ValueKind == JsonValueKind.String && ManagedDemand.Candidate(client.GetString()) ||
-                    ManagedTokenTransport.Candidate(context) || client.ValueKind == JsonValueKind.String && NativeTokenTransport.Matches(context.Transaction, client.GetString()))) &&
+                    ManagedTokenTransport.Candidate(context) || client.ValueKind == JsonValueKind.String && (NativeTokenTransport.Matches(context.Transaction, client.GetString()) || ManagedAssertionTransport.Matches(context.Transaction, client.GetString())))) &&
                 (profiles.Administrator is null || client.ValueKind != JsonValueKind.String || client.GetString() != AdministratorProtocolIdentity.ClientId))
             {
                 context.Reject(OpenIddictConstants.Errors.InvalidClient);

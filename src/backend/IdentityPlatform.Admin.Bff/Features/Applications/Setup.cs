@@ -31,6 +31,24 @@ internal static class Setup
     private const string CollectionPath = "/applications";
     private const string Operation = "ListBrowserApplications";
     private const string Summary = "List applications through the current browser session";
+    /// <summary>Offers explicit cookie-and-antiforgery routes for public-key enrollment and current-version rotation.</summary>
+    private static void MapKeyActions(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapManagementGroup().MapPost(CollectionPath + MachineClientRules.KeyRegistrationSuffix, (Func<HttpContext, Task>)(context =>
+            ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.CreateMachineKey)))
+            .WithName(ApplicationEditorContract.KeyMachineOperation).WithSummary(ApplicationEditorContract.KeyMachineSummary)
+            .Accepts<ApplicationKeyMachineCreate>(JsonType).Produces<ApplicationDetails>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        endpoints.MapManagementGroup().MapPost(DetailsPath + MachineClientRules.KeyReplacementSuffix, (HttpContext context, string id) =>
+            ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.ReplaceKey, id))
+            .WithName(ApplicationEditorContract.KeyReplacementOperation).WithSummary(ApplicationEditorContract.KeyReplacementSummary)
+            .Accepts<ApplicationKeyReplacement>(JsonType).Produces<ApplicationDetails>()
+            .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound).ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status412PreconditionFailed)
+            .ProducesProblem(StatusCodes.Status428PreconditionRequired).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+    }
+
     /// <summary>Owns a single fixed HTTPS transport until host disposal; no caller controls its destination or credential source.</summary>
     internal static IServiceCollection AddApplicationProxy(this IServiceCollection services, Uri api) =>
         services.AddSingleton(_ => new ApplicationProxyTransport(api));
@@ -54,6 +72,7 @@ internal static class Setup
             .Produces<ApplicationDetails>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        MapKeyActions(endpoints);
         endpoints.MapManagementGroup().MapPost(CollectionPath + MachineClientRules.Suffix, (Func<HttpContext, Task>)(context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.CreateMachine)))
             .WithName(ApplicationEditorContract.MachineOperation).WithSummary(ApplicationEditorContract.MachineSummary).Accepts<ApplicationMachineCreate>(JsonType)
             .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created).ProducesProblem(StatusCodes.Status400BadRequest)

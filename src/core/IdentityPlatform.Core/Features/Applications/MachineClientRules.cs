@@ -16,6 +16,9 @@ public sealed record ApplicationMachineCreate(
 public static class MachineClientRules
 {
     public const string Profile = "managed-machine-v1";
+    public const string KeyRegistrationSuffix = "/machine-key-registrations";
+    public const string KeyReplacementSuffix = "/key-replacements";
+    public const string KeyProfile = "managed-machine-key-v1";
     public const string Suffix = "/machine-registrations";
     public const string IdentityType = "identity_type";
     public const string Machine = "machine";

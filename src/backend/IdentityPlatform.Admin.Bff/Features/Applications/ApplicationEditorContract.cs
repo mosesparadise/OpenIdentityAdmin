@@ -39,6 +39,11 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string PreconditionDescription = "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.";
     private const int VersionMinimum = 68;
     private const int VersionMaximum = 86;
+    internal const string KeyMachineOperation = "RegisterBrowserKeyedMachineApplication";
+    internal const string KeyMachineSummary = "Register a machine application with a public RSA authentication key";
+    internal const string KeyReplacementOperation = "ReplaceBrowserApplicationPublicKey";
+    internal const string KeyReplacementSummary = "Replace the registered public key using the current application ETag";
+    private const string Permissions = "x-required-permissions";
     internal const string MachineOperation = "RegisterBrowserMachineApplication";
     internal const string MachineSummary = "Register a confidential machine client for assigned API scopes";
     internal const string BrowserOperation = "RegisterPublicBrowserApplication";
@@ -72,6 +77,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Collection + ApplicationEditorRules.NativeRegistrationSuffix, HttpMethod.Post, NativeOperation);
         Apply(document, Collection + ApplicationEditorRules.BrowserRegistrationSuffix, HttpMethod.Post, BrowserOperation);
         Apply(document, Collection + MachineClientRules.Suffix, HttpMethod.Post, MachineOperation);
+        Apply(document, Collection + MachineClientRules.KeyRegistrationSuffix, HttpMethod.Post, KeyMachineOperation);
+        Apply(document, Details + MachineClientRules.KeyReplacementSuffix, HttpMethod.Post, KeyReplacementOperation);
         Apply(document, Clone, HttpMethod.Post, CloneOperation);
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
@@ -121,12 +128,17 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         {
             return;
         }
-        var create = path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + MachineClientRules.Suffix;
+        var registerKey = name == KeyMachineOperation;
+        var create = registerKey || path == Collection || path == Collection + ApplicationEditorRules.NativeRegistrationSuffix || path == Collection + ApplicationEditorRules.BrowserRegistrationSuffix || path == Collection + MachineClientRules.Suffix;
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
-        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : path == Replacement ? Credentials : read ? Read : Write));
-        if (path is Replacement or Disable or Enable or Clone || path == ScopePath && !read)
+        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : (path == Replacement || name == KeyReplacementOperation) ? Credentials : read ? Read : Write));
+        if (registerKey)
+        {
+            operation.Extensions[Permissions] = new JsonNodeExtension(new JsonArray(Write, Credentials));
+        }
+        if (registerKey || name == KeyReplacementOperation || path is Replacement or Disable or Enable or Clone || path == ScopePath && !read)
         {
             operation.Extensions[FreshMfa] = new JsonNodeExtension(JsonValue.Create(MfaSeconds));
         }

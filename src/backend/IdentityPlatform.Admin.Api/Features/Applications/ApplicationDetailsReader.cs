@@ -15,6 +15,7 @@ internal static class ApplicationDetailsReader
 {
     private const int Probe = 1;
     private const int NativeJsonBytes = 131072;
+    private const int MaximumKeySetLength = 16384;
     private const int NativeNamesLength = 4096;
     private const string EmptyObject = "{}";
     private const string EmptyArray = "[]";
@@ -48,8 +49,9 @@ internal static class ApplicationDetailsReader
         {
             return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
-        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects?.Length > NativeJsonBytes || row.Redirects is null && policy.Profile != MachineClientRules.Profile ||
-            row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements?.Length > NativeNamesLength || row.Requirements is null && policy.Profile != MachineClientRules.Profile)
+        var machine = policy.Profile is MachineClientRules.Profile or ApplicationKeyApproval.MachineProfile;
+        if (policy.Revision < 1 || policy.ObservedAt < 0 || !row.NativeProfile || row.Redirects?.Length > NativeJsonBytes || row.Redirects is null && !machine ||
+            row.Permissions is null || row.Permissions.Length > NativeNamesLength || row.Requirements?.Length > NativeNamesLength || row.Requirements is null && !machine)
         {
             throw new InvalidDataException();
         }
@@ -64,7 +66,16 @@ internal static class ApplicationDetailsReader
                 throw new InvalidDataException();
             }
         }
-        var credential = Credential(policy, row, descriptor);
+        var keyed = policy.Profile is ApplicationKeyApproval.MachineProfile or ApplicationKeyApproval.WebProfile;
+        if (keyed != row.HasKey)
+        {
+            throw new InvalidDataException();
+        }
+        if (keyed)
+        {
+            await RequirePublicKeyAsync(database, policy, descriptor, token);
+        }
+        var credential = Credential(policy, row, descriptor, keyed);
         var retirement = await ApplicationRetirementReader.ReadAsync(database, policy, token);
         return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
             policy.Profile, !policy.Retired, credential, expiry, policy.Enabled,
@@ -74,16 +85,38 @@ internal static class ApplicationDetailsReader
                 .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).Order(StringComparer.Ordinal).ToArray());
     }
 
+    /// <summary>Reads a bounded native key set solely for an explicitly approved managed identity and validates it without exposing it in the response.</summary>
+    private static async Task RequirePublicKeyAsync(PlatformDbContext database, ApplicationPolicy policy, OpenIddictApplicationDescriptor descriptor, CancellationToken token)
+    {
+        var approval = await database.Set<ApplicationKeyApproval>().AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == policy.ApplicationId, token);
+        if (approval?.ApplicationId != policy.ApplicationId || approval.CredentialRevision != policy.CredentialRevision)
+        {
+            throw new InvalidDataException();
+        }
+        var json = await database.Set<OpenIddictEntityFrameworkCoreApplication>().AsNoTracking().Where(row => row.Id == policy.ApplicationId)
+            .Select(row => row.JsonWebKeySet!.Substring(0, MaximumKeySetLength + Probe)).SingleAsync(token);
+        if (json is null || json.Length > MaximumKeySetLength)
+        {
+            throw new InvalidDataException();
+        }
+        descriptor.JsonWebKeySet = new Microsoft.IdentityModel.Tokens.JsonWebKeySet(json);
+        if (AdministratorPublicKey.FromNative(descriptor.JsonWebKeySet) is not { } key || key.Fingerprint != approval.Fingerprint ||
+            ApplicationKeyApproval.Material(key) != approval.Thumbprint)
+        {
+            throw new InvalidDataException();
+        }
+    }
+
     /// <summary>Requires matching profile, credential kind and native capabilities without retrieving a stored secret.</summary>
-    private static ApplicationCredentialMetadata? Credential(ApplicationPolicy policy, Row row, OpenIddictApplicationDescriptor descriptor)
+    private static ApplicationCredentialMetadata? Credential(ApplicationPolicy policy, Row row, OpenIddictApplicationDescriptor descriptor, bool keyed)
     {
         if (policy.Profile is ApplicationEditorRules.NativeProfile or ApplicationEditorRules.BrowserProfile && row.NoSecret && ManagedApplicationProfile.MatchesProfile(policy.Profile, descriptor) &&
             policy.CredentialRevision == 0 && policy.CredentialIssuedAt is null && policy.CredentialExpiresAt is null)
         {
             return null;
         }
-        if (row.HasSecret && (policy.Profile == ApplicationEditorRules.Profile && ManagedApplicationProfile.MatchesManagement(descriptor) ||
-            policy.Profile == MachineClientRules.Profile && ManagedApplicationProfile.MatchesMachine(descriptor)) &&
+        if ((keyed && row.NoSecret && ManagedApplicationProfile.MatchesKeyProfile(policy.Profile, descriptor) || row.HasSecret && (policy.Profile == ApplicationEditorRules.Profile && ManagedApplicationProfile.MatchesManagement(descriptor) ||
+            policy.Profile == MachineClientRules.Profile && ManagedApplicationProfile.MatchesMachine(descriptor))) &&
             policy.CredentialRevision >= 1 && policy.CredentialIssuedAt is { } issued && policy.CredentialExpiresAt is { } expires &&
             issued >= 0 && expires > issued && policy.ObservedAt >= issued)
         {
@@ -104,7 +137,7 @@ internal static class ApplicationDetailsReader
         row.ApplicationType == null ? null : row.ApplicationType.Substring(0, ApplicationProjection.ClientTypeLength + Probe),
         row.ConsentType == null ? null : row.ConsentType.Substring(0, ApplicationProjection.ClientTypeLength + Probe),
         row.ClientSecret == null, row.ClientSecret != null && row.ClientSecret != string.Empty,
-        row.JsonWebKeySet == null && (row.PostLogoutRedirectUris == null || row.PostLogoutRedirectUris == EmptyArray) &&
+        row.JsonWebKeySet != null, (row.PostLogoutRedirectUris == null || row.PostLogoutRedirectUris == EmptyArray) &&
         (row.Properties == null || row.Properties == EmptyObject) && (row.Settings == null || row.Settings == EmptyObject) &&
         (row.DisplayNames == null || row.DisplayNames == EmptyObject)));
 
@@ -141,7 +174,7 @@ internal static class ApplicationDetailsReader
         await database.Set<PilotManifest>().AsNoTracking().AnyAsync(row => row.ApplicationId == id, token);
 
     /// <summary>Contains only bounded presentation/profile metadata; no native credential or arbitrary object is retained.</summary>
-    private sealed record Row(string Id, string ClientId, string? DisplayName, string? ClientType, string? Redirects, string? Permissions, string? Requirements, string? ApplicationType, string? ConsentType, bool NoSecret, bool HasSecret, bool NativeProfile);
+    private sealed record Row(string Id, string ClientId, string? DisplayName, string? ClientType, string? Redirects, string? Permissions, string? Requirements, string? ApplicationType, string? ConsentType, bool NoSecret, bool HasSecret, bool HasKey, bool NativeProfile);
 }
 
 /// <summary>Retains one bounded already validated native observation without exposing additional fields through existing editor contracts.</summary>

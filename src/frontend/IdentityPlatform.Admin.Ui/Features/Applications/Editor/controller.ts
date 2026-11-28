@@ -2,8 +2,8 @@ import { retired } from "./retirement";
 import { assignment } from "./Scopes/observation";
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
-import { validate, validateNative, validateBrowser, validateMachine, machineProfile, type MachineInput, type BrowserInput, type RegistrationType, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
-import { created, cloned, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
+import { validate, validateNative, validateBrowser, validateMachine, validatePublicKey, machineProfile, keyedMachineProfile, type MachineInput, type BrowserInput, type RegistrationType, nativeProfile, type CreateInput, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
+import { created, cloned, edited, replaced, keyReplaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
 export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone" | "retire";
 export type Outcome = "browser-created" | "browser-unknown" | "native-created" | "native-unknown" | "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
 export type EditorState =
@@ -71,8 +71,10 @@ export class EditorController {
   /** Sets the single-send fence before token acquisition; any post-dispatch non-success remains potentially committed. */
   async create(draft: Draft, profile: RegistrationType = "web"): Promise<Errors> {
     if (this.stopped || this.state.kind !== "form") return {};
-    const checked = profile === "machine" ? validateMachine(draft, this.now()) : profile === "browser" ? validateBrowser(draft) : profile === "native" ? validateNative(draft) : validate(draft, this.now());
-    if (!checked.input) return checked.errors;
+    const keyed = profile === "keyed-machine";
+    const publicKey = keyed ? validatePublicKey(draft) : undefined;
+    const checked = keyed || profile === "machine" ? validateMachine(draft, this.now()) : profile === "browser" ? validateBrowser(draft) : profile === "native" ? validateNative(draft) : validate(draft, this.now());
+    if (!checked.input || keyed && !publicKey?.key) return { ...checked.errors, ...publicKey?.errors };
     if (!this.currentSession()) { this.fail("expired", "not-sent"); return {}; }
     const input = checked.input;
     const confidential = (value: typeof input): value is CreateInput | MachineInput => "credentialExpiresAt" in value;
@@ -86,17 +88,18 @@ export class EditorController {
       if (confidential(input) && !(utc(input.credentialExpiresAt, true) > this.now())) { this.fail("invalid", "not-sent"); return {}; }
       this.dispatched = true;
       const result = confidential(input) ? ("redirectUris" in input ? await this.client.create(input, proof.value.requestToken, operation.signal) :
+        publicKey?.key ? await this.client.createMachineKey({ application: input, publicKey: publicKey.key }, proof.value.requestToken, operation.signal) :
         await this.client.createMachine(input, proof.value.requestToken, operation.signal)) :
         "origins" in input ? await this.client.createBrowser(input as BrowserInput, proof.value.requestToken, operation.signal) :
         await this.client.createNative(input, proof.value.requestToken, operation.signal);
       if (!this.live(operation.version)) return {};
       if (result.status !== 201) { this.fail(reason(result.status), "unknown"); return {}; }
-      const value = confidential(input) ? await created(result, input, this.now()) : await observe(result, null, this.now(), input);
+      const value = confidential(input) && !keyed ? await created(result, input, this.now()) : await observe(result, null, this.now(), input, keyed);
       if (!this.live(operation.version)) return {};
       if (!value) { this.fail("unavailable", "unknown"); return {}; }
       const expires = Math.min(value.expires, this.session!.expires, value.details.credential ? utc(value.details.credential.expiresAt) : value.expires);
       if (expires <= this.now()) { this.fail("display-expired", "unknown"); return {}; }
-      this.dispatched = false; this.completed = profile === "browser" ? "browser-created" : profile === "native" ? "native-created" : "created";
+      this.dispatched = false; this.completed = keyed ? "updated" : profile === "browser" ? "browser-created" : profile === "native" ? "native-created" : "created";
       this.emit("secret" in value && typeof value.secret === "string" ? { ...value, expires, kind: "created", secret: value.secret } : { ...value, expires, kind: "details" }); this.arm(expires);
     } catch { if (this.live(operation.version)) this.fail("unavailable", this.dispatched ? "unknown" : "not-sent"); }
     return {};
@@ -106,6 +109,7 @@ export class EditorController {
     this.checkDeadline();
     if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
     const { details, expires, etag } = this.state;
+    if (details.profile === keyedMachineProfile && action === "edit") return;
     if (action === "replace" && !details.credential) return;
     this.cancel(); this.completed = undefined; this.target = { id: details.id, action };
     this.emit({ kind: action === "edit" ? "edit-form" : action === "replace" ? "replacement-form" : action === "disable" ? "disable-form" : action === "retire" ? "retire-form" : "enable-form", details: structuredClone(details), expires, etag }); this.arm(expires);
@@ -114,7 +118,7 @@ export class EditorController {
   async openClone(): Promise<void> {
     this.checkDeadline();
     if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
-    if (!this.state.details.credential || this.state.details.profile === machineProfile) return;
+    if (!this.state.details.credential || this.state.details.profile === machineProfile || this.state.details.profile === keyedMachineProfile) return;
     const base: Observed = { details: structuredClone(this.state.details), expires: this.state.expires, etag: this.state.etag };
     this.completed = undefined; this.target = { id: base.details.id, action: "clone" };
     const operation = this.begin("read", base.expires);
@@ -161,6 +165,15 @@ export class EditorController {
   async replace(draft: ReplacementDraft): Promise<Errors> {
     if (this.stopped || this.state.kind !== "replacement-form") return {};
     const checked = validateReplacement({ ...draft }, this.now());
+    if (this.state.details.profile === keyedMachineProfile) {
+      const { key, errors } = validatePublicKey(draft);
+      if (checked.errors.confirmed) checked.errors.confirmed = "Confirm that the current key will stop authenticating.";
+      if (!checked.input || !key) return { ...checked.errors, ...errors };
+      const base = this.state, expiry = checked.input.credentialExpiresAt;
+      return this.mutate(base, "replace", (token, signal) => this.client.replaceKey(base.details.id, base.etag!,
+        { publicKey: key, credentialExpiresAt: expiry, confirm: true }, token, signal),
+        result => keyReplaced(result, base, expiry, this.now()), utc(expiry, true));
+    }
     if (!checked.input) return checked.errors;
     const input = checked.input, base = this.state;
     return this.mutate(base, "replace", (token, signal) => this.client.replace(base.details.id, base.etag!, input, token, signal),

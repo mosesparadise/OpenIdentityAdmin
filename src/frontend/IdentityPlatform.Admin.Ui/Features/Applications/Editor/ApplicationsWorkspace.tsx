@@ -1,3 +1,4 @@
+import { keyedMachineProfile } from "./input";
 import { useLayoutEffect, useRef } from "react";
 import { Button } from "../../../Components/Button";
 import type { SessionState } from "../../Session/observation";
@@ -39,9 +40,9 @@ export function ApplicationsWorkspace({ session, retired = false }: { session: S
     <ApplicationsPanel retired={retired} onDetails={id => { void owner.current?.details(id); }} />
   </>;
   const title = state.kind === "form" ? "Create application" : state.kind === "created" ? "Application created" : state.kind === "cloned" ? "Application cloned" : state.kind === "clone-form" ? "Clone application"
-     : state.kind === "edit-form" ? "Edit application" : state.kind === "replacement-form" ? "Replace secret" : state.kind === "updated" ? "Application updated" : state.kind === "replaced" ? "Secret replaced"
+     : state.kind === "edit-form" ? "Edit application" : state.kind === "replacement-form" ? (state.details.profile === keyedMachineProfile ? "Replace public key" : "Replace secret") : state.kind === "updated" ? "Application updated" : state.kind === "replaced" ? "Secret replaced"
      : state.kind === "retire-form" ? "Permanently retire application" : state.kind === "disable-form" ? "Disable application" : state.kind === "enable-form" ? "Re-enable application"
-    : state.kind === "details" ? "Application details" : state.kind === "working" ? state.operation === "retire" ? "Retiring application…" : state.operation === "clone" ? "Cloning application…" : (state.operation === "create" || state.operation === "create-native" || state.operation === "create-browser") ? "Creating application…" : state.operation === "edit" ? "Saving changes…" : state.operation === "replace" ? "Replacing secret…" : state.operation === "disable" ? "Disabling application…" : state.operation === "enable" ? "Re-enabling application…" : "Loading application details…" : "Review application status";
+    : state.kind === "details" ? "Application details" : state.kind === "working" ? state.operation === "retire" ? "Retiring application…" : state.operation === "clone" ? "Cloning application…" : (state.operation === "create" || state.operation === "create-native" || state.operation === "create-browser") ? "Creating application…" : state.operation === "edit" ? "Saving changes…" : state.operation === "replace" ? "Replacing credential…" : state.operation === "disable" ? "Disabling application…" : state.operation === "enable" ? "Re-enabling application…" : "Loading application details…" : "Review application status";
   return <section className="applications-card application-editor" aria-labelledby="editor-heading" aria-busy={state.kind === "working"}>
     <div role="status" aria-live="polite" aria-atomic="true"><h2 id="editor-heading" tabIndex={-1} ref={heading}>{title}</h2></div>
     {state.kind === "form" && <><p className="editor-help">Register an application for OpenID sign-in using authorization code and PKCE S256. Each sign-in requires fresh password/MFA and explicit consent.</p>
